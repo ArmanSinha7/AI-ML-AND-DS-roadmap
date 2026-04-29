@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Arman · AIML + DS Mastery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#07070d;--bg2:#0e0e18;--bg3:#141420;--bg4:#1a1a28;--bg5:#202030;
+  --border:rgba(255,255,255,0.055);--border2:rgba(255,255,255,0.10);--border3:rgba(255,255,255,0.16);
+  --text:#ddddf0;--muted:#7a7a9a;--faint:#3a3a5a;
+  --accent:#7c6fff;--accent2:#a78bfa;--accentglow:rgba(124,111,255,0.18);
+  --green:#20c997;--greenglow:rgba(32,201,151,0.15);
+  --amber:#f5a623;--ambglow:rgba(245,166,35,0.15);
+  --coral:#ff6b6b;--coralglow:rgba(255,107,107,0.15);
+  --blue:#5ba4ff;--blueglow:rgba(91,164,255,0.15);
+  --pink:#e879b0;
+  --gold:#ffd700;
+  --font-h:'Syne',sans-serif;
+  --font-b:'Plus Jakarta Sans',sans-serif;
+  --font-m:'JetBrains Mono',monospace;
+  --r:14px;--r2:10px;--r3:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font-b);font-size:14px;line-height:1.5;}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--bg5);border-radius:3px;}
+/* LAYOUT */
+.shell{display:flex;height:100vh;overflow:hidden;}
+.sidebar{width:230px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;}
+.main{flex:1;overflow-y:auto;background:var(--bg);}
+/* SIDEBAR */
+.sb-logo{padding:20px 18px 16px;border-bottom:1px solid var(--border);}
+.sb-logo-title{font-family:var(--font-h);font-size:16px;font-weight:800;letter-spacing:-.4px;background:linear-gradient(135deg,var(--accent2),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sb-logo-sub{font-family:var(--font-m);font-size:9px;color:var(--muted);margin-top:3px;letter-spacing:.06em;text-transform:uppercase;}
+.sb-user{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--border);}
+.sb-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--pink));display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:700;font-size:12px;color:#fff;flex-shrink:0;}
+.sb-uname{font-size:13px;font-weight:600;}
+.sb-urank{font-family:var(--font-m);font-size:9px;color:var(--muted);margin-top:2px;}
+.sb-overall{padding:12px 18px;border-bottom:1px solid var(--border);}
+.sb-ol-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.sb-ol-label{font-family:var(--font-m);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+.sb-ol-pct{font-family:var(--font-m);font-size:11px;color:var(--accent2);font-weight:500;}
+.sb-bar{height:4px;background:var(--bg5);border-radius:2px;overflow:hidden;}
+.sb-bar-fill{height:4px;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .5s ease;}
+.sb-section{font-family:var(--font-m);font-size:8px;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;padding:12px 18px 6px;}
+.sb-nav{display:flex;flex-direction:column;gap:1px;padding:0 8px;}
+.sb-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--r3);cursor:pointer;color:var(--muted);font-size:12px;font-weight:500;border:1px solid transparent;transition:all .15s;user-select:none;}
+.sb-item:hover{color:var(--text);background:rgba(255,255,255,.03);}
+.sb-item.active{color:var(--accent2);background:var(--accentglow);border-color:rgba(124,111,255,.2);}
+.sb-item svg{width:14px;height:14px;flex-shrink:0;}
+.sb-badge{margin-left:auto;font-family:var(--font-m);font-size:9px;background:var(--bg5);padding:1px 6px;border-radius:8px;color:var(--faint);}
+.sb-bottom{margin-top:auto;padding:14px 18px;border-top:1px solid var(--border);}
+.sb-career{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:12px;}
+.sb-career-lpa{font-family:var(--font-h);font-size:18px;font-weight:800;color:var(--green);line-height:1;}
+.sb-career-role{font-size:11px;color:var(--muted);margin-top:3px;}
+.sb-career-label{font-family:var(--font-m);font-size:8px;color:var(--faint);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;}
+/* TOPBAR */
+.topbar{padding:24px 28px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.topbar-left .page-title{font-family:var(--font-h);font-size:24px;font-weight:800;letter-spacing:-.5px;}
+.topbar-left .page-sub{font-family:var(--font-m);font-size:10px;color:var(--muted);margin-top:4px;}
+/* STAT CARDS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:16px 28px;}
+.stat-c{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;position:relative;overflow:hidden;}
+.stat-c::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:var(--r) var(--r) 0 0;}
+.stat-c.c1::before{background:linear-gradient(90deg,var(--accent),var(--accent2));}
+.stat-c.c2::before{background:linear-gradient(90deg,var(--green),#0dd4a8);}
+.stat-c.c3::before{background:linear-gradient(90deg,var(--amber),#f7b731);}
+.stat-c.c4::before{background:linear-gradient(90deg,var(--coral),#fa8072);}
+.stat-val{font-family:var(--font-h);font-size:26px;font-weight:800;line-height:1;margin-bottom:3px;}
+.stat-lbl{font-family:var(--font-m);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;}
+.stat-sub{font-size:10px;color:var(--faint);margin-top:5px;}
+/* PANELS */
+.panel{display:none;padding:0 28px 48px;animation:fadeUp .2s ease;}
+.panel.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* SECTION HEADS */
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin:20px 0 14px;}
+.sec-title{font-family:var(--font-h);font-size:16px;font-weight:700;}
+.sec-meta{font-family:var(--font-m);font-size:10px;color:var(--muted);}
+/* PHASE CARDS */
+.phase-card{border:1px solid var(--border);border-radius:var(--r);margin-bottom:12px;background:var(--bg2);overflow:hidden;}
+.phase-head{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;}
+.phase-head:hover{background:rgba(255,255,255,.02);}
+.phase-num{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:800;font-size:12px;flex-shrink:0;}
+.phase-info{flex:1;}
+.phase-name{font-family:var(--font-h);font-size:13px;font-weight:700;}
+.phase-meta2{font-family:var(--font-m);font-size:9px;color:var(--muted);margin-top:2px;}
+.phase-right{display:flex;align-items:center;gap:10px;}
+.ph-bar-wrap{width:90px;height:4px;background:var(--bg5);border-radius:2px;overflow:hidden;}
+.ph-bar-fill{height:4px;border-radius:2px;transition:width .5s;}
+.ph-pct{font-family:var(--font-m);font-size:11px;color:var(--muted);min-width:30px;text-align:right;}
+.ph-chev{font-size:10px;color:var(--faint);transition:transform .2s;flex-shrink:0;}
+.ph-chev.open{transform:rotate(180deg);}
+.ph-accent-bar{height:2px;}
+.phase-body{border-top:1px solid var(--border);}
+/* COURSE */
+.course-block{border-bottom:1px solid var(--border);}
+.course-block:last-child{border-bottom:none;}
+.course-head{display:flex;align-items:center;gap:10px;padding:11px 18px;cursor:pointer;transition:background .12s;}
+.course-head:hover{background:rgba(255,255,255,.02);}
+.c-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.c-name{font-size:12px;font-weight:600;flex:1;}
+.c-tag{font-family:var(--font-m);font-size:8px;padding:2px 7px;border-radius:6px;text-transform:uppercase;letter-spacing:.05em;}
+.tag-core{background:rgba(124,111,255,.15);color:var(--accent2);}
+.tag-add{background:rgba(32,201,151,.12);color:var(--green);}
+.tag-math{background:rgba(91,164,255,.12);color:var(--blue);}
+.c-prog{font-family:var(--font-m);font-size:9px;color:var(--muted);}
+.c-chev{font-size:9px;color:var(--faint);transition:transform .2s;margin-left:4px;}
+.c-chev.open{transform:rotate(180deg);}
+.topic-wrap{padding:4px 18px 10px 40px;display:none;}
+.topic{display:flex;align-items:flex-start;gap:9px;padding:5px 9px;border-radius:7px;cursor:pointer;transition:background .12s;}
+.topic:hover{background:rgba(255,255,255,.025);}
+.topic.done{background:rgba(32,201,151,.05);}
+.topic.done .t-name{text-decoration:line-through;color:var(--muted);}
+.chkbox{width:15px;height:15px;border-radius:3px;border:1.5px solid var(--faint);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.chkbox.on{background:var(--green);border-color:var(--green);}
+.chkbox.on::after{content:'';display:block;width:8px;height:4px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translate(1px,-1px);}
+.t-name{font-size:11.5px;flex:1;line-height:1.4;}
+.t-sub{font-family:var(--font-m);font-size:9px;color:var(--faint);margin-top:2px;line-height:1.4;}
+/* PROJECTS */
+.proj-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.flt{font-family:var(--font-m);font-size:10px;padding:5px 13px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;}
+.flt:hover{color:var(--text);background:var(--bg3);}
+.flt.on{background:var(--accentglow);color:var(--accent2);border-color:rgba(124,111,255,.3);}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;}
+.proj-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:9px;transition:border-color .15s,transform .15s;}
+.proj-card:hover{border-color:var(--border3);transform:translateY(-1px);}
+.proj-card.starred{border-color:rgba(124,111,255,.3);}
+.proj-card.done-c{opacity:.65;border-color:rgba(32,201,151,.25);}
+.proj-top{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.p-phase-pill{font-family:var(--font-m);font-size:8px;padding:2px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.05em;}
+.p-hot{background:rgba(255,107,107,.12);color:var(--coral);font-family:var(--font-m);font-size:8px;padding:2px 8px;border-radius:6px;}
+.p-new{background:rgba(32,201,151,.12);color:var(--green);font-family:var(--font-m);font-size:8px;padding:2px 8px;border-radius:6px;}
+.p-title{font-family:var(--font-h);font-size:14px;font-weight:700;line-height:1.3;}
+.p-desc{font-size:11.5px;color:var(--muted);line-height:1.6;}
+.p-detail{font-family:var(--font-m);font-size:9.5px;color:var(--faint);background:var(--bg4);padding:8px 10px;border-radius:7px;line-height:1.55;border:1px solid var(--border);}
+.p-skills{display:flex;flex-wrap:wrap;gap:4px;}
+.skill-pill{font-family:var(--font-m);font-size:9px;padding:2px 8px;border-radius:5px;background:var(--bg4);color:var(--muted);border:1px solid var(--border);}
+.p-foot{display:flex;align-items:center;gap:8px;margin-top:3px;}
+.p-diff{font-family:var(--font-m);font-size:9px;color:var(--muted);display:flex;align-items:center;gap:4px;}
+.p-diff-dot{width:5px;height:5px;border-radius:50%;}
+.p-src{font-family:var(--font-m);font-size:8px;background:var(--bg4);color:var(--faint);padding:1px 6px;border-radius:5px;border:1px solid var(--border);}
+.p-done{display:flex;align-items:center;gap:5px;cursor:pointer;font-size:10px;color:var(--muted);margin-left:auto;user-select:none;transition:color .12s;}
+.p-done:hover{color:var(--text);}
+.p-chk{width:15px;height:15px;border-radius:3px;border:1.5px solid var(--faint);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.p-chk.on{background:var(--green);border-color:var(--green);}
+.p-chk.on::after{content:'';display:block;width:8px;height:4px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translate(1px,-1px);}
+/* OVERVIEW */
+.ov-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.ov-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;}
+.ov-title{font-family:var(--font-m);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;}
+.ph-row{display:flex;align-items:center;gap:9px;margin-bottom:7px;}
+.ph-row-name{font-size:10px;color:var(--muted);width:140px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ph-row-bw{flex:1;height:4px;background:var(--bg5);border-radius:2px;overflow:hidden;}
+.ph-row-bf{height:4px;border-radius:2px;transition:width .5s;}
+.ph-row-pct{font-family:var(--font-m);font-size:9px;color:var(--muted);min-width:28px;text-align:right;}
+/* CAREER LEVELS */
+.career-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:12px;}
+.career-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;position:relative;overflow:hidden;}
+.career-card.unlocked{border-color:rgba(32,201,151,.3);background:rgba(32,201,151,.04);}
+.career-card.current-level{border-color:var(--accent);box-shadow:0 0 16px var(--accentglow);}
+.career-card.locked{opacity:.45;}
+.career-lock{position:absolute;top:10px;right:10px;font-size:11px;color:var(--faint);}
+.career-pct{font-family:var(--font-m);font-size:9px;margin-bottom:6px;}
+.career-role{font-family:var(--font-h);font-size:13px;font-weight:700;margin-bottom:2px;}
+.career-lpa{font-family:var(--font-h);font-size:18px;font-weight:800;color:var(--green);}
+.career-lpa-lbl{font-size:9px;color:var(--muted);margin-left:3px;}
+.career-desc{font-size:10px;color:var(--muted);margin-top:6px;line-height:1.5;}
+.career-skills{display:flex;flex-wrap:wrap;gap:3px;margin-top:8px;}
+.career-skill{font-family:var(--font-m);font-size:8px;padding:1px 6px;border-radius:4px;background:var(--bg4);color:var(--faint);}
+.current-badge{font-family:var(--font-m);font-size:8px;background:var(--accent);color:#fff;padding:1px 7px;border-radius:6px;display:inline-block;margin-bottom:6px;}
+/* TIMELINE */
+.tl{display:flex;flex-direction:column;}
+.tl-item{display:flex;gap:12px;padding-bottom:14px;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-left{display:flex;flex-direction:column;align-items:center;width:18px;flex-shrink:0;}
+.tl-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+.tl-line{flex:1;width:1px;background:var(--border);margin-top:4px;}
+.tl-item:last-child .tl-line{display:none;}
+.tl-mo{font-family:var(--font-m);font-size:9px;color:var(--muted);flex-shrink:0;margin-top:2px;width:42px;}
+.tl-content{flex:1;}
+.tl-title{font-size:11.5px;font-weight:600;}
+.tl-sub{font-size:10px;color:var(--muted);margin-top:1px;}
+/* RESOURCES */
+.res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;}
+.res-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:14px;transition:border-color .15s;}
+.res-card:hover{border-color:var(--border3);}
+.res-tag{font-family:var(--font-m);font-size:8px;padding:1px 7px;border-radius:5px;display:inline-block;margin-bottom:8px;}
+.res-name{font-size:12px;font-weight:600;margin-bottom:3px;}
+.res-desc{font-size:10px;color:var(--muted);line-height:1.5;margin-bottom:8px;}
+.res-link{font-family:var(--font-m);font-size:9px;color:var(--accent2);text-decoration:none;display:block;}
+.res-link:hover{text-decoration:underline;}
+/* NOTES */
+.notes-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.notes-area{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:8px;}
+.notes-label{font-family:var(--font-m);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;}
+.notes-input{background:var(--bg4);border:1px solid var(--border2);border-radius:var(--r3);padding:10px;color:var(--text);font-family:var(--font-b);font-size:12px;resize:vertical;min-height:120px;outline:none;transition:border-color .15s;line-height:1.5;}
+.notes-input:focus{border-color:rgba(124,111,255,.4);}
+.notes-save{font-family:var(--font-m);font-size:10px;padding:6px 14px;border-radius:7px;background:var(--accentglow);color:var(--accent2);border:1px solid rgba(124,111,255,.3);cursor:pointer;transition:all .15s;align-self:flex-start;}
+.notes-save:hover{background:rgba(124,111,255,.25);}
+.streak-grid{display:grid;grid-template-columns:repeat(13,1fr);gap:3px;}
+.s-cell{aspect-ratio:1;border-radius:3px;background:var(--bg5);cursor:pointer;transition:transform .1s;}
+.s-cell:hover{transform:scale(1.3);}
+.s0{background:var(--bg5)}.s1{background:rgba(124,111,255,.25)}.s2{background:rgba(124,111,255,.5)}.s3{background:rgba(124,111,255,.75)}.s4{background:var(--accent);}
+</style>
+</head>
+<body>
+<div class="shell">
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-title">ARMAN · AIML+DS</div>
+    <div class="sb-logo-sub">mastery tracker · 2026</div>
+  </div>
+  <div class="sb-user">
+    <div class="sb-av">AS</div>
+    <div>
+      <div class="sb-uname">Arman Sinha</div>
+      <div class="sb-urank" id="sb-rank">Beginner · 0%</div>
+    </div>
+  </div>
+  <div class="sb-overall">
+    <div class="sb-ol-row">
+      <div class="sb-ol-label">Overall Progress</div>
+      <div class="sb-ol-pct" id="sb-pct">0%</div>
+    </div>
+    <div class="sb-bar"><div class="sb-bar-fill" id="sb-fill" style="width:0%"></div></div>
+  </div>
+  <div class="sb-section">Navigation</div>
+  <div class="sb-nav">
+    <div class="sb-item active" data-panel="roadmap" onclick="nav(this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+      Roadmap <span class="sb-badge">5 phases</span>
+    </div>
+    <div class="sb-item" data-panel="projects" onclick="nav(this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M14.25 9.75L16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z"/></svg>
+      Projects <span class="sb-badge" id="nb-proj">30</span>
+    </div>
+    <div class="sb-item" data-panel="career" onclick="nav(this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      Career Levels
+    </div>
+    <div class="sb-item" data-panel="overview" onclick="nav(this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
+      Overview
+    </div>
+    <div class="sb-item" data-panel="resources" onclick="nav(this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
+      Resources
+    </div>
+    <div class="sb-item" data-panel="notes" onclick="nav(this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125"/></svg>
+      My Notes
+    </div>
+  </div>
+  <div class="sb-bottom">
+    <div class="sb-career-label">Current Level Salary</div>
+    <div class="sb-career">
+      <div class="sb-career-lpa" id="sb-lpa">Not Eligible</div>
+      <div class="sb-career-role" id="sb-role">Keep studying to unlock</div>
+    </div>
+  </div>
+</aside>
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="page-title" id="pg-title">Roadmap</div>
+      <div class="page-sub" id="pg-sub">Your focused AIML + DS mastery path · Click topics to track progress</div>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat-c c1"><div class="stat-val" id="s-done" style="color:var(--accent2)">0</div><div class="stat-lbl">Topics Done</div><div class="stat-sub" id="s-done-sub">of 0 total</div></div>
+    <div class="stat-c c2"><div class="stat-val" id="s-pct" style="color:var(--green)">0%</div><div class="stat-lbl">Overall Progress</div><div class="stat-sub">keep going 💪</div></div>
+    <div class="stat-c c3"><div class="stat-val" id="s-proj" style="color:var(--amber)">0</div><div class="stat-lbl">Projects Done</div><div class="stat-sub" id="s-proj-sub">of 30 total</div></div>
+    <div class="stat-c c4"><div class="stat-val" id="s-streak" style="color:var(--coral)">0</div><div class="stat-lbl">Day Streak</div><div class="stat-sub" id="s-streak-sub">start today!</div></div>
+  </div>
+  <!-- ROADMAP -->
+  <div id="roadmap" class="panel active" style="padding-top:4px;"></div>
+  <!-- PROJECTS -->
+  <div id="projects" class="panel" style="padding-top:8px;">
+    <div class="sec-head"><div class="sec-title">Project Portfolio</div><div class="sec-meta" id="proj-count">0 / 30 done</div></div>
+    <div class="proj-filters">
+      <button class="flt on" onclick="flt('all',this)">All (30)</button>
+      <button class="flt" onclick="flt('p1',this)">Phase 1 Starter</button>
+      <button class="flt" onclick="flt('p2',this)">Phase 2 Analytics</button>
+      <button class="flt" onclick="flt('p3',this)">Phase 3 ML</button>
+      <button class="flt" onclick="flt('p4',this)">Phase 4 DL/LLM</button>
+      <button class="flt" onclick="flt('p5',this)">Phase 5 Capstone</button>
+      <button class="flt" onclick="flt('kaggle',this)">🏆 Kaggle</button>
+      <button class="flt" onclick="flt('starred',this)">⭐ Must-Do</button>
+    </div>
+    <div class="proj-grid" id="proj-grid"></div>
+  </div>
+  <!-- CAREER -->
+  <div id="career" class="panel" style="padding-top:8px;">
+    <div class="sec-head"><div class="sec-title">Career Levels & INR Salary</div><div class="sec-meta">Based on 2025-26 market data · India</div></div>
+    <div class="career-grid" id="career-grid"></div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-top:4px;">
+      <div style="font-family:var(--font-m);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;">India Job Market · 2026 Salary Data</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;font-size:11px;color:var(--muted);">
+        <div><div style="color:var(--text);font-weight:600;margin-bottom:4px;">Services MNC</div><div>Data Analyst: ₹4–7L</div><div>Jr ML Eng: ₹5–9L</div><div>NLP Eng: ₹6–10L</div></div>
+        <div><div style="color:var(--text);font-weight:600;margin-bottom:4px;">Product Startup</div><div>Data Analyst: ₹7–14L</div><div>Jr ML Eng: ₹12–22L</div><div>LLM Eng: ₹35–70L</div></div>
+        <div><div style="color:var(--text);font-weight:600;margin-bottom:4px;">FAANG / Unicorn</div><div>Data Scientist: ₹45–100L</div><div>ML Engineer: ₹55–120L</div><div>Principal ML: ₹120–250L</div></div>
+      </div>
+      <div style="margin-top:10px;font-family:var(--font-m);font-size:9px;color:var(--faint);">Sources: Glassdoor India, AmbitionBox, LinkedIn Salary Insights, Dheya Research (2025–26). Salaries vary by city, company, and portfolio quality. Bangalore leads (+30% premium). Strong portfolio can 2x initial offer.</div>
+    </div>
+  </div>
+  <!-- OVERVIEW -->
+  <div id="overview" class="panel" style="padding-top:8px;">
+    <div class="ov-grid">
+      <div class="ov-card">
+        <div class="ov-title">Progress by Phase</div>
+        <div id="ph-progress"></div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-title">17-Month Timeline</div>
+        <div class="tl" id="tl"></div>
+      </div>
+    </div>
+    <div class="ov-card" style="margin-bottom:12px;">
+      <div class="ov-title">91-Day Activity Heatmap · Click to log a study day</div>
+      <div class="streak-grid" id="heatmap"></div>
+    </div>
+  </div>
+  <!-- RESOURCES -->
+  <div id="resources" class="panel" style="padding-top:8px;">
+    <div class="sec-head"><div class="sec-title">Free Learning Resources</div><div class="sec-meta">Curated · No fluff</div></div>
+    <div class="res-grid" id="res-grid"></div>
+  </div>
+  <!-- NOTES -->
+  <div id="notes" class="panel" style="padding-top:8px;">
+    <div class="sec-head"><div class="sec-title">My Notes</div><div class="sec-meta">Auto-saved in browser</div></div>
+    <div class="notes-wrap" id="notes-wrap"></div>
+  </div>
+</main>
+</div>
+<script>
+// ═══════════════ DATA ═══════════════
+
+const PHASES=[
+{id:'p1',name:'Phase 1 — Programming & Math Foundation',meta:'Months 1–3 · ~380 hrs',color:'#7c6fff',bg:'rgba(124,111,255,.15)',courses:[
+  {name:'Python — Complete Mastery',tag:'core',color:'#7c6fff',topics:[
+    {t:'Variables, data types, type casting',s:'int, float, str, bool, complex, None; explicit vs implicit casting'},
+    {t:'Operators — arithmetic, comparison, logical, bitwise',s:'operator precedence, short-circuit evaluation'},
+    {t:'Control flow — if/elif/else, match-case',s:'truthiness rules, ternary expressions, nested conditions'},
+    {t:'Loops — for, while, break, continue, pass',s:'enumerate(), zip(), range() — avoid manual indexing always'},
+    {t:'List comprehensions, dict/set comprehensions',s:'nested comprehensions, conditional filtering, walrus operator'},
+    {t:'Functions — args, kwargs, *args, **kwargs',s:'positional vs keyword, default values, argument unpacking'},
+    {t:'Scope — LEGB rule, closures',s:'local, enclosing, global, built-in; nonlocal keyword'},
+    {t:'Lambda, map, filter, functools.reduce',s:'functional style, chaining, when NOT to use lambda'},
+    {t:'Data structures — list, tuple, dict, set, frozenset',s:'mutability, hashability, time complexity of operations'},
+    {t:'String methods, f-strings, format()',s:'split, join, strip, replace, find; multi-line f-strings'},
+    {t:'Regular expressions — re module',s:'match, search, findall, groups, lookahead/behind'},
+    {t:'OOP — classes, __init__, self, @classmethod, @staticmethod',s:'encapsulation, naming conventions'},
+    {t:'Inheritance, MRO, super(), multiple inheritance',s:'Method Resolution Order, diamond problem, mixins'},
+    {t:'Dunder methods — __str__, __repr__, __len__, __eq__, __hash__',s:'operator overloading, comparison protocol'},
+    {t:'Decorators — building from scratch',s:'functools.wraps, stacking decorators, parametrized decorators'},
+    {t:'Context managers — with statement, __enter__/__exit__',s:'contextlib.contextmanager, resource management'},
+    {t:'Generators — yield, yield from, generator expressions',s:'lazy evaluation, send(), memory efficiency'},
+    {t:'Iterators — __iter__, __next__, iter(), next()',s:'custom iterator classes, StopIteration'},
+    {t:'Exception handling — try/except/else/finally',s:'exception hierarchy, custom exceptions, re-raising, chaining'},
+    {t:'File I/O — open(), pathlib, context managers',s:'read/write modes, binary, CSV via csv module, JSON'},
+    {t:'Modules & packages — import system, __init__.py',s:'relative imports, circular imports, namespace packages'},
+    {t:'Virtual environments — venv, pip, requirements.txt',s:'conda, pip-tools, pyproject.toml basics'},
+    {t:'Standard library — os, sys, pathlib, shutil',s:'file system ops; critical for scripting ML pipelines'},
+    {t:'Standard library — collections (Counter, defaultdict, deque, namedtuple)',s:'performance advantages over plain dict/list'},
+    {t:'Standard library — itertools, functools',s:'chain, product, combinations, permutations, lru_cache, partial'},
+    {t:'Standard library — datetime, time, calendar',s:'strptime/strftime, timedelta, timezone-aware ops'},
+    {t:'Type hints — typing module, mypy',s:'List, Dict, Optional, Union, Tuple, TypeVar, Protocol, dataclasses'},
+    {t:'Concurrency — threading vs multiprocessing vs asyncio',s:'GIL, CPU-bound vs IO-bound, async/await basics'},
+    {t:'Testing — pytest, unittest, fixtures, mocks',s:'parametrize, coverage, TDD basics for ML code'},
+    {t:'Packaging & project structure',s:'src layout, setup.py vs pyproject.toml, __main__.py, CLI tools'},
+  ]},
+  {name:'DSA with Python — Interview Ready',tag:'core',color:'#7c6fff',topics:[
+    {t:'Big-O — time & space complexity analysis',s:'O(1) O(log n) O(n) O(n log n) O(n²) — identify on sight for any loop structure'},
+    {t:'Arrays — basic ops, rotation, Kadane\'s algorithm',s:'max subarray, prefix sums, difference arrays, range update queries'},
+    {t:'Two-pointer technique',s:'pair sum, palindrome check, container with most water, trapping rain water'},
+    {t:'Sliding window — fixed & variable size',s:'max sum subarray, longest substring without repeat, min window substring'},
+    {t:'Hashing — dict/set patterns',s:'two-sum, group anagrams, top-K frequent, subarray sum equals K'},
+    {t:'Strings — manipulation, pattern matching',s:'KMP algorithm concept, Z-algorithm, rabin-karp, string compression'},
+    {t:'Linked list — singly, doubly, circular',s:'reverse, detect cycle (Floyd\'s), find middle, merge k sorted lists'},
+    {t:'Stacks — implementation, monotonic stack',s:'balanced parentheses, next greater element, largest rectangle histogram'},
+    {t:'Queues — BFS pattern, deque, priority queue',s:'sliding window max, first non-repeating, rotten oranges BFS'},
+    {t:'Recursion — tree recursion, memoisation',s:'fibonacci, power(x,n), flatten list, tower of Hanoi pattern'},
+    {t:'Backtracking — decision tree model',s:'N-queens, subsets, permutations, combinations, sudoku solver, word search'},
+    {t:'Divide & conquer',s:'merge sort, quick sort, binary search variants, closest pair of points'},
+    {t:'Binary search — standard + variants',s:'lower bound, upper bound, search rotated, kth smallest, capacity to ship'},
+    {t:'Sorting — merge, quick, heap, counting, radix',s:'stability, in-place, average vs worst case, Dutch National Flag'},
+    {t:'Binary trees — DFS/BFS, all traversals',s:'inorder, preorder, postorder, level-order, zigzag, boundary traversal'},
+    {t:'Binary search trees — insert, delete, validate',s:'BST iterator, kth smallest, successor/predecessor, balance check'},
+    {t:'Tries — insert, search, startsWith',s:'autocomplete, word break II, maximum XOR, replace words'},
+    {t:'Heaps — min/max, heapq, custom comparator',s:'top-K problems, merge K sorted lists, median from data stream'},
+    {t:'Graphs — representation, DFS, BFS',s:'adjacency list vs matrix, connected components, flood fill, number of islands'},
+    {t:'Graph — topological sort (Kahn\'s + DFS)',s:'course schedule, alien dictionary, task scheduling'},
+    {t:'Graph — shortest path: Dijkstra, Bellman-Ford',s:'network delay, cheapest flights within K stops, path with min effort'},
+    {t:'Graph — Union-Find (DSU)',s:'connected components, redundant connection, accounts merge, min spanning tree'},
+    {t:'Dynamic programming — pattern recognition',s:'identify overlapping subproblems, optimal substructure'},
+    {t:'DP — 1D: climbing stairs, house robber, jump game',s:'coin change, perfect squares, decode ways, word break'},
+    {t:'DP — 2D: grid paths, edit distance, LCS',s:'unique paths, minimum path sum, longest common subsequence'},
+    {t:'DP — Knapsack patterns',s:'0/1 knapsack, unbounded, partition equal subset, target sum'},
+    {t:'DP — Intervals: burst balloons, matrix chain',s:'palindrome partitioning, strange printer, minimum cost to cut a stick'},
+    {t:'Greedy — activity selection, interval scheduling',s:'meeting rooms, task scheduler, jump game II, gas station'},
+    {t:'Bit manipulation',s:'XOR tricks, bit masking, count set bits, power of two, single number III'},
+    {t:'LeetCode grind — 100 curated problems',s:'30 Easy → 50 Medium → 20 Hard; focus: patterns not memorisation'},
+  ]},
+  {name:'Mathematics for ML — Self-Study (Parallel)',tag:'math',color:'#5ba4ff',topics:[
+    {t:'Linear algebra — vectors, scalars, vector ops',s:'dot product, cross product, norm, unit vector (3B1B Series Ch1-4)'},
+    {t:'Matrices — ops, transpose, inverse, determinant',s:'matrix multiplication as linear transformation (3B1B Ch5-9)'},
+    {t:'Eigenvalues & eigenvectors',s:'geometric intuition, characteristic polynomial, diagonalisation (3B1B Ch14)'},
+    {t:'SVD — Singular Value Decomposition',s:'used in PCA, LSA, recommender systems, low-rank approximation'},
+    {t:'Calculus — derivatives, chain rule',s:'power rule, product rule, quotient rule — this is backpropagation'},
+    {t:'Partial derivatives & gradients',s:'gradient points uphill, gradient descent goes downhill — visualise 3D loss'},
+    {t:'Jacobian & Hessian basics',s:'vector derivatives, second-order optimisation, Newton\'s method concept'},
+    {t:'Probability — sample space, events, axioms',s:'unions, intersections, complement, conditional probability'},
+    {t:'Bayes\' theorem — prior, likelihood, posterior',s:'Naive Bayes, medical diagnosis example, update beliefs'},
+    {t:'Probability distributions — discrete',s:'Bernoulli, Binomial, Geometric, Poisson — PMF, CDF, mean, variance'},
+    {t:'Probability distributions — continuous',s:'Gaussian, Exponential, Beta, Gamma — PDF, CDF, parameters'},
+    {t:'Expectation, variance, covariance, correlation',s:'E[X], Var(X), Cov(X,Y), Pearson r — core to feature analysis'},
+    {t:'Hypothesis testing — null/alternative, p-value',s:'type I/II error, significance level, t-test, z-test'},
+    {t:'Statistical tests — t-test, chi-square, ANOVA',s:'when to use each, assumptions, interpret results'},
+    {t:'Information theory — entropy, KL divergence, cross-entropy',s:'cross-entropy loss is KL divergence + entropy of true dist'},
+    {t:'Optimisation — convex vs non-convex',s:'local vs global minima, saddle points, convexity check, Lagrange multipliers'},
+  ]},
+  {name:'Git & GitHub — Version Control',tag:'add',color:'#20c997',topics:[
+    {t:'Git fundamentals — init, add, commit, log',s:'working directory, staging area, .gitignore, commit best practices'},
+    {t:'Branching — branch, checkout, merge, rebase',s:'fast-forward, 3-way merge, interactive rebase, squash commits'},
+    {t:'Remote — push, pull, fetch, clone',s:'origin, upstream, tracking branches, remote refs'},
+    {t:'Conflict resolution — merge conflicts',s:'<<<, ===, >>> markers, using vimdiff, VS Code merge editor'},
+    {t:'Advanced ops — stash, cherry-pick, reset, revert',s:'soft/hard/mixed reset, when to revert vs reset'},
+    {t:'GitHub — PRs, forks, issues, code review',s:'PR templates, branch protection rules, CODEOWNERS'},
+    {t:'GitHub Actions — CI/CD pipelines for ML',s:'workflows, triggers, matrix builds, secrets, artifacts'},
+  ]},
+]},
+{id:'p2',name:'Phase 2 — Data Science & Analytics',meta:'Months 3–6 · ~320 hrs',color:'#20c997',bg:'rgba(32,201,151,.13)',courses:[
+  {name:'NumPy — Deep Scientific Computing',tag:'core',color:'#20c997',topics:[
+    {t:'ndarray creation — zeros, ones, arange, linspace, random',s:'dtype, shape, C vs F order, fromfunction, fromiter'},
+    {t:'Indexing — basic, slicing, boolean, fancy indexing',s:'np.where, np.select, advanced indexing rules, views vs copies'},
+    {t:'Broadcasting — rules and patterns',s:'shape compatibility, add a new axis, broadcast_to, meshgrid'},
+    {t:'Universal functions (ufuncs)',s:'np.exp, np.log, np.sqrt, np.maximum, np.vectorize vs ufunc speed'},
+    {t:'Array operations — reshape, stack, split, tile, repeat',s:'vstack, hstack, dstack, concatenate, atleast_2d'},
+    {t:'Linear algebra — np.linalg',s:'solve, inv, det, eig, svd, lstsq, norm, matrix_rank'},
+    {t:'Random module — np.random',s:'seed, rand, randn, randint, choice, shuffle, Generator API'},
+    {t:'Performance — vectorisation vs Python loops',s:'%timeit benchmarks, avoid Python for loops on arrays, einsum'},
+    {t:'Structured arrays and record arrays',s:'used for heterogeneous data before Pandas'},
+    {t:'Masked arrays — np.ma',s:'handle missing data in numerical ops, fill_value'},
+  ]},
+  {name:'Pandas — Data Manipulation Mastery',tag:'core',color:'#20c997',topics:[
+    {t:'Series creation, indexing, operations',s:'from dict, list, ndarray; .loc, .iloc, .at — precision matters'},
+    {t:'DataFrame creation, reading CSV/JSON/Excel/SQL',s:'pd.read_csv options: dtype, parse_dates, chunksize, nrows'},
+    {t:'Selection — .loc, .iloc, boolean masks, .query()',s:'chained vs single-step indexing, SettingWithCopyWarning'},
+    {t:'Missing data — isna, fillna, dropna, interpolate',s:'forward/backward fill, interpolation methods, detection patterns'},
+    {t:'Data types — astype, pd.Categorical, pd.StringDtype',s:'memory reduction with categoricals, nullable integer types'},
+    {t:'GroupBy — split-apply-combine',s:'agg, transform, apply, filter; multiple aggregations, named agg'},
+    {t:'Merging & joining — merge, join, concat',s:'on, left_on, right_on, how; merge_asof for time series'},
+    {t:'Reshaping — pivot, melt, stack, unstack, pivot_table',s:'wide to long, long to wide, hierarchical index'},
+    {t:'String methods — .str accessor',s:'contains, extract, replace with regex, split, get_dummies'},
+    {t:'DateTime — pd.to_datetime, DatetimeIndex',s:'resample, rolling, shift, date_range, tz_localize, tz_convert'},
+    {t:'Apply, applymap, pipe — custom transformations',s:'lambda in apply, vectorised alternatives, performance tradeoffs'},
+    {t:'Performance — vectorise, use_cols, dtypes, eval/query',s:'Categorical memory savings, chunked reading, Dask handoff point'},
+    {t:'MultiIndex — creation, slicing, reset_index',s:'cross-section, IndexSlice, unstack for pivot operations'},
+  ]},
+  {name:'EDA & Visualisation — Data Storytelling',tag:'core',color:'#20c997',topics:[
+    {t:'EDA framework — shape, dtypes, describe, nunique, value_counts',s:'null%, unique%, distribution check, first 5 things every analyst does'},
+    {t:'Matplotlib — Figure, Axes, subplots OOP API',s:'figsize, dpi, tight_layout, savefig, rcParams styling'},
+    {t:'Seaborn — statistical visualisation',s:'histplot, boxplot, violinplot, heatmap, pairplot, FacetGrid, catplot'},
+    {t:'Plotly Express — interactive charts',s:'scatter, line, bar, histogram, choropleth; hover_data, animation_frame'},
+    {t:'Plotly Graph Objects — custom layouts',s:'go.Figure, update_layout, add_trace, subplots, secondary y-axis'},
+    {t:'Distribution analysis — skewness, kurtosis, Q-Q plots',s:'normality tests: Shapiro-Wilk, K-S test; log transforms'},
+    {t:'Correlation analysis — heatmaps, pair plots',s:'Pearson vs Spearman vs Kendall; VIF for multicollinearity'},
+    {t:'Outlier detection — IQR, Z-score, boxplots',s:'domain-driven thresholds, cap vs remove vs flag'},
+    {t:'Feature distribution analysis before modelling',s:'target variable distribution, class balance check, train/test distribution shift'},
+    {t:'Storytelling with data — chart selection guide',s:'which chart for which comparison; annotations, colours for meaning, Tufte principles'},
+  ]},
+  {name:'Feature Engineering — The ML Secret Weapon',tag:'add',color:'#20c997',topics:[
+    {t:'Encoding — one-hot, label, ordinal, binary encoding',s:'handle unknown categories at inference; cardinality thresholds'},
+    {t:'Target encoding & leave-one-out encoding',s:'overfitting risk, smoothing, K-fold target encoding'},
+    {t:'Scaling — StandardScaler, MinMaxScaler, RobustScaler',s:'when to use each; effect on SVM, KNN, tree models'},
+    {t:'Binning & discretisation — cut, qcut, decision-tree bins',s:'monotonic bins for scorecard models, Weight of Evidence'},
+    {t:'Polynomial & interaction features',s:'PolynomialFeatures, manual domain interactions, dimensionality explosion'},
+    {t:'Date/time features — cyclical encoding',s:'sin/cos transform for hour-of-day, day-of-week; is_weekend, lag, lead'},
+    {t:'Aggregation features — groupby stats',s:'mean/std/max of group; count, rank within group; ratio features'},
+    {t:'Feature selection — filter methods',s:'mutual information, ANOVA F-test, chi-square, correlation threshold'},
+    {t:'Feature selection — wrapper & embedded',s:'RFE with CV, Lasso path, Ridge shrinkage, permutation importance'},
+    {t:'SHAP-based feature selection',s:'SHAP summary plot, mean |SHAP| ranking, interaction values'},
+  ]},
+  {name:'Power BI — Business Intelligence',tag:'core',color:'#f5a623',topics:[
+    {t:'Power Query — data import, transformation',s:'M language basics, merge/append queries, custom columns, data profiling'},
+    {t:'Data model — star schema, relationships, cardinality',s:'fact vs dimension, 1:M vs M:M, cross-filter direction'},
+    {t:'DAX fundamentals — calculated columns vs measures',s:'evaluation context, row context vs filter context (critical distinction)'},
+    {t:'Core DAX — SUM, CALCULATE, FILTER, ALL, ALLEXCEPT',s:'SUMX, COUNTROWS, DIVIDE, IF, SWITCH, RELATED'},
+    {t:'Time intelligence DAX',s:'TOTALYTD, TOTALQTD, SAMEPERIODLASTYEAR, DATEADD, DATESYTD'},
+    {t:'Dashboard design — visuals, slicers, drill-through',s:'bookmarks, tooltip pages, selection pane, accessibility'},
+    {t:'Row-level security — static and dynamic',s:'USERPRINCIPALNAME(), test as role, manage roles'},
+    {t:'Publish to Power BI Service — scheduled refresh',s:'workspaces, apps, dataflows, incremental refresh'},
+  ]},
+]},
+{id:'p3',name:'Phase 3 — Machine Learning (Core)',meta:'Months 6–10 · ~420 hrs',color:'#ff6b6b',bg:'rgba(255,107,107,.12)',courses:[
+  {name:'Machine Learning — Complete & Deep',tag:'core',color:'#ff6b6b',topics:[
+    {t:'ML workflow — problem framing to production',s:'business objective → ML formulation → data → features → model → eval → deploy → monitor'},
+    {t:'Train/val/test split — why 3 sets not 2',s:'data leakage definition and how it destroys models in production'},
+    {t:'Linear regression — OLS, assumptions, diagnostics',s:'Gauss-Markov, residual plots, heteroscedasticity, multicollinearity (VIF)'},
+    {t:'Regularisation — Ridge (L2), Lasso (L1), ElasticNet',s:'geometric intuition, coefficient paths, alpha/lambda tuning, when each wins'},
+    {t:'Logistic regression — sigmoid, log-loss, interpretation',s:'odds ratio, log-odds, multi-class: OvR vs softmax'},
+    {t:'Naive Bayes — Gaussian, Multinomial, Bernoulli',s:'independence assumption violations, smoothing (Laplace), text classification'},
+    {t:'K-Nearest Neighbours — distance metrics, k selection',s:'curse of dimensionality, KD-trees, ball trees, weighted KNN'},
+    {t:'SVM — hard margin, soft margin, kernels',s:'kernel trick (RBF, polynomial, sigmoid), dual problem, support vectors'},
+    {t:'Decision trees — information gain, Gini impurity, pruning',s:'max_depth, min_samples_leaf, min_impurity_decrease, tree visualisation'},
+    {t:'Ensemble — Bagging, Random Forest',s:'bootstrap sampling, feature randomness, OOB error, feature importances'},
+    {t:'Ensemble — Boosting: AdaBoost, Gradient Boosting',s:'weak learners, residuals, learning rate, shrinkage'},
+    {t:'XGBoost — architecture, hyperparameters',s:'regularisation terms, tree booster vs linear, dart, weighted quantile sketch'},
+    {t:'LightGBM — leaf-wise growth, GOSS, EFB',s:'faster than XGBoost, handles categoricals natively, histograms'},
+    {t:'CatBoost — ordered boosting, categorical handling',s:'no preprocessing needed, symmetric trees, eval_metric'},
+    {t:'Stacking & blending ensembles',s:'level-1 vs level-2 models, out-of-fold predictions, StackingClassifier'},
+    {t:'Evaluation — classification: precision, recall, F1, ROC-AUC',s:'confusion matrix, PR curve, micro vs macro avg, MCC'},
+    {t:'Evaluation — regression: RMSE, MAE, MAPE, R², RMSLE',s:'when log-transform target, custom loss functions'},
+    {t:'Cross-validation — k-fold, stratified, group, time-series',s:'avoid leakage, nested CV for honest evaluation, RepeatedKFold'},
+    {t:'Hyperparameter tuning — GridSearch, RandomSearch, Optuna',s:'Bayesian optimisation, early stopping, pruning in Optuna'},
+    {t:'Sklearn Pipeline — ColumnTransformer, FunctionTransformer',s:'fit_transform vs transform distinction, pipeline serialisation'},
+    {t:'Imbalanced learning — SMOTE, ADASYN, class_weight',s:'SMOTENC for mixed types, threshold tuning, precision-recall tradeoffs'},
+    {t:'Unsupervised — K-Means: elbow, silhouette, init strategies',s:'K-Means++, mini-batch, limitations with non-convex clusters'},
+    {t:'Unsupervised — DBSCAN, HDBSCAN',s:'eps, min_samples, core/border/noise points, arbitrary shapes'},
+    {t:'Unsupervised — Gaussian Mixture Models (GMM)',s:'soft assignment, EM algorithm, BIC/AIC for k selection'},
+    {t:'Dimensionality reduction — PCA: explained variance',s:'scree plot, biplot, whitening, incremental PCA for large data'},
+    {t:'Dimensionality reduction — t-SNE, UMAP',s:'perplexity, n_neighbors, min_dist — for visualisation only, not features'},
+    {t:'Anomaly detection — Isolation Forest, One-Class SVM',s:'contamination parameter, LOF, Autoencoder for anomaly'},
+    {t:'Time series ML — lag features, rolling stats, train-test split',s:'never shuffle time series, walk-forward validation, target leak risk'},
+    {t:'SHAP — SHapley Additive exPlanations',s:'TreeSHAP for trees, KernelSHAP for black-boxes, waterfall, beeswarm'},
+    {t:'Calibration — probability calibration, reliability diagrams',s:'Platt scaling, isotonic regression, expected calibration error'},
+  ]},
+  {name:'Natural Language Processing (NLP)',tag:'core',color:'#ff6b6b',topics:[
+    {t:'NLP pipeline — tokenise, normalise, represent, model',s:'end-to-end view before diving into each step'},
+    {t:'Text preprocessing — lowercasing, noise removal, regex',s:'HTML tags, URLs, emojis, special chars; preserve meaningful punctuation'},
+    {t:'Tokenisation — word, sentence, subword',s:'NLTK, spaCy, differences between them; whitespace vs rule-based'},
+    {t:'Stopwords, stemming (Porter/Snowball), lemmatisation (spaCy)',s:'when to apply each; domain-specific stopwords'},
+    {t:'Bag of Words — CountVectorizer, n-grams',s:'vocabulary size, min_df, max_df, max_features'},
+    {t:'TF-IDF — term frequency × inverse document frequency',s:'TfidfVectorizer, sublinear_tf, smooth_idf; cosine similarity'},
+    {t:'Word2Vec — CBOW vs Skip-gram',s:'negative sampling, window size, training from scratch vs gensim'},
+    {t:'GloVe & FastText — pretrained embeddings',s:'OOV handling in FastText (subword), loading pretrained, analogy tasks'},
+    {t:'Sentiment analysis — rule-based, ML-based',s:'VADER, TextBlob, fine-grained sentiment, aspect-based'},
+    {t:'Text classification — end-to-end pipeline',s:'clean → vectorise → model → calibrate → deploy → monitor'},
+    {t:'Named Entity Recognition (NER)',s:'spaCy, Hugging Face token classification, BIO tagging scheme'},
+    {t:'Topic modelling — LDA, NMF',s:'coherence score (c_v), pyLDAvis, choosing num_topics, interpreting topics'},
+    {t:'Text similarity & semantic search',s:'sentence-transformers, cosine similarity, dot-product, bi-encoder'},
+    {t:'Language model evaluation — perplexity, BLEU, ROUGE',s:'when to use each metric, limitations of BLEU'},
+  ]},
+  {name:'Scikit-learn — Production Patterns',tag:'core',color:'#ff6b6b',topics:[
+    {t:'Estimator API — fit, predict, transform, fit_transform',s:'consistent interface, duck typing, BaseEstimator, TransformerMixin'},
+    {t:'Custom transformers — fit() stores state, transform() uses it',s:'FunctionTransformer vs class-based, stateful transforms'},
+    {t:'ColumnTransformer — apply different transforms per column type',s:'remainder, passthrough, named_transformers_, get_feature_names_out'},
+    {t:'Pipeline — chain transforms + model, prevent leakage',s:'make_pipeline, set_params for CV, clone'},
+    {t:'Model persistence — joblib, pickle, cloudpickle',s:'protocol versions, when models break, versioning strategy'},
+    {t:'Model inspection — coef_, feature_importances_, permutation_importance',s:'partial dependence plots, ICE plots'},
+  ]},
+]},
+{id:'p4',name:'Phase 4 — Deep Learning & LLMs',meta:'Months 10–14 · ~480 hrs',color:'#5ba4ff',bg:'rgba(91,164,255,.12)',courses:[
+  {name:'Deep Learning — From Scratch to Transformers',tag:'core',color:'#5ba4ff',topics:[
+    {t:'Neural network fundamentals — perceptron, MLP',s:'forward pass step-by-step, weight initialisation (Xavier, He), bias'},
+    {t:'Activation functions — ReLU, GELU, Sigmoid, Tanh, Swish, Mish',s:'dying ReLU, why GELU for transformers, saturation problems'},
+    {t:'Backpropagation — chain rule in computational graphs',s:'build from scratch in NumPy, gradient flow, Jacobians'},
+    {t:'Loss functions — MSE, BCE, CCE, focal loss, triplet loss',s:'match loss to task type; class weighting in loss'},
+    {t:'Optimisers — SGD, Momentum, RMSProp, Adam, AdamW',s:'Adam hyperparams (β1, β2, ε), weight decay vs L2, AMSGrad'},
+    {t:'Learning rate schedules — warmup, cosine annealing, OneCycleLR',s:'cyclical LR, lr_finder (fastai), reduce on plateau'},
+    {t:'Regularisation — Dropout, BatchNorm, LayerNorm, WeightDecay',s:'MC Dropout for uncertainty, when BN fails (small batch)'},
+    {t:'Weight initialisation — Xavier, He, orthogonal',s:'dead neurons with zero init, exploding with large init'},
+    {t:'Gradient problems — vanishing, exploding; gradient clipping',s:'norm clipping vs value clipping, skip connections as solution'},
+    {t:'CNN — convolution, pooling, stride, padding, receptive field',s:'depthwise separable conv, dilated conv, transposed conv'},
+    {t:'CNN architectures — LeNet, AlexNet, VGG, ResNet, EfficientNet',s:'skip connections, bottleneck blocks, compound scaling'},
+    {t:'Transfer learning — pretrained models, fine-tuning strategies',s:'freeze layers, differential LR, feature extraction vs fine-tuning'},
+    {t:'Data augmentation for images',s:'RandomFlip, RandomRotation, Cutout, Mixup, CutMix, RandAugment'},
+    {t:'RNN — sequence modelling, BPTT, vanishing gradient',s:'teacher forcing, exposure bias, stateful vs stateless'},
+    {t:'LSTM — forget gate, input gate, output gate, cell state',s:'gate equations from scratch, peephole connections, GRU comparison'},
+    {t:'Attention mechanism — scaled dot-product attention',s:'Q, K, V intuition; why divide by √d_k; softmax temperature'},
+    {t:'Multi-head attention — parallel attention heads',s:'concatenation, projection, information diversity'},
+    {t:'Transformer architecture — encoder, decoder, cross-attention',s:'positional encoding (sinusoidal vs learned), FFN, pre-norm vs post-norm'},
+    {t:'Training tricks — gradient accumulation, mixed precision (AMP)',s:'torch.cuda.amp, GradScaler, fp16 vs bf16'},
+    {t:'PyTorch — tensors, autograd, computational graph',s:'requires_grad, backward(), retain_graph, no_grad, detach'},
+    {t:'PyTorch — nn.Module, forward(), parameters(), state_dict',s:'model surgery, freeze layers, parameter groups'},
+    {t:'PyTorch — Dataset, DataLoader, custom collate_fn',s:'pin_memory, num_workers, prefetch_factor, IterableDataset'},
+    {t:'PyTorch — training loop — optimizer, scheduler, scaler',s:'gradient clipping, step every N batches, checkpointing'},
+    {t:'PyTorch — debugging — hooks, anomaly detection',s:'register_forward_hook, register_backward_hook, detect_anomaly'},
+  ]},
+  {name:'LLMs — Engineering & Fine-tuning',tag:'core',color:'#5ba4ff',topics:[
+    {t:'LLM landscape — GPT, BERT, T5, LLaMA, Mistral, Gemma',s:'decoder-only vs encoder vs encoder-decoder; parameter counts; FLOP estimates'},
+    {t:'Tokenisation — BPE, WordPiece, SentencePiece, Tiktoken',s:'vocab size tradeoffs, special tokens, tokenisation surprises'},
+    {t:'Pre-training objectives — CLM, MLM, prefix LM, span corruption',s:'why GPT uses CLM, BERT uses MLM; downstream task alignment'},
+    {t:'Attention optimisations — Flash Attention, Multi-query, GQA',s:'memory bandwidth bottleneck, KV cache, ring attention'},
+    {t:'Positional encodings — sinusoidal, RoPE, ALiBi, YARN',s:'extrapolation to longer sequences, rotary embedding geometry'},
+    {t:'Inference — temperature, top-p, top-k, beam search',s:'repetition penalty, length penalty, contrastive search'},
+    {t:'Hugging Face Transformers — AutoModel, AutoTokenizer, pipeline()',s:'model hub, config.json, tokenizer.json, model card reading'},
+    {t:'Hugging Face Trainer API — TrainingArguments, data_collator',s:'gradient accumulation, evaluation_strategy, push_to_hub'},
+    {t:'Fine-tuning — full fine-tune vs parameter-efficient',s:'when each is appropriate; catastrophic forgetting; LoRA as standard choice'},
+    {t:'LoRA — Low-Rank Adaptation',s:'rank decomposition, α scaling, target modules, merging weights back'},
+    {t:'QLoRA — quantised LoRA, 4-bit training',s:'bitsandbytes, NF4 quantisation, double quantisation, paged AdamW'},
+    {t:'PEFT library — LoRA, Prefix Tuning, Prompt Tuning, IA3',s:'get_peft_model, TaskType, merge_and_unload'},
+    {t:'Instruction tuning — SFT with chat templates',s:'system/user/assistant roles, conversation formatting, data quality'},
+    {t:'RLHF concept — reward model, PPO, DPO',s:'preference data, Bradley-Terry model, direct preference optimisation'},
+    {t:'LLM evaluation — MMLU, HellaSwag, HumanEval, MT-Bench',s:'BERTScore, ROUGE-L, G-Eval with LLM-as-judge'},
+    {t:'Context length extension — long context models',s:'LongLoRA, PoSE, streaming attention, retrieval augmentation'},
+    {t:'Model quantisation — GPTQ, AWQ, GGUF',s:'llama.cpp, llama-cpp-python, Ollama; quantisation effects on quality'},
+    {t:'Efficient inference — vLLM, Text Generation Inference (TGI)',s:'PagedAttention, continuous batching, speculative decoding'},
+  ]},
+  {name:'RAG & LLM Applications',tag:'core',color:'#5ba4ff',topics:[
+    {t:'RAG architecture — retriever + reader + generator',s:'naive vs advanced RAG; when to use RAG vs fine-tuning vs both'},
+    {t:'Document processing — loading, chunking strategies',s:'fixed-size, recursive, semantic, sentence-window, parent-document chunking'},
+    {t:'Embedding models — sentence-transformers, OpenAI, BGE, E5',s:'MTEB benchmark, cosine vs dot-product, embedding dimensions'},
+    {t:'Vector databases — FAISS, ChromaDB, Pinecone, Weaviate, Qdrant',s:'flat vs IVF vs HNSW indexes; ANN tradeoffs; metadata filtering'},
+    {t:'Retrieval strategies — dense, sparse (BM25), hybrid',s:'BM25+dense hybrid, reciprocal rank fusion, reranking'},
+    {t:'Advanced RAG — HyDE, query expansion, multi-query',s:'step-back prompting, RAG fusion; evaluate with RAGAS'},
+    {t:'LangChain — chains, LCEL, memory, tools',s:'RunnableSequence, RunnableParallel, streaming, fallbacks'},
+    {t:'LangGraph — stateful multi-step agents',s:'StateGraph, nodes, edges, conditional edges, checkpointer'},
+    {t:'AI Agents — ReAct, tool use, planning',s:'ToolCallingAgent, structured output, error recovery, multi-agent'},
+    {t:'Structured output — JSON mode, Pydantic with LLMs',s:'outlines library, grammar-constrained decoding'},
+    {t:'Prompt engineering — system prompts, few-shot, CoT',s:'chain-of-thought, self-consistency, tree-of-thoughts, meta-prompting'},
+    {t:'Evaluation — RAGAS, DeepEval, LLM-as-judge',s:'faithfulness, answer relevancy, context precision/recall'},
+    {t:'Deployment — Gradio, Streamlit, FastAPI + LLM backend',s:'streaming responses, session state, chat history management'},
+  ]},
+]},
+{id:'p5',name:'Phase 5 — MLOps & Production AI',meta:'Months 14–18 · ~300 hrs',color:'#e879b0',bg:'rgba(232,121,176,.12)',courses:[
+  {name:'MLOps — End-to-End Production ML',tag:'core',color:'#e879b0',topics:[
+    {t:'MLOps principles — reproducibility, automation, monitoring',s:'CD4ML (Continuous Delivery for ML), CRISP-DM vs ML lifecycle'},
+    {t:'Experiment tracking — MLflow',s:'log_metric, log_param, log_artifact, model registry, compare runs'},
+    {t:'Experiment tracking — Weights & Biases (W&B)',s:'sweeps for HPO, reports, model versioning, team collaboration'},
+    {t:'Data versioning — DVC',s:'dvc add, dvc push, dvc repro, pipeline stages, remote storage (S3/GCS)'},
+    {t:'Docker — Dockerfile, images, containers, build, run',s:'multi-stage builds, GPU containers (nvidia/cuda base), .dockerignore'},
+    {t:'Docker Compose — multi-container ML services',s:'services, volumes, networks, depends_on, health checks'},
+    {t:'Model serving — FastAPI + Pydantic',s:'async endpoints, request validation, response schemas, middleware'},
+    {t:'Model serving — BentoML, TorchServe, Triton Inference Server',s:'batching, model versioning, multi-model, gRPC vs REST'},
+    {t:'CI/CD for ML — GitHub Actions',s:'pytest, flake8, mypy, model validation gate, automated retraining trigger'},
+    {t:'Feature stores — Feast basics',s:'offline store (Parquet/BigQuery), online store (Redis), point-in-time retrieval'},
+    {t:'Model monitoring — data drift, concept drift',s:'EvidentlyAI reports, PSI, KS-test, wasserstein distance, alert thresholds'},
+    {t:'A/B testing & shadow mode deployment',s:'canary deployment, traffic splitting, statistical significance for ML models'},
+    {t:'Kubernetes basics for ML',s:'pods, deployments, services, HPA, resource requests/limits, Seldon Core'},
+    {t:'AWS for ML — SageMaker, EC2, S3, Lambda',s:'SageMaker Training, Endpoint deployment, Batch Transform, Model Monitor'},
+    {t:'System design for ML — interview prep',s:'recommendation, fraud detection, search, content moderation — each system'},
+  ]},
+]},
+];
+
+const PROJECTS=[
+  // Phase 1
+  {id:'pr1',phase:'p1',title:'Python CLI Data Analyser',diff:'Beginner',src:'Custom',starred:false,tag:'p1',
+   desc:'Build a command-line tool in Python that accepts any CSV file, prints summary stats, detects missing values, and exports a cleaned version. Use argparse for CLI, pandas for processing. No Jupyter — real scripts only.',
+   detail:'Deliverables: main.py, README.md on GitHub, sample dataset, before/after CSV. This proves you can write production Python, not just notebook Python. Employers notice this.',
+   skills:['Python','Pandas','Argparse','CSV','CLI']},
+  {id:'pr2',phase:'p1',title:'Titanic Survival — ML Baseline',diff:'Beginner',src:'Kaggle',starred:true,tag:'p1',
+   desc:'Classic Kaggle competition. Focus on feature engineering (cabin decoding, title extraction, family size), build a clean sklearn Pipeline, try 5 models, compare on val set. Aim for top 20% on leaderboard.',
+   detail:'Key: build it as a Pipeline, not manual fit/transform. Write a 1-page findings doc. Push to GitHub with proper README. This is interview checkpoint #1.',
+   skills:['Python','Pandas','Scikit-learn','XGBoost','Feature Engineering']},
+  {id:'pr3',phase:'p1',title:'SQL + EDA: Indian E-Commerce Dataset',diff:'Beginner',src:'Kaggle',starred:false,tag:'p1',
+   desc:'Use the Olist (Brazil) or Flipkart dataset. Answer 15 business questions using SQL. Then build a full EDA notebook with Seaborn/Plotly. Find the top-selling categories, peak order hours, and repeat customer rate.',
+   detail:'Publish the Plotly charts using chart_studio or embed in GitHub Pages. SQL + EDA together shows data analyst skills.',
+   skills:['SQL','Pandas','Seaborn','Plotly','EDA']},
+  {id:'pr4',phase:'p1',title:'DSA Problem Set — 80 LeetCode Solutions',diff:'Beginner',src:'LeetCode',starred:true,tag:'p1',
+   desc:'Solve 80 curated LeetCode problems (30 Easy, 40 Medium, 10 Hard) over 3 months. Write a clean solution + explanation for each. Organise by pattern (not problem number) on GitHub. This is your interview prep asset.',
+   detail:'Patterns to cover: sliding window, two-pointer, backtracking, DP, graphs, heaps. Quality over speed — understand each pattern before moving on.',
+   skills:['Python','DSA','Problem Solving','Algorithms','GitHub']},
+  // Phase 2
+  {id:'pr5',phase:'p2',title:'Indian Air Quality Dashboard',diff:'Beginner',src:'Kaggle',starred:false,tag:'p2',
+   desc:'AQI data across Indian cities. Build an interactive Plotly Dash or Streamlit dashboard: city comparison, seasonal trends, AQI forecasting with ARIMA. Include anomaly detection for pollution spikes (>500 AQI events).',
+   detail:'Deploy on Render (free tier). This is a data analyst portfolio piece. Combining EDA + BI + basic forecasting in one project is impressive.',
+   skills:['Pandas','Plotly','Streamlit','ARIMA','EDA']},
+  {id:'pr6',phase:'p2',title:'Customer Segmentation — Retail Analytics',diff:'Beginner-Int',src:'Kaggle',starred:true,tag:'p2',
+   desc:'Use UCI Online Retail dataset. Build RFM (Recency, Frequency, Monetary) features, apply K-Means clustering, profile each segment. Build a Power BI dashboard showing segment characteristics and revenue contribution.',
+   detail:'The business framing matters — label clusters as "Champions", "At Risk", "Hibernating". This is what marketing teams actually want from data science.',
+   skills:['Pandas','K-Means','RFM Analysis','Power BI','Seaborn']},
+  {id:'pr7',phase:'p2',title:'Store Sales Forecasting (Kaggle)',diff:'Intermediate',src:'Kaggle',starred:true,tag:'p2',
+   desc:'Kaggle "Store Sales — Time Series Forecasting". Predict sales for Corporación Favorita. Engineer date features, holiday features, oil price correlations. Compare ARIMA, Prophet, LightGBM. Aim top 15%.',
+   detail:'This is a real Kaggle competition with active discussions. Join the forums, read top notebooks, understand what features move the leaderboard.',
+   skills:['Time Series','Prophet','LightGBM','Feature Engineering','RMSLE']},
+  {id:'pr8',phase:'p2',title:'Google Play Store Sentiment Clustering',diff:'Intermediate',src:'Kaggle',starred:false,tag:'p2',
+   desc:'App reviews → TF-IDF + K-Means → discover natural topic clusters. Compare with LDA topic modelling. Build a Tableau dashboard showing review sentiment trends by app category and rating band.',
+   detail:'This project spans NLP + unsupervised ML + BI. Rare combination that shows breadth early in your career.',
+   skills:['NLP','TF-IDF','K-Means','LDA','Tableau']},
+  {id:'pr9',phase:'p2',title:'IPL Win Probability Live Model',diff:'Intermediate',src:'Kaggle',starred:false,tag:'p2',
+   desc:'Ball-by-ball IPL dataset. Engineer run rate, required run rate, wickets in hand, current partnership features. Train LightGBM. Build Streamlit UI where user inputs match state and sees live win probability bar.',
+   detail:'Domain relevance: every Indian interviewer will ask about this. The Streamlit UI makes it a real product, not just a notebook.',
+   skills:['Python','LightGBM','Feature Engineering','Streamlit','Sports Analytics']},
+  {id:'pr10',phase:'p2',title:'A/B Test Analyser Tool',diff:'Intermediate',src:'Custom',starred:false,tag:'p2',
+   desc:'Build a Streamlit app that takes two groups of data, runs the right statistical test (t-test, Mann-Whitney, chi-square based on data type), reports p-value, confidence interval, effect size, and a business-friendly recommendation.',
+   detail:'This shows you understand statistics beyond just ML. Every data analyst role requires A/B testing knowledge.',
+   skills:['Python','SciPy','Statistics','Streamlit','Hypothesis Testing']},
+  // Phase 3
+  {id:'pr11',phase:'p3',title:'House Prices — Advanced Regression',diff:'Intermediate',src:'Kaggle',starred:true,tag:'p3',
+   desc:'Kaggle House Prices benchmark. Implement stacking ensemble: XGBoost + LightGBM + Ridge + ElasticNet. Extensive FE: interaction terms, log transforms, KNN imputation. Aim top 5%. Write a Medium article about your approach.',
+   detail:'The stacking ensemble implementation alone teaches more ML engineering than 10 courses. Document every design decision.',
+   skills:['XGBoost','LightGBM','Stacking','Optuna','Feature Engineering']},
+  {id:'pr12',phase:'p3',title:'Credit Card Fraud Detection',diff:'Intermediate',src:'Kaggle',starred:true,tag:'p3',
+   desc:'Kaggle Credit Card Fraud (0.17% fraud — extreme imbalance). Master: SMOTE, ADASYN, class_weight, threshold tuning. Use Precision-Recall AUC, not accuracy. Add Isolation Forest comparison. Explain with SHAP.',
+   detail:'Every fintech company solves this. The imbalanced learning techniques here are directly applicable in industry. SHAP waterfall plots make results explainable to non-technical stakeholders.',
+   skills:['Python','SMOTE','XGBoost','SHAP','Isolation Forest']},
+  {id:'pr13',phase:'p3',title:'NIFTY50 Directional Predictor',diff:'Intermediate',src:'Custom',starred:true,tag:'p3',
+   desc:'yfinance NIFTY50 data. Engineer 50+ indicators (RSI, MACD, Bollinger, EMA). Frame as classification (next-day direction). Train LightGBM. Build walk-forward backtest. Calculate Sharpe ratio vs buy-and-hold benchmark.',
+   detail:'Combine with financial news sentiment (FinBERT or VADER on MoneyControl headlines) for a stronger signal. Deploy as daily report sent via Telegram bot.',
+   skills:['yfinance','pandas-ta','LightGBM','Backtesting','Sharpe Ratio']},
+  {id:'pr14',phase:'p3',title:'Movie Recommendation System',diff:'Intermediate',src:'Kaggle',starred:false,tag:'p3',
+   desc:'MovieLens 1M dataset. Build: (1) collaborative filtering with SVD (Surprise), (2) content-based with TF-IDF + cosine similarity, (3) hybrid. Evaluate with NDCG, MAP, Hit Rate. Deploy as FastAPI service.',
+   detail:'The FastAPI deployment is the differentiator — shows you can productionise a model. Add a simple HTML frontend for end-to-end demo.',
+   skills:['Python','Surprise','SVD','FastAPI','NDCG']},
+  {id:'pr15',phase:'p3',title:'Loan Default Prediction + XAI',diff:'Intermediate',src:'Kaggle',starred:true,tag:'p3',
+   desc:'Build XGBoost + RF models for loan default. Apply full XAI suite: SHAP values, Anchors, counterfactual explanations (DiCE). Build a scorecard model with Weight of Evidence. This satisfies GDPR/RBI explainability requirements.',
+   detail:'XAI is the fastest-growing area in applied ML (GDPR, EU AI Act compliance). This project stands out on resume for fintech, banking, NBFC roles.',
+   skills:['XGBoost','SHAP','DiCE','Weight of Evidence','Scikit-learn']},
+  {id:'pr16',phase:'p3',title:'Insurance Claim Severity Prediction',diff:'Intermediate',src:'Kaggle',starred:false,tag:'p3',
+   desc:'Allstate Claims dataset. Predict claim severity (regression). Stacking ensemble with blending. Outlier analysis. Deploy as Flask API with Docker container. Full MLflow tracking of all experiments.',
+   detail:'The combination of stacking + Docker + MLflow in one project shows junior MLOps skills alongside strong ML.',
+   skills:['XGBoost','LightGBM','MLflow','Docker','Flask']},
+  {id:'pr17',phase:'p3',title:'Twitter/X Sentiment Real-Time Dashboard',diff:'Intermediate',src:'Custom',starred:false,tag:'p3',
+   desc:'Scrape tweets with snscrape on Indian stock, politics, cricket topics. Compare VADER, TextBlob, fine-tuned DistilBERT. Streamlit dashboard with live sentiment score, entity cloud, trending topics, trend over time.',
+   detail:'The DistilBERT comparison with lexicon-based methods shows NLP depth. IPL/election topics maximise Indian audience interest and interviewer engagement.',
+   skills:['NLP','DistilBERT','Streamlit','spaCy','Sentiment Analysis']},
+  {id:'pr18',phase:'p3',title:'Kaggle Competition Sprint',diff:'Intermediate',src:'Kaggle',starred:true,tag:'p3',
+   desc:'Enter 3 active Kaggle tabular competitions back-to-back. For each: baseline → EDA → feature engineering → single best model → ensemble. Target: at least one top-20% finish. Document learnings after each.',
+   detail:'Kaggle medals on profile are visible to recruiters. Even bronze shows competitive ML skills. Join discussion forums, learn from top notebooks.',
+   skills:['XGBoost','LightGBM','Optuna','Ensemble','Kaggle API']},
+  // Phase 4
+  {id:'pr19',phase:'p4',title:'Document Q&A RAG System',diff:'Advanced',src:'Custom',starred:true,tag:'p4',
+   desc:'Upload any PDF → chunk → embed (sentence-transformers/BGE) → store in ChromaDB → retrieve top-K → generate with Mistral/LLaMA3 via Ollama. Gradio UI with streaming. Add source citation, chat history, multi-PDF.',
+   detail:'THE project for 2026. Deploy on Hugging Face Spaces. Extend: add a reranker (Cohere/CrossEncoder), evaluate with RAGAS (faithfulness, relevancy). Put on GitHub with Stars.',
+   skills:['LangChain','ChromaDB','sentence-transformers','Ollama','Gradio']},
+  {id:'pr20',phase:'p4',title:'Fine-tune LLM on Indian Legal Text',diff:'Advanced',src:'Custom',starred:true,tag:'p4',
+   desc:'Collect IPC sections, Supreme Court judgements, RTI responses. Fine-tune Mistral-7B or LLaMA3-8B using QLoRA on Colab A100 (free). Evaluate on legal Q&A. Build a Gradio chat UI. This is publishable-quality work.',
+   detail:'Highly differentiated — almost no one in India has done this. Write a Medium article or blog post. Could become a startup (LegalAI for India). Mention in every interview.',
+   skills:['QLoRA','PEFT','Hugging Face','Mistral','Legal NLP']},
+  {id:'pr21',phase:'p4',title:'Chest X-Ray Pneumonia Detection + Grad-CAM',diff:'Advanced',src:'Kaggle',starred:true,tag:'p4',
+   desc:'Kaggle Chest X-Ray dataset. Fine-tune ResNet50/EfficientNet-B4. Achieve 95%+ accuracy. Explain predictions with Grad-CAM heatmaps and LIME. Build doctor-friendly Streamlit UI. Discuss false negative cost.',
+   detail:'Healthcare AI is exploding in India (Apollo, Manipal, Practo investing heavily). The Grad-CAM explanation is what makes AI trustworthy for medical use.',
+   skills:['PyTorch','ResNet','Grad-CAM','LIME','Streamlit']},
+  {id:'pr22',phase:'p4',title:'Multi-Agent Research Assistant',diff:'Advanced',src:'Custom',starred:true,tag:'p4',
+   desc:'LangGraph multi-agent system: Planner → Web Search (Tavily) → Analyst → Writer agents. Given any research question, autonomously research, analyse data, create charts, write structured report. Add PDF export.',
+   detail:'2026\'s hottest skill: AI Agents. This is a demonstration of agentic AI. Show it live in interviews. Add code execution tool for data analysis tasks.',
+   skills:['LangGraph','Tavily API','OpenAI/Mistral','Python','Multi-Agent']},
+  {id:'pr23',phase:'p4',title:'Plant Disease Detection (Kaggle)',diff:'Advanced',src:'Kaggle',starred:false,tag:'p4',
+   desc:'PlantVillage dataset — 54K images, 38 classes. Train EfficientNet-B3 with aggressive augmentation (Albumentations). Implement label smoothing, Mixup, test-time augmentation. Build mobile-ready model with ONNX export.',
+   detail:'Agricultural AI has massive Indian government support (NITI Aayog). ONNX export shows production deployment thinking. Strong rural tech angle for interviews.',
+   skills:['PyTorch','EfficientNet','Albumentations','ONNX','TTA']},
+  {id:'pr24',phase:'p4',title:'Text-to-SQL Natural Language Query Engine',diff:'Advanced',src:'Custom',starred:false,tag:'p4',
+   desc:'Fine-tune a small LLM (CodeLLaMA or SQLCoder) on Text-to-SQL pairs. Given natural language business questions, generate correct SQL for any database schema. Evaluate on Spider benchmark. Build Streamlit demo.',
+   detail:'Every business intelligence team wants this. Combine with a database connection to run the generated SQL and return actual results. Very demo-able.',
+   skills:['CodeLLaMA','Fine-tuning','SQL','Spider Benchmark','Streamlit']},
+  // Phase 5
+  {id:'pr25',phase:'p5',title:'End-to-End MLOps Pipeline',diff:'Expert',src:'Custom',starred:true,tag:'p5',
+   desc:'Take churn prediction model: DVC (data) → MLflow (experiments) → Pytest (tests) → Docker (container) → FastAPI (serve) → EvidentlyAI (monitor) → GitHub Actions (CI/CD) → AWS EC2 (deploy). Full architecture diagram.',
+   detail:'This single project is what separates ML engineers from ML enthusiasts. 90% of ML practitioners cannot do this. Draw the architecture, explain each component in interviews.',
+   skills:['MLflow','DVC','Docker','FastAPI','EvidentlyAI','AWS','GitHub Actions']},
+  {id:'pr26',phase:'p5',title:'LLM-Powered Financial Analyst',diff:'Expert',src:'Custom',starred:true,tag:'p5',
+   desc:'System ingests company annual report (PDF) + quarterly results + news + stock data → RAG over docs → quantitative analysis → LLM synthesis → structured analyst report with charts. Deploy as web app.',
+   detail:'Sits at the intersection of Finance + AI — genuinely unique. Combine FinBERT for news sentiment with RAG for document understanding and Plotly for charts. Could be commercialised.',
+   skills:['RAG','FinBERT','LangChain','Plotly','Streamlit','yfinance']},
+  {id:'pr27',phase:'p5',title:'Real-Time Fraud Detection System',diff:'Expert',src:'Custom',starred:false,tag:'p5',
+   desc:'Kafka → transactions stream → PySpark Streaming → feature computation → LightGBM scoring → PostgreSQL → Grafana dashboard. Simulate 10K transactions/sec. Docker Compose for full stack.',
+   detail:'Full data engineering + ML pipeline. Use the Credit Card dataset to simulate transactions. This is a senior-level system design project.',
+   skills:['Kafka','PySpark','LightGBM','PostgreSQL','Grafana','Docker']},
+  {id:'pr28',phase:'p5',title:'Algorithmic Trading Bot — Full Stack',diff:'Expert',src:'Custom',starred:true,tag:'p5',
+   desc:'Pipeline: yfinance + alt data → 60+ indicator features → LightGBM signal → backtrader backtest → Zerodha Kite paper trading → Streamlit performance dashboard. Benchmark vs NIFTY50 buy-and-hold.',
+   detail:'Combine technical + FinBERT sentiment signals. Target 15%+ annual return in backtest. This is genuinely unique for Indian ML practitioners and is catnip for fintech interviewers.',
+   skills:['LightGBM','backtrader','Zerodha API','FinBERT','pandas-ta']},
+  {id:'pr29',phase:'p5',title:'Open-Source Contribution',diff:'Expert',src:'GitHub',starred:false,tag:'p5',
+   desc:'Contribute to: Hugging Face Transformers, scikit-learn, LangChain, or fastai. Start with "good first issue" labels. Fix bugs, improve docs, add tests, implement small features. One merged PR > 10 personal projects on resume.',
+   detail:'GitHub contribution graph visible to all recruiters. A merged PR to a major library instantly differentiates you. Build a relationship with maintainers.',
+   skills:['Python','Git','Testing','Documentation','Code Review']},
+  {id:'pr30',phase:'p5',title:'AI SaaS Product — Build & Launch',diff:'Expert',src:'Custom',starred:true,tag:'p5',
+   desc:'Identify one problem, build an AI-powered web app, launch on ProductHunt. Options: AI cover letter generator, resume analyser, meeting transcript summariser, job JD-to-skills matcher. Charge ₹99/month.',
+   detail:'Even 10 paying users proves product skills. Founders, VCs, and senior engineers respect this. Build with FastAPI + React or Next.js + Stripe. Document the journey on LinkedIn.',
+   skills:['FastAPI','React/Next.js','LLM API','Stripe','Product Launch']},
+];
+
+const CAREER_LEVELS=[
+  {minPct:0,maxPct:9,role:'Not Job-Ready Yet',lpa:'Study Mode',color:'#3a3a5a',desc:'Foundations incomplete. Focus on Python + Math + SQL before applying anywhere.',skills:['Python Basics','SQL Basics'],locked:true},
+  {minPct:10,maxPct:24,role:'Data Entry / Intern',lpa:'0–3 LPA',color:'#7c6fff',desc:'Basic Python and SQL. Can assist in data tasks, cleaning, simple visualisations. Apply for internships on Internshala.',skills:['Python','Pandas','SQL','Excel'],locked:false},
+  {minPct:25,maxPct:39,role:'Junior Data Analyst',lpa:'4–7 LPA',color:'#5ba4ff',desc:'EDA, visualisation, Power BI, basic statistics. Can work at services MNCs (TCS, Infosys AI). Build 2–3 analytics portfolio pieces.',skills:['Pandas','Power BI','Tableau','SQL','Statistics'],locked:false},
+  {minPct:40,maxPct:54,role:'Data Analyst / ML Intern',lpa:'7–12 LPA',color:'#20c997',desc:'Classical ML models, feature engineering, model evaluation. Eligible for product startups as analyst or ML intern. Strong portfolio unlocks 10–12 LPA at startups.',skills:['Scikit-learn','XGBoost','Feature Engineering','EDA','Streamlit'],locked:false},
+  {minPct:55,maxPct:69,role:'Junior ML Engineer',lpa:'12–22 LPA',color:'#f5a623',desc:'Full ML pipelines, NLP, model deployment. Product companies (Swiggy, Razorpay, PhonePe level). Strong Kaggle profile adds +30% negotiating power.',skills:['XGBoost','NLP','FastAPI','MLflow','Docker'],locked:false},
+  {minPct:70,maxPct:84,role:'ML Engineer / Data Scientist',lpa:'22–45 LPA',color:'#ff6b6b',desc:'Deep learning, LLMs, RAG, MLOps pipelines. Eligible for AI-first startups, MAANG India. GenAI skills push to higher end of range.',skills:['PyTorch','LLMs','RAG','MLOps','AWS'],locked:false},
+  {minPct:85,maxPct:100,role:'Senior ML / LLM Engineer',lpa:'45–120 LPA',color:'#e879b0',desc:'Full-stack AI: from training to production to monitoring. MAANG, Sarvam AI, Krutrim, global remote roles. Top 5% of Indian ML talent at this stage.',skills:['Fine-tuning','MLOps','System Design','LLM Agents','Cloud'],locked:false},
+];
+
+const RESOURCES=[
+  {name:'fast.ai Practical DL — Pt 1 & 2',desc:'Best hands-on DL course. Build a model first, understand theory later. Lesson 1 trains a SOTA classifier in 2 lines.',link:'https://course.fast.ai',tag:'DL',tc:'#ff6b6b'},
+  {name:'3Blue1Brown — Essence of Linear Algebra',desc:'18 videos that will make matrix ops visual forever. Do this before any ML.',link:'https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab',tag:'Math',tc:'#5ba4ff'},
+  {name:'Andrej Karpathy — Zero to Hero',desc:'Build GPT-2 from scratch in PyTorch. Best LLM course anywhere, free, from OpenAI co-founder.',link:'https://www.youtube.com/@AndrejKarpathy/playlists',tag:'LLM',tc:'#5ba4ff'},
+  {name:'Hugging Face NLP Course',desc:'Free, interactive, covers transformers + fine-tuning + deployment. Official and excellent.',link:'https://huggingface.co/learn/nlp-course',tag:'NLP',tc:'#20c997'},
+  {name:'StatQuest — Josh Starmer',desc:'Best ML intuition on YouTube. Every algorithm explained with humour and clarity.',link:'https://www.youtube.com/@statquest',tag:'ML',tc:'#f5a623'},
+  {name:'Made With ML — MLOps Guide',desc:'Free curriculum for production ML. Covers testing, serving, monitoring, CI/CD.',link:'https://madewithml.com',tag:'MLOps',tc:'#e879b0'},
+  {name:'Kaggle Learn — Free Micro-Courses',desc:'Python, Pandas, ML, DL, SQL, Feature Engineering — all free with notebooks.',link:'https://www.kaggle.com/learn',tag:'All',tc:'#7c6fff'},
+  {name:'CS229 Stanford — Andrew Ng',desc:'Full ML lecture notes free online. Rigorous mathematical foundation. Supplement with StatQuest for intuition.',link:'https://cs229.stanford.edu',tag:'ML',tc:'#f5a623'},
+  {name:'Jay Alammar — Illustrated Transformer',desc:'The single best visual explanation of attention and transformers on the internet.',link:'https://jalammar.github.io/illustrated-transformer/',tag:'LLM',tc:'#5ba4ff'},
+  {name:'Papers With Code',desc:'State-of-the-art papers with open-source implementations. Stay current.',link:'https://paperswithcode.com',tag:'Research',tc:'#20c997'},
+  {name:'Chip Huyen — ML Interviews Book (Free)',desc:'ML fundamentals + system design for interviews. Free PDF available.',link:'https://huyenchip.com/ml-interviews-book/',tag:'Interviews',tc:'#ff6b6b'},
+  {name:'Full Stack Deep Learning',desc:'Covers the full ML lifecycle: data, training, deployment, monitoring. Free recordings.',link:'https://fullstackdeeplearning.com',tag:'MLOps',tc:'#e879b0'},
+  {name:'LangChain Docs + Cookbook',desc:'Best way to learn LangChain is their official cookbook with real use-cases.',link:'https://python.langchain.com/docs/tutorials/',tag:'LLM',tc:'#7c6fff'},
+  {name:'D2L.ai — Dive Into Deep Learning',desc:'Interactive DL textbook. Every concept has runnable code. PyTorch + MXNet.',link:'https://d2l.ai',tag:'DL',tc:'#ff6b6b'},
+  {name:'RAGAS — RAG Evaluation Framework',desc:'Evaluate your RAG systems properly — faithfulness, relevancy, context precision.',link:'https://docs.ragas.io',tag:'LLM',tc:'#5ba4ff'},
+];
+
+const TIMELINE=[
+  {mo:'M 1–3',title:'Python fluent, SQL solid, DSA started',sub:'50 LeetCode done, GitHub active, Math in progress',c:'#7c6fff'},
+  {mo:'M 3–4',title:'First 3 portfolio projects live',sub:'Titanic, Air Quality Dashboard, SQL project on GitHub',c:'#7c6fff'},
+  {mo:'M 4–6',title:'Data Science toolkit complete',sub:'Numpy, Pandas, Plotly, Power BI, Feature Engineering',c:'#20c997'},
+  {mo:'M 6',title:'First internship applications',sub:'Junior Data Analyst / ML Intern (4–7 LPA range)',c:'#20c997'},
+  {mo:'M 6–9',title:'Classical ML deeply understood',sub:'XGBoost, ensembles, Kaggle competition completed',c:'#ff6b6b'},
+  {mo:'M 9–11',title:'PyTorch & Deep Learning baseline',sub:'CNN + LSTM built from scratch, transfer learning done',c:'#5ba4ff'},
+  {mo:'M 11–13',title:'LLMs & RAG capable',sub:'RAG system deployed, LoRA fine-tuning done, HuggingFace fluent',c:'#5ba4ff'},
+  {mo:'M 13–14',title:'Second job applications',sub:'Junior ML Engineer (12–22 LPA range)',c:'#5ba4ff'},
+  {mo:'M 14–16',title:'MLOps pipeline built',sub:'Full: DVC→MLflow→Docker→FastAPI→AWS→monitoring',c:'#e879b0'},
+  {mo:'M 16–18',title:'Senior-level projects complete',sub:'Trading bot, Legal LLM, Financial Analyst app deployed',c:'#e879b0'},
+  {mo:'M 18+',title:'Senior ML roles accessible',sub:'45–120 LPA range, FAANG prep, open-source contributions',c:'#f5a623'},
+];
+
+// ═══════════════ STATE ═══════════════
+let S=JSON.parse(localStorage.getItem('aiml_v3')||'{"t":{},"p":{},"h":{},"n":{},"streak":0,"lastStudy":""}');
+function save(){localStorage.setItem('aiml_v3',JSON.stringify(S));}
+
+// ═══════════════ BUILD ROADMAP ═══════════════
+function buildRoadmap(){
+  const cont=document.getElementById('roadmap');
+  cont.innerHTML='';
+  PHASES.forEach((ph,pi)=>{
+    const {done,total}=phProg(ph,pi);
+    const pct=total?Math.round(done/total*100):0;
+    const card=document.createElement('div');
+    card.className='phase-card';
+    card.innerHTML=`
+      <div class="phase-head" onclick="togglePh(${pi})">
+        <div class="phase-num" style="background:${ph.bg};color:${ph.color}">${pi+1}</div>
+        <div class="phase-info">
+          <div class="phase-name">${ph.name}</div>
+          <div class="phase-meta2">${ph.meta}</div>
+        </div>
+        <div class="phase-right">
+          <div class="ph-bar-wrap"><div class="ph-bar-fill" style="width:${pct}%;background:${ph.color}" id="phbf-${pi}"></div></div>
+          <div class="ph-pct" id="phpct-${pi}">${pct}%</div>
+          <div class="ph-chev open" id="phch-${pi}">▼</div>
+        </div>
+      </div>
+      <div class="ph-accent-bar" style="background:${ph.color};opacity:.3;width:${pct}%;transition:width .5s;" id="phab-${pi}"></div>
+      <div class="phase-body" id="phbody-${pi}">
+        ${ph.courses.map((c,ci)=>buildCourse(c,pi,ci,ph.color)).join('')}
+      </div>`;
+    cont.appendChild(card);
+    if(pi>0){document.getElementById(`phbody-${pi}`).style.display='none';document.getElementById(`phch-${pi}`).classList.remove('open');}
+  });
+}
+
+function buildCourse(c,pi,ci,phColor){
+  const tid=(ti)=>`${pi}-${ci}-${ti}`;
+  const done=c.topics.filter((_,ti)=>S.t[tid(ti)]).length;
+  const tagCls={core:'tag-core',add:'tag-add',math:'tag-math',tool:'tag-math'}[c.tag]||'tag-core';
+  const topics=c.topics.map((tp,ti)=>{
+    const id=tid(ti);
+    const isDone=S.t[id];
+    return `<div class="topic${isDone?' done':''}" onclick="toggleTopic('${id}',${pi},${ci},this)">
+      <div class="chkbox${isDone?' on':''}"></div>
+      <div><div class="t-name">${tp.t}</div>${tp.s?`<div class="t-sub">${tp.s}</div>`:''}</div>
+    </div>`;
+  }).join('');
+  return `<div class="course-block">
+    <div class="course-head" onclick="toggleCourse('cl-${pi}-${ci}','cc-${pi}-${ci}')">
+      <div class="c-dot" style="background:${c.color}"></div>
+      <div class="c-name">${c.name}</div>
+      <span class="c-tag ${tagCls}">${c.tag}</span>
+      <span class="c-prog" id="cprog-${pi}-${ci}">${done}/${c.topics.length}</span>
+      <span class="c-chev" id="cc-${pi}-${ci}">▼</span>
+    </div>
+    <div class="topic-wrap" id="cl-${pi}-${ci}">${topics}</div>
+  </div>`;
+}
+
+function togglePh(pi){
+  const b=document.getElementById(`phbody-${pi}`);
+  const ch=document.getElementById(`phch-${pi}`);
+  const open=b.style.display!=='none';
+  b.style.display=open?'none':'block';
+  ch.classList.toggle('open',!open);
+}
+function toggleCourse(lid,cid){
+  const l=document.getElementById(lid),c=document.getElementById(cid);
+  const open=l.style.display!=='none';
+  l.style.display=open?'none':'block';
+  c.classList.toggle('open',!open);
+}
+function toggleTopic(id,pi,ci,el){
+  S.t[id]=!S.t[id];
+  // log study today
+  const today=new Date().toISOString().slice(0,10);
+  if(today!==S.lastStudy){S.streak=(S.lastStudy===yesterday()?S.streak+1:1);S.lastStudy=today;}
+  save();
+  el.classList.toggle('done',S.t[id]);
+  el.querySelector('.chkbox').classList.toggle('on',S.t[id]);
+  const c=PHASES[pi].courses[ci];
+  const done=c.topics.filter((_,ti)=>S.t[`${pi}-${ci}-${ti}`]).length;
+  const prog=document.getElementById(`cprog-${pi}-${ci}`);
+  if(prog)prog.textContent=`${done}/${c.topics.length}`;
+  updatePhase(pi);
+  updateStats();
+}
+function yesterday(){
+  const d=new Date();d.setDate(d.getDate()-1);return d.toISOString().slice(0,10);
+}
+function phProg(ph,pi){
+  let done=0,total=0;
+  ph.courses.forEach((c,ci)=>c.topics.forEach((_,ti)=>{total++;if(S.t[`${pi}-${ci}-${ti}`])done++;}));
+  return{done,total};
+}
+function updatePhase(pi){
+  const {done,total}=phProg(PHASES[pi],pi);
+  const pct=total?Math.round(done/total*100):0;
+  const bf=document.getElementById(`phbf-${pi}`);
+  const pp=document.getElementById(`phpct-${pi}`);
+  const ab=document.getElementById(`phab-${pi}`);
+  if(bf)bf.style.width=pct+'%';
+  if(pp)pp.textContent=pct+'%';
+  if(ab)ab.style.width=pct+'%';
+}
+
+// ═══════════════ STATS ═══════════════
+function updateStats(){
+  let done=0,total=0;
+  PHASES.forEach((ph,pi)=>ph.courses.forEach((c,ci)=>c.topics.forEach((_,ti)=>{total++;if(S.t[`${pi}-${ci}-${ti}`])done++;})));
+  const pDone=Object.values(S.p).filter(Boolean).length;
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById('s-done').textContent=done;
+  document.getElementById('s-done-sub').textContent=`of ${total} total`;
+  document.getElementById('s-pct').textContent=pct+'%';
+  document.getElementById('s-proj').textContent=pDone;
+  document.getElementById('s-proj-sub').textContent=`of ${PROJECTS.length} total`;
+  document.getElementById('s-streak').textContent=S.streak||0;
+  document.getElementById('s-streak-sub').textContent=S.streak>0?`${S.streak} day streak 🔥`:'start today!';
+  document.getElementById('sb-pct').textContent=pct+'%';
+  document.getElementById('sb-fill').style.width=pct+'%';
+  document.getElementById('proj-count').textContent=`${pDone} / ${PROJECTS.length} done`;
+  // career
+  const lvl=CAREER_LEVELS.slice().reverse().find(l=>pct>=l.minPct&&pct<=l.maxPct)||CAREER_LEVELS[0];
+  document.getElementById('sb-lpa').textContent=lvl.lpa;
+  document.getElementById('sb-role').textContent=lvl.role;
+  const rank=pct===0?'Beginner':pct<15?'Learner':pct<30?'Explorer':pct<50?'Builder':pct<70?'Practitioner':pct<85?'Engineer':'Expert';
+  document.getElementById('sb-rank').textContent=`${rank} · ${pct}%`;
+  buildCareer(pct);
+  buildOverview();
+}
+
+// ═══════════════ PROJECTS ═══════════════
+function buildProjects(filter='all'){
+  const grid=document.getElementById('proj-grid');
+  let list=PROJECTS;
+  if(filter==='kaggle')list=PROJECTS.filter(p=>p.src==='Kaggle');
+  else if(filter==='starred')list=PROJECTS.filter(p=>p.starred);
+  else if(filter!=='all')list=PROJECTS.filter(p=>p.phase===filter);
+  grid.innerHTML=list.map(p=>{
+    const done=S.p[p.id];
+    const dc={Beginner:'#20c997','Beginner-Int':'#5ba4ff',Intermediate:'#f5a623',Advanced:'#ff6b6b',Expert:'#e879b0'}[p.diff]||'#7c6fff';
+    const phLabel={'p1':'Phase 1','p2':'Phase 2','p3':'Phase 3','p4':'Phase 4','p5':'Phase 5'}[p.phase];
+    const phColor={'p1':'#7c6fff','p2':'#20c997','p3':'#ff6b6b','p4':'#5ba4ff','p5':'#e879b0'}[p.phase];
+    return `<div class="proj-card${p.starred?' starred':''}${done?' done-c':''}" id="pc-${p.id}">
+      <div class="proj-top">
+        <span class="p-phase-pill" style="background:${phColor}22;color:${phColor}">${phLabel}</span>
+        ${p.starred?'<span class="p-hot">⭐ Must-Do</span>':''}
+        ${p.src==='Kaggle'?'<span class="p-new">🏆 Kaggle</span>':''}
+      </div>
+      <div class="p-title">${p.title}</div>
+      <div class="p-desc">${p.desc}</div>
+      <div class="p-detail">${p.detail}</div>
+      <div class="p-skills">${p.skills.map(s=>`<span class="skill-pill">${s}</span>`).join('')}</div>
+      <div class="p-foot">
+        <span class="p-diff"><span class="p-diff-dot" style="background:${dc}"></span>${p.diff}</span>
+        <span class="p-src">${p.src}</span>
+        <div class="p-done" onclick="toggleProj('${p.id}',this)">
+          <div class="p-chk${done?' on':''}" id="pchk-${p.id}"></div>
+          <span id="ptxt-${p.id}">${done?'✓ Done':'Mark done'}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function flt(f,btn){
+  document.querySelectorAll('.flt').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  buildProjects(f);
+}
+function toggleProj(id,el){
+  S.p[id]=!S.p[id];save();
+  const card=document.getElementById(`pc-${id}`);
+  const chk=document.getElementById(`pchk-${id}`);
+  const txt=document.getElementById(`ptxt-${id}`);
+  if(card)card.classList.toggle('done-c',S.p[id]);
+  if(chk)chk.classList.toggle('on',S.p[id]);
+  if(txt)txt.textContent=S.p[id]?'✓ Done':'Mark done';
+  updateStats();
+}
+
+// ═══════════════ CAREER ═══════════════
+function buildCareer(pct){
+  const grid=document.getElementById('career-grid');
+  if(!grid)return;
+  grid.innerHTML=CAREER_LEVELS.map(l=>{
+    const isCurrent=pct>=l.minPct&&pct<=l.maxPct;
+    const isUnlocked=pct>l.maxPct;
+    const cls=isCurrent?'current-level':isUnlocked?'unlocked':l.locked?'locked':'';
+    return `<div class="career-card ${cls}">
+      ${isCurrent?'<div class="current-badge">YOUR LEVEL NOW</div>':''}
+      ${l.locked||(!isCurrent&&!isUnlocked)?'<div class="career-lock">🔒</div>':''}
+      <div class="career-pct" style="color:${l.color};font-weight:600">${l.minPct}%–${l.maxPct}% progress</div>
+      <div class="career-role">${l.role}</div>
+      <div style="display:flex;align-items:baseline;gap:4px;margin:4px 0">
+        <div class="career-lpa">${l.lpa}</div>
+        ${l.lpa!=='Study Mode'&&l.lpa!=='Not Eligible'?'<span class="career-lpa-lbl">per annum</span>':''}
+      </div>
+      <div class="career-desc">${l.desc}</div>
+      <div class="career-skills">${l.skills.map(s=>`<span class="career-skill">${s}</span>`).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════ OVERVIEW ═══════════════
+function buildOverview(){
+  // phase progress
+  const pp=document.getElementById('ph-progress');
+  if(pp)pp.innerHTML=PHASES.map((ph,pi)=>{
+    const {done,total}=phProg(ph,pi);
+    const pct=total?Math.round(done/total*100):0;
+    return `<div class="ph-row">
+      <div class="ph-row-name">${ph.name.split('—')[1]?.trim()||ph.name}</div>
+      <div class="ph-row-bw"><div class="ph-row-bf" style="width:${pct}%;background:${ph.color}"></div></div>
+      <div class="ph-row-pct">${pct}%</div>
+    </div>`;
+  }).join('');
+  // timeline
+  const tl=document.getElementById('tl');
+  if(tl)tl.innerHTML=TIMELINE.map(t=>`<div class="tl-item">
+    <div class="tl-left"><div class="tl-dot" style="background:${t.c}"></div><div class="tl-line"></div></div>
+    <div class="tl-mo">${t.mo}</div>
+    <div class="tl-content"><div class="tl-title">${t.title}</div><div class="tl-sub">${t.sub}</div></div>
+  </div>`).join('');
+  // heatmap
+  const hm=document.getElementById('heatmap');
+  if(hm&&!hm.children.length){
+    for(let i=0;i<91;i++){
+      const d=document.createElement('div');
+      const key=`hm-${i}`;
+      const lvl=S.h[key]||0;
+      d.className=`s-cell s${lvl}`;
+      d.title=`Day ${i+1}`;
+      d.onclick=()=>{S.h[key]=((S.h[key]||0)+1)%5;save();d.className=`s-cell s${S.h[key]}`;};
+      hm.appendChild(d);
+    }
+  }
+}
+
+// ═══════════════ RESOURCES ═══════════════
+function buildResources(){
+  document.getElementById('res-grid').innerHTML=RESOURCES.map(r=>`
+    <div class="res-card">
+      <span class="res-tag" style="background:${r.tc}22;color:${r.tc}">${r.tag}</span>
+      <div class="res-name">${r.name}</div>
+      <div class="res-desc">${r.desc}</div>
+      <a class="res-link" href="${r.link}" target="_blank" rel="noopener">→ ${r.link.replace('https://','')}</a>
+    </div>`).join('');
+}
+
+// ═══════════════ NOTES ═══════════════
+function buildNotes(){
+  const wrap=document.getElementById('notes-wrap');
+  const topics=['Daily Goals','Key Learnings','Questions to Research','Interview Prep Notes','Project Ideas','Doubts & Blockers'];
+  wrap.innerHTML=topics.map((t,i)=>`
+    <div class="notes-area">
+      <div class="notes-label">${t}</div>
+      <textarea class="notes-input" id="note-${i}" placeholder="Write your ${t.toLowerCase()} here..." onchange="saveNote(${i})">${S.n[i]||''}</textarea>
+      <button class="notes-save" onclick="saveNote(${i})">Save</button>
+    </div>`).join('');
+}
+function saveNote(i){
+  S.n[i]=document.getElementById(`note-${i}`).value;
+  save();
+}
+
+// ═══════════════ NAV ═══════════════
+const PAGE_META={
+  roadmap:['Roadmap','Your focused AIML + DS mastery path · Click topics to track progress'],
+  projects:['Projects','30 portfolio projects from beginner to capstone'],
+  career:['Career Levels','Real INR salary data based on your current progress'],
+  overview:['Overview','Progress, timeline & activity'],
+  resources:['Free Resources','Best free learning materials — no fluff'],
+  notes:['My Notes','Personal notes, goals & questions · Auto-saved'],
+};
+function nav(el){
+  const panel=el.dataset.panel;
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById(panel).classList.add('active');
+  const[title,sub]=PAGE_META[panel]||[panel,''];
+  document.getElementById('pg-title').textContent=title;
+  document.getElementById('pg-sub').textContent=sub;
+  if(panel==='projects')buildProjects();
+  if(panel==='resources')buildResources();
+  if(panel==='notes')buildNotes();
+  if(panel==='overview')buildOverview();
+}
+
+// ═══════════════ INIT ═══════════════
+buildRoadmap();
+buildProjects();
+buildCareer(0);
+buildOverview();
+updateStats();
+</script>
+</body>
+</html>
