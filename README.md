@@ -1,0 +1,1 @@
+The roadmap1 file is the new updated version of aimlds tracker previously it had roles data on job market completion rates for AIML and DS but in the new roadmap1 numourous features have been introduced a more basic roadmap for learnin linux,OS is also added for preparing from start along with latest trends for AIML is also added 
