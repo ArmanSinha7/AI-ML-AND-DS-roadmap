@@ -1,0 +1,2162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Arman · AIML + DS Mastery v3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#07070d;--bg2:#0e0e18;--bg3:#141420;--bg4:#1a1a28;--bg5:#202030;
+  --border:rgba(255,255,255,0.055);--border2:rgba(255,255,255,0.10);--border3:rgba(255,255,255,0.16);
+  --text:#ddddf0;--muted:#7a7a9a;--faint:#3a3a5a;
+  --accent:#7c6fff;--accent2:#a78bfa;--accentglow:rgba(124,111,255,0.18);
+  --green:#20c997;--greenglow:rgba(32,201,151,0.15);
+  --amber:#f5a623;--ambglow:rgba(245,166,35,0.15);
+  --coral:#ff6b6b;--coralglow:rgba(255,107,107,0.15);
+  --blue:#5ba4ff;--blueglow:rgba(91,164,255,0.15);
+  --pink:#e879b0;--gold:#ffd700;--silver:#c0c0d0;
+  --font-h:'Syne',sans-serif;
+  --font-b:'Plus Jakarta Sans',sans-serif;
+  --font-m:'JetBrains Mono',monospace;
+  --r:14px;--r2:10px;--r3:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font-b);font-size:14px;line-height:1.5;}
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--bg5);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:var(--faint);}
+button{font-family:inherit;}
+a{color:var(--accent2);}
+.shell{display:flex;height:100vh;overflow:hidden;}
+.sidebar{width:248px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;}
+.main{flex:1;overflow-y:auto;background:var(--bg);}
+.sb-logo{padding:20px 18px 16px;border-bottom:1px solid var(--border);}
+.sb-logo-title{font-family:var(--font-h);font-size:16px;font-weight:800;letter-spacing:-.4px;background:linear-gradient(135deg,var(--accent2),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sb-logo-sub{font-family:var(--font-m);font-size:9px;color:var(--muted);margin-top:3px;letter-spacing:.06em;text-transform:uppercase;}
+.sb-user{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--border);}
+.sb-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--pink));display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:700;font-size:12px;color:#fff;flex-shrink:0;}
+.sb-uname{font-size:13px;font-weight:600;}
+.sb-urank{font-family:var(--font-m);font-size:9px;color:var(--muted);margin-top:2px;}
+.sb-role-pick{padding:12px 18px;border-bottom:1px solid var(--border);}
+.sb-role-label{font-family:var(--font-m);font-size:8px;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+.sb-role-sel{width:100%;background:var(--bg4);border:1px solid var(--border2);color:var(--text);padding:7px 9px;border-radius:7px;font-family:var(--font-b);font-size:11px;cursor:pointer;outline:none;}
+.sb-role-sel:focus{border-color:rgba(124,111,255,.4);}
+.sb-overall{padding:12px 18px;border-bottom:1px solid var(--border);}
+.sb-ol-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.sb-ol-label{font-family:var(--font-m);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+.sb-ol-pct{font-family:var(--font-m);font-size:11px;color:var(--accent2);font-weight:500;}
+.sb-bar{height:4px;background:var(--bg5);border-radius:2px;overflow:hidden;}
+.sb-bar-fill{height:4px;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .5s ease;}
+.sb-readiness{padding:10px 18px;border-bottom:1px solid var(--border);}
+.sb-rd-label{font-family:var(--font-m);font-size:8px;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+.sb-rd-val{font-family:var(--font-h);font-size:14px;font-weight:700;color:var(--green);}
+.sb-rd-sub{font-size:10px;color:var(--muted);margin-top:2px;}
+.sb-section{font-family:var(--font-m);font-size:8px;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;padding:12px 18px 6px;}
+.sb-nav{display:flex;flex-direction:column;gap:1px;padding:0 8px;}
+.sb-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--r3);cursor:pointer;color:var(--muted);font-size:12px;font-weight:500;border:1px solid transparent;transition:all .15s;user-select:none;}
+.sb-item:hover{color:var(--text);background:rgba(255,255,255,.03);}
+.sb-item.active{color:var(--accent2);background:var(--accentglow);border-color:rgba(124,111,255,.2);}
+.sb-item svg{width:14px;height:14px;flex-shrink:0;}
+.sb-badge{margin-left:auto;font-family:var(--font-m);font-size:9px;background:var(--bg5);padding:1px 6px;border-radius:8px;color:var(--faint);}
+.sb-bottom{margin-top:auto;padding:12px 18px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;}
+.sb-btn{font-family:var(--font-m);font-size:9px;padding:6px 10px;border-radius:6px;border:1px solid var(--border2);background:var(--bg3);color:var(--muted);cursor:pointer;transition:all .15s;text-align:center;}
+.sb-btn:hover{color:var(--text);border-color:var(--border3);}
+.sb-btn-row{display:flex;gap:6px;}
+.sb-btn-row .sb-btn{flex:1;}
+.topbar{padding:24px 28px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.topbar-left .page-title{font-family:var(--font-h);font-size:24px;font-weight:800;letter-spacing:-.5px;}
+.topbar-left .page-sub{font-family:var(--font-m);font-size:10px;color:var(--muted);margin-top:4px;}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:16px 28px;}
+.stat-c{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;position:relative;overflow:hidden;}
+.stat-c::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:var(--r) var(--r) 0 0;}
+.stat-c.c1::before{background:linear-gradient(90deg,var(--accent),var(--accent2));}
+.stat-c.c2::before{background:linear-gradient(90deg,var(--green),#0dd4a8);}
+.stat-c.c3::before{background:linear-gradient(90deg,var(--amber),#f7b731);}
+.stat-c.c4::before{background:linear-gradient(90deg,var(--coral),#fa8072);}
+.stat-val{font-family:var(--font-h);font-size:26px;font-weight:800;line-height:1;margin-bottom:3px;}
+.stat-lbl{font-family:var(--font-m);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;}
+.stat-sub{font-size:10px;color:var(--faint);margin-top:5px;}
+.panel{display:none;padding:0 28px 48px;animation:fadeUp .2s ease;}
+.panel.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin:20px 0 14px;flex-wrap:wrap;gap:10px;}
+.sec-title{font-family:var(--font-h);font-size:16px;font-weight:700;}
+.sec-meta{font-family:var(--font-m);font-size:10px;color:var(--muted);}
+.search-box{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:7px 12px;color:var(--text);font-family:var(--font-b);font-size:12px;outline:none;width:240px;transition:border-color .15s;}
+.search-box:focus{border-color:rgba(124,111,255,.4);}
+.phase-card{border:1px solid var(--border);border-radius:var(--r);margin-bottom:12px;background:var(--bg2);overflow:hidden;}
+.phase-head{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;}
+.phase-head:hover{background:rgba(255,255,255,.02);}
+.phase-num{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:800;font-size:12px;flex-shrink:0;}
+.phase-info{flex:1;min-width:0;}
+.phase-name{font-family:var(--font-h);font-size:13px;font-weight:700;}
+.phase-meta2{font-family:var(--font-m);font-size:9px;color:var(--muted);margin-top:2px;}
+.phase-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.ph-bar-wrap{width:90px;height:4px;background:var(--bg5);border-radius:2px;overflow:hidden;}
+.ph-bar-fill{height:4px;border-radius:2px;transition:width .5s;}
+.ph-pct{font-family:var(--font-m);font-size:11px;color:var(--muted);min-width:30px;text-align:right;}
+.ph-chev{font-size:10px;color:var(--faint);transition:transform .2s;flex-shrink:0;}
+.ph-chev.open{transform:rotate(180deg);}
+.ph-accent-bar{height:2px;}
+.phase-body{border-top:1px solid var(--border);}
+.phase-gate{background:rgba(124,111,255,.05);border-top:1px solid var(--border);padding:12px 18px;font-size:11px;color:var(--muted);font-family:var(--font-m);line-height:1.7;}
+.phase-gate b{color:var(--accent2);font-weight:600;display:block;margin-bottom:4px;}
+.phase-gate ul{list-style:none;padding:0;margin:4px 0 0;}
+.phase-gate li{padding:2px 0;}
+.course-block{border-bottom:1px solid var(--border);}
+.course-block:last-child{border-bottom:none;}
+.course-head{display:flex;align-items:center;gap:10px;padding:11px 18px;cursor:pointer;transition:background .12s;}
+.course-head:hover{background:rgba(255,255,255,.02);}
+.c-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.c-name{font-size:12px;font-weight:600;flex:1;min-width:0;}
+.c-tag{font-family:var(--font-m);font-size:8px;padding:2px 7px;border-radius:6px;text-transform:uppercase;letter-spacing:.05em;flex-shrink:0;}
+.tag-core{background:rgba(124,111,255,.15);color:var(--accent2);}
+.tag-add{background:rgba(32,201,151,.12);color:var(--green);}
+.tag-math{background:rgba(91,164,255,.12);color:var(--blue);}
+.tag-eng{background:rgba(245,166,35,.12);color:var(--amber);}
+.tag-prod{background:rgba(232,121,176,.12);color:var(--pink);}
+.c-prog{font-family:var(--font-m);font-size:9px;color:var(--muted);flex-shrink:0;}
+.c-chev{font-size:9px;color:var(--faint);transition:transform .2s;margin-left:4px;flex-shrink:0;}
+.c-chev.open{transform:rotate(180deg);}
+.topic-wrap{padding:4px 18px 10px 40px;display:none;}
+.topic{display:flex;align-items:flex-start;gap:9px;padding:6px 9px;border-radius:7px;cursor:pointer;transition:background .12s;position:relative;}
+.topic:hover{background:rgba(255,255,255,.025);}
+.topic.lvl5{background:rgba(32,201,151,.06);}
+.topic.lvl5 .t-name{color:var(--green);}
+.topic.hidden{display:none;}
+.lvl-pip{display:flex;gap:2px;flex-shrink:0;margin-top:3px;}
+.lvl-dot{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--faint);background:transparent;cursor:pointer;transition:all .12s;}
+.lvl-dot.on{background:var(--accent);border-color:var(--accent);}
+.lvl-dot:hover{transform:scale(1.25);}
+.lvl-dot.l5.on{background:var(--green);border-color:var(--green);}
+.t-main{flex:1;min-width:0;}
+.t-name{font-size:11.5px;line-height:1.4;}
+.t-sub{font-family:var(--font-m);font-size:9px;color:var(--faint);margin-top:2px;line-height:1.5;}
+.t-proof{font-family:var(--font-m);font-size:9px;color:var(--blue);margin-top:3px;line-height:1.5;}
+.t-meta{display:flex;gap:5px;flex-shrink:0;align-items:flex-start;margin-top:1px;flex-wrap:wrap;justify-content:flex-end;max-width:140px;}
+.t-weight,.t-level{font-family:var(--font-m);font-size:8px;background:var(--bg4);padding:1px 5px;border-radius:4px;color:var(--faint);}
+.t-level.basic{background:rgba(91,164,255,.15);color:var(--blue);}
+.t-level.intermediate{background:rgba(32,201,151,.15);color:var(--green);}
+.t-level.advanced{background:rgba(245,166,35,.15);color:var(--amber);}
+.t-level.expert{background:rgba(232,121,176,.15);color:var(--pink);}
+.proj-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.flt{font-family:var(--font-m);font-size:10px;padding:5px 13px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;}
+.flt:hover{color:var(--text);background:var(--bg3);}
+.flt.on{background:var(--accentglow);color:var(--accent2);border-color:rgba(124,111,255,.3);}
+.flt-group{margin-bottom:10px;}
+.flt-group-lbl{font-family:var(--font-m);font-size:8px;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px;}
+.proj-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:9px;transition:border-color .15s,transform .15s;}
+.proj-card:hover{border-color:var(--border3);transform:translateY(-1px);}
+.proj-card.tier1{border-color:rgba(124,111,255,.3);}
+.proj-card.tier2{border-color:rgba(32,201,151,.3);}
+.proj-card.tier3{border-color:rgba(255,215,0,.4);}
+.proj-card.done-c{opacity:.78;}
+.proj-top{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.p-phase-pill{font-family:var(--font-m);font-size:8px;padding:2px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.05em;}
+.p-tier{font-family:var(--font-m);font-size:8px;padding:2px 8px;border-radius:6px;}
+.p-tier.t0{background:rgba(91,164,255,.15);color:var(--blue);}
+.p-tier.t1{background:rgba(124,111,255,.15);color:var(--accent2);}
+.p-tier.t2{background:rgba(32,201,151,.15);color:var(--green);}
+.p-tier.t3{background:rgba(255,215,0,.15);color:var(--gold);}
+.p-title{font-family:var(--font-h);font-size:14px;font-weight:700;line-height:1.3;}
+.p-desc{font-size:11.5px;color:var(--muted);line-height:1.6;}
+.p-detail{font-family:var(--font-m);font-size:9.5px;color:var(--faint);background:var(--bg4);padding:8px 10px;border-radius:7px;line-height:1.55;border:1px solid var(--border);}
+.p-skills{display:flex;flex-wrap:wrap;gap:4px;}
+.skill-pill{font-family:var(--font-m);font-size:9px;padding:2px 8px;border-radius:5px;background:var(--bg4);color:var(--muted);border:1px solid var(--border);}
+.p-foot{display:flex;align-items:center;gap:8px;margin-top:3px;flex-wrap:wrap;}
+.p-diff{font-family:var(--font-m);font-size:9px;color:var(--muted);display:flex;align-items:center;gap:4px;}
+.p-diff-dot{width:5px;height:5px;border-radius:50%;}
+.p-src{font-family:var(--font-m);font-size:8px;background:var(--bg4);color:var(--faint);padding:1px 6px;border-radius:5px;border:1px solid var(--border);}
+.p-evidence{font-family:var(--font-m);font-size:9px;color:var(--accent2);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;}
+.p-checklist-pct{font-family:var(--font-m);font-size:9px;color:var(--muted);margin-left:auto;}
+.p-done{display:flex;align-items:center;gap:5px;cursor:pointer;font-size:10px;color:var(--muted);user-select:none;transition:color .12s;}
+.p-done:hover{color:var(--text);}
+.p-chk{width:15px;height:15px;border-radius:3px;border:1.5px solid var(--faint);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.p-chk.on{background:var(--green);border-color:var(--green);}
+.p-chk.on::after{content:'';display:block;width:8px;height:4px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translate(1px,-1px);}
+.evidence-wrap{display:none;margin-top:6px;padding:12px;background:var(--bg4);border-radius:7px;border:1px solid var(--border);flex-direction:column;gap:7px;}
+.evidence-wrap.open{display:flex;}
+.ev-input{background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:6px 8px;border-radius:5px;font-family:var(--font-m);font-size:10px;outline:none;}
+.ev-input:focus{border-color:rgba(124,111,255,.4);}
+.ev-status{display:flex;gap:4px;flex-wrap:wrap;}
+.ev-st-btn{font-family:var(--font-m);font-size:8px;padding:3px 8px;border-radius:5px;border:1px solid var(--border2);background:transparent;color:var(--muted);cursor:pointer;transition:all .12s;}
+.ev-st-btn.on{background:var(--accentglow);color:var(--accent2);border-color:rgba(124,111,255,.3);}
+.ev-checklist{margin-top:5px;border-top:1px solid var(--border);padding-top:8px;}
+.ev-checklist-title{font-family:var(--font-m);font-size:8px;color:var(--faint);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+.ev-cli{display:flex;align-items:flex-start;gap:7px;padding:3px 0;cursor:pointer;font-size:10px;color:var(--muted);user-select:none;}
+.ev-cli:hover{color:var(--text);}
+.ev-cli .p-chk{width:13px;height:13px;}
+.ev-cli.on{color:var(--green);}
+.ov-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.ov-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;}
+.ov-title{font-family:var(--font-m);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;}
+.ph-row{display:flex;align-items:center;gap:9px;margin-bottom:7px;}
+.ph-row-name{font-size:10px;color:var(--muted);width:180px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ph-row-bw{flex:1;height:4px;background:var(--bg5);border-radius:2px;overflow:hidden;}
+.ph-row-bf{height:4px;border-radius:2px;transition:width .5s;}
+.ph-row-pct{font-family:var(--font-m);font-size:9px;color:var(--muted);min-width:28px;text-align:right;}
+.role-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:12px;}
+.role-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;position:relative;overflow:hidden;}
+.role-card.unlocked{border-color:rgba(32,201,151,.4);background:rgba(32,201,151,.04);}
+.role-card.current-target{border-color:var(--accent);box-shadow:0 0 16px var(--accentglow);}
+.role-status{position:absolute;top:10px;right:10px;font-family:var(--font-m);font-size:8px;padding:2px 7px;border-radius:5px;}
+.rs-locked{background:var(--bg4);color:var(--faint);}
+.rs-progress{background:var(--ambglow);color:var(--amber);}
+.rs-ready{background:var(--greenglow);color:var(--green);}
+.role-title{font-family:var(--font-h);font-size:14px;font-weight:700;margin-bottom:3px;}
+.role-lpa{font-family:var(--font-h);font-size:18px;font-weight:800;color:var(--green);margin-bottom:2px;}
+.role-lpa-lbl{font-size:9px;color:var(--muted);}
+.role-desc{font-size:10px;color:var(--muted);margin:8px 0;line-height:1.5;}
+.role-prog-list{display:flex;flex-direction:column;gap:4px;margin-top:8px;}
+.role-prog-item{display:flex;align-items:center;gap:6px;font-size:10px;}
+.role-prog-name{flex:1;color:var(--muted);}
+.role-prog-bar{width:60px;height:3px;background:var(--bg5);border-radius:2px;overflow:hidden;}
+.role-prog-fill{height:3px;border-radius:2px;}
+.role-prog-pct{font-family:var(--font-m);font-size:9px;color:var(--muted);min-width:28px;text-align:right;}
+.role-overall{font-family:var(--font-m);font-size:10px;margin-top:10px;padding-top:8px;border-top:1px solid var(--border);}
+.tl{display:flex;flex-direction:column;}
+.tl-item{display:flex;gap:12px;padding-bottom:14px;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-left{display:flex;flex-direction:column;align-items:center;width:18px;flex-shrink:0;}
+.tl-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+.tl-line{flex:1;width:1px;background:var(--border);margin-top:4px;}
+.tl-item:last-child .tl-line{display:none;}
+.tl-mo{font-family:var(--font-m);font-size:9px;color:var(--muted);flex-shrink:0;margin-top:2px;width:60px;}
+.tl-content{flex:1;min-width:0;}
+.tl-title{font-size:11.5px;font-weight:600;}
+.tl-sub{font-size:10px;color:var(--muted);margin-top:1px;}
+.streak-grid{display:grid;grid-template-columns:repeat(13,1fr);gap:3px;}
+.s-cell{aspect-ratio:1;border-radius:3px;background:var(--bg5);cursor:pointer;transition:transform .1s;}
+.s-cell:hover{transform:scale(1.3);}
+.s0{background:var(--bg5)}.s1{background:rgba(124,111,255,.25)}.s2{background:rgba(124,111,255,.5)}.s3{background:rgba(124,111,255,.75)}.s4{background:var(--accent);}
+.res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+.res-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:14px;transition:border-color .15s;}
+.res-card:hover{border-color:var(--border3);}
+.res-tag{font-family:var(--font-m);font-size:8px;padding:1px 7px;border-radius:5px;display:inline-block;margin-bottom:8px;}
+.res-name{font-size:12px;font-weight:600;margin-bottom:3px;}
+.res-desc{font-size:10px;color:var(--muted);line-height:1.5;margin-bottom:8px;}
+.res-link{font-family:var(--font-m);font-size:9px;color:var(--accent2);text-decoration:none;display:block;word-break:break-all;}
+.res-link:hover{text-decoration:underline;}
+.notes-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.notes-area{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:8px;}
+.notes-label{font-family:var(--font-m);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;}
+.notes-input{background:var(--bg4);border:1px solid var(--border2);border-radius:var(--r3);padding:10px;color:var(--text);font-family:var(--font-b);font-size:12px;resize:vertical;min-height:120px;outline:none;transition:border-color .15s;line-height:1.5;}
+.notes-input:focus{border-color:rgba(124,111,255,.4);}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--bg3);border:1px solid var(--border3);border-radius:8px;padding:10px 16px;font-size:12px;color:var(--text);z-index:1000;opacity:0;transform:translateY(20px);transition:all .25s;pointer-events:none;}
+.toast.show{opacity:1;transform:none;}
+.weekly-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;}
+.week-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;}
+.week-title{font-family:var(--font-h);font-size:13px;font-weight:700;margin-bottom:8px;}
+.week-list{display:flex;flex-direction:column;gap:5px;font-size:11px;color:var(--muted);}
+.week-list li{padding:3px 0;list-style:none;display:flex;gap:6px;}
+.week-list li::before{content:'•';color:var(--accent2);}
+.ev-locker-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;}
+.ev-locker-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:12px;}
+.ev-locker-title{font-size:11.5px;font-weight:600;margin-bottom:6px;line-height:1.4;}
+.ev-locker-links{display:flex;flex-direction:column;gap:4px;}
+.ev-locker-link{font-family:var(--font-m);font-size:9px;color:var(--accent2);text-decoration:none;word-break:break-all;display:flex;align-items:center;gap:5px;}
+.ev-locker-link:hover{text-decoration:underline;}
+.ev-locker-empty{font-family:var(--font-m);font-size:9px;color:var(--faint);font-style:italic;}
+.ev-locker-status{font-family:var(--font-m);font-size:8px;padding:2px 7px;border-radius:5px;display:inline-block;margin-top:5px;}
+.iv-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.iv-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;}
+.iv-card h3{font-family:var(--font-h);font-size:13px;font-weight:700;margin-bottom:8px;}
+.iv-card p,.iv-card li{font-size:11px;color:var(--muted);line-height:1.6;}
+.iv-card ul{padding-left:14px;}
+.iv-counter{display:flex;gap:8px;margin-top:8px;align-items:center;}
+.iv-counter button{background:var(--bg4);border:1px solid var(--border2);color:var(--text);padding:4px 10px;border-radius:6px;cursor:pointer;font-family:var(--font-m);font-size:11px;}
+.iv-counter button:hover{border-color:var(--accent2);color:var(--accent2);}
+.iv-counter-val{font-family:var(--font-h);font-size:18px;font-weight:700;color:var(--accent2);min-width:30px;text-align:center;}
+.log-grid{display:grid;grid-template-columns:1fr;gap:12px;}
+.log-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;}
+.log-stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:12px;}
+.log-stat{background:var(--bg4);border-radius:8px;padding:10px;text-align:center;}
+.log-stat-val{font-family:var(--font-h);font-size:18px;font-weight:800;}
+.log-stat-lbl{font-family:var(--font-m);font-size:9px;color:var(--muted);text-transform:uppercase;margin-top:3px;}
+.review-list{display:flex;flex-direction:column;gap:4px;max-height:300px;overflow-y:auto;}
+.review-item{font-size:11px;color:var(--muted);padding:5px 8px;background:var(--bg4);border-radius:5px;display:flex;justify-content:space-between;align-items:center;}
+.review-item.due{color:var(--coral);background:rgba(255,107,107,.08);}
+@media(max-width:900px){
+  .sidebar{width:200px;}
+  .stats{grid-template-columns:repeat(2,1fr);}
+  .ov-grid{grid-template-columns:1fr;}
+  .notes-wrap{grid-template-columns:1fr;}
+  .iv-grid{grid-template-columns:1fr;}
+  .search-box{width:160px;}
+}
+@media(max-width:640px){
+  .shell{flex-direction:column;}
+  .sidebar{width:100%;height:auto;max-height:60px;overflow:hidden;}
+  .sidebar.open{max-height:100vh;overflow-y:auto;}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-title">ARMAN · AIML+DS v3</div>
+    <div class="sb-logo-sub">artifacts &gt; checkboxes · 2026</div>
+  </div>
+  <div class="sb-user">
+    <div class="sb-av">AS</div>
+    <div>
+      <div class="sb-uname">Arman Sinha</div>
+      <div class="sb-urank" id="sb-rank">Setup · 0%</div>
+    </div>
+  </div>
+  <div class="sb-role-pick">
+    <div class="sb-role-label">🎯 Target Role</div>
+    <select class="sb-role-sel" id="role-select" onchange="setRole(this.value)">
+      <option value="all">All Roles (broad)</option>
+      <option value="da">Data Analyst</option>
+      <option value="ae">Analytics Engineer ★</option>
+      <option value="ds">Data Scientist</option>
+      <option value="de">Data Engineer ★</option>
+      <option value="mle">ML Engineer</option>
+      <option value="llm">LLM / GenAI Engineer</option>
+      <option value="mlops">MLOps Engineer</option>
+      <option value="research">AI Research Engineer ★</option>
+    </select>
+  </div>
+  <div class="sb-overall">
+    <div class="sb-ol-row">
+      <div class="sb-ol-label">Weighted Score</div>
+      <div class="sb-ol-pct" id="sb-pct">0%</div>
+    </div>
+    <div class="sb-bar"><div class="sb-bar-fill" id="sb-fill" style="width:0%"></div></div>
+  </div>
+  <div class="sb-readiness">
+    <div class="sb-rd-label">Role Readiness</div>
+    <div class="sb-rd-val" id="sb-rd-val">Pick a role</div>
+    <div class="sb-rd-sub" id="sb-rd-sub">Select target above</div>
+  </div>
+  <div class="sb-section">Navigation</div>
+  <div class="sb-nav">
+    <div class="sb-item active" data-panel="roadmap" onclick="nav(this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+      Roadmap <span class="sb-badge" id="nb-phases">10</span>
+    </div>
+    <div class="sb-item" data-panel="projects" onclick="nav(this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M14.25 9.75L16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z"/></svg>
+      Projects <span class="sb-badge" id="nb-proj">55</span>
+    </div>
+    <div class="sb-item" data-panel="career" onclick="nav(this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      Role Readiness <span class="sb-badge">8</span>
+    </div>
+    <div class="sb-item" data-panel="overview" onclick="nav(this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
+      Overview
+    </div>
+    <div class="sb-item" data-panel="weekly" onclick="nav(this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></svg>
+      Weekly Plan
+    </div>
+    <div class="sb-item" data-panel="locker" onclick="nav(this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m6.75 12l-3-3m0 0l-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+      Evidence Locker
+    </div>
+    <div class="sb-item" data-panel="vault" onclick="nav(this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+      Interview Vault
+    </div>
+    <div class="sb-item" data-panel="log" onclick="nav(this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z"/></svg>
+      Learning Log
+    </div>
+    <div class="sb-item" data-panel="resources" onclick="nav(this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
+      Resources
+    </div>
+    <div class="sb-item" data-panel="notes" onclick="nav(this)">
+      <svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125"/></svg>
+      Notes
+    </div>
+  </div>
+  <div class="sb-bottom">
+    <div class="sb-btn-row">
+      <button class="sb-btn" onclick="exportData()">⬇ Export</button>
+      <button class="sb-btn" onclick="document.getElementById('import-file').click()">⬆ Import</button>
+    </div>
+    <button class="sb-btn" onclick="resetData()">🔄 Reset Progress</button>
+    <input type="file" id="import-file" accept="application/json" style="display:none" onchange="importData(event)"/>
+  </div>
+</aside>
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="page-title" id="pg-title">Roadmap</div>
+      <div class="page-sub" id="pg-sub">10 stages · 6-level mastery · weighted progress</div>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat-c c1"><div class="stat-val" id="s-done" style="color:var(--accent2)">0</div><div class="stat-lbl">Topics ≥ L3</div><div class="stat-sub" id="s-done-sub">of 0 total</div></div>
+    <div class="stat-c c2"><div class="stat-val" id="s-pct" style="color:var(--green)">0%</div><div class="stat-lbl">Weighted Progress</div><div class="stat-sub">level × weight</div></div>
+    <div class="stat-c c3"><div class="stat-val" id="s-proj" style="color:var(--amber)">0</div><div class="stat-lbl">Projects Done</div><div class="stat-sub" id="s-proj-sub">of 55 total</div></div>
+    <div class="stat-c c4"><div class="stat-val" id="s-streak" style="color:var(--coral)">0</div><div class="stat-lbl">Day Streak</div><div class="stat-sub" id="s-streak-sub">start today!</div></div>
+  </div>
+  <div id="roadmap" class="panel active" style="padding-top:4px;">
+    <div class="sec-head">
+      <div>
+        <div class="sec-title">Roadmap (6-Level Mastery × Weighted)</div>
+      </div>
+      <input type="text" class="search-box" id="topic-search" placeholder="🔍 Search topics..." oninput="searchTopics(this.value)"/>
+    </div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:11px 14px;margin-bottom:12px;font-size:11px;color:var(--muted);line-height:1.6;">
+      <b style="color:var(--text);font-family:var(--font-h);">Mastery scale:</b> click the dots to set level — ⬤⬤⬤⬤⬤ <span style="color:var(--faint)">L0 not started</span> · <span style="color:var(--blue)">L1 watched</span> · <span style="color:var(--accent2)">L2 practiced</span> · <span style="color:var(--amber)">L3 implemented</span> · <span style="color:var(--coral)">L4 deployed</span> · <span style="color:var(--green)">L5 can teach</span>. Topic counts toward stage at L≥3.
+    </div>
+    <div id="roadmap-list"></div>
+  </div>
+  <div id="projects" class="panel" style="padding-top:8px;">
+    <div class="sec-head"><div class="sec-title">Project Portfolio · 4-Tier System</div><div class="sec-meta" id="proj-count">0 / 55 done</div></div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:12px;font-size:11px;color:var(--muted);line-height:1.6;">
+      <b style="color:var(--text);font-family:var(--font-h);">Quality over quantity.</b> 25 Micro · 15 Core · 10 Production · 5 Elite. A project is "Tier-complete" only when ≥8/10 proof-checklist items are checked. Use Evidence Locker (sidebar) to see all your proof URLs in one place.
+    </div>
+    <div class="flt-group">
+      <div class="flt-group-lbl">Tier</div>
+      <div class="proj-filters">
+        <button class="flt on" data-flt="all" onclick="flt('all',this)">All (55)</button>
+        <button class="flt" data-flt="t0" onclick="flt('t0',this)">🔹 Micro (25)</button>
+        <button class="flt" data-flt="t1" onclick="flt('t1',this)">⭐ Core (15)</button>
+        <button class="flt" data-flt="t2" onclick="flt('t2',this)">🛠️ Production (10)</button>
+        <button class="flt" data-flt="t3" onclick="flt('t3',this)">🏆 Elite (5)</button>
+      </div>
+    </div>
+    <div class="flt-group">
+      <div class="flt-group-lbl">Role Track</div>
+      <div class="proj-filters">
+        <button class="flt" data-flt="da" onclick="flt('da',this)">Data Analyst</button>
+        <button class="flt" data-flt="ae" onclick="flt('ae',this)">Analytics Eng</button>
+        <button class="flt" data-flt="ds" onclick="flt('ds',this)">Data Scientist</button>
+        <button class="flt" data-flt="de" onclick="flt('de',this)">Data Eng</button>
+        <button class="flt" data-flt="mle" onclick="flt('mle',this)">ML Engineer</button>
+        <button class="flt" data-flt="llm" onclick="flt('llm',this)">LLM Engineer</button>
+        <button class="flt" data-flt="mlops" onclick="flt('mlops',this)">MLOps</button>
+        <button class="flt" data-flt="research" onclick="flt('research',this)">Research</button>
+      </div>
+    </div>
+    <div class="flt-group">
+      <div class="flt-group-lbl">Status</div>
+      <div class="proj-filters">
+        <button class="flt" data-flt="deployed" onclick="flt('deployed',this)">✓ Deployed</button>
+        <button class="flt" data-flt="documented" onclick="flt('documented',this)">📝 Documented</button>
+        <button class="flt" data-flt="users" onclick="flt('users',this)">👥 Real Users</button>
+        <button class="flt" data-flt="building" onclick="flt('building',this)">🚧 Building</button>
+      </div>
+    </div>
+    <div class="proj-grid" id="proj-grid"></div>
+  </div>
+  <div id="career" class="panel" style="padding-top:8px;">
+    <div class="sec-head"><div class="sec-title">Role-Specific Readiness · 8 Roles</div><div class="sec-meta">Realistic India salary data · 2026</div></div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:12px;font-size:11px;color:var(--muted);line-height:1.6;">
+      <b style="color:var(--text);font-family:var(--font-h);">Honest framing.</b> Ranges reflect typical outcomes — not guarantees. Strong portfolio + interview prep + city/company tier all matter. Top-tier numbers (FAANG/unicorn) require exceptional proof: research, OSS, Kaggle finishes, or referrals.
+    </div>
+    <div class="role-grid" id="role-grid"></div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-top:4px;">
+      <div style="font-family:var(--font-m);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;">Verified India Salary Data · 2026 Sources</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;font-size:11px;color:var(--muted);">
+        <div><div style="color:var(--text);font-weight:600;margin-bottom:4px;">AmbitionBox 2026</div><div>ML Engineer avg: ₹12.6 LPA</div><div>ML Engineer top 10%: ₹22.2 LPA</div><div>AI/ML Engineer avg: ₹18.9 LPA</div></div>
+        <div><div style="color:var(--text);font-weight:600;margin-bottom:4px;">Glassdoor 2026</div><div>Data Analyst avg: ₹6.5 LPA</div><div>Analytics Engineer avg: ₹14 LPA</div><div>LLM Engineer avg: ₹21.3 LPA</div></div>
+        <div><div style="color:var(--text);font-weight:600;margin-bottom:4px;">6figr 2026</div><div>LLM-skilled avg: ₹37.1 LPA</div><div>Research Engineer top: ₹65 LPA+</div><div>Top 1% ML: ₹44.7 LPA+</div></div>
+      </div>
+      <div style="margin-top:10px;font-family:var(--font-m);font-size:9px;color:var(--faint);">Sources: AmbitionBox.com, Glassdoor.co.in, 6figr.com, Levels.fyi (verified 2026). Bangalore +30% premium. Strong portfolio can lift offers 30–60%.</div>
+    </div>
+  </div>
+  <div id="overview" class="panel" style="padding-top:8px;">
+    <div class="ov-grid">
+      <div class="ov-card">
+        <div class="ov-title">Progress by Stage</div>
+        <div id="ph-progress"></div>
+      </div>
+      <div class="ov-card">
+        <div class="ov-title">21-Month Realistic Timeline</div>
+        <div class="tl" id="tl"></div>
+      </div>
+    </div>
+    <div class="ov-card" style="margin-bottom:12px;">
+      <div class="ov-title">91-Day Activity Heatmap · Click to log a study day (4 levels)</div>
+      <div class="streak-grid" id="heatmap"></div>
+    </div>
+    <div class="ov-card">
+      <div class="ov-title">Pillar Coverage (23 pillars)</div>
+      <div id="pillar-coverage" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;"></div>
+    </div>
+  </div>
+  <div id="weekly" class="panel" style="padding-top:8px;">
+    <div class="sec-head"><div class="sec-title">Weekly Execution Plan</div><div class="sec-meta">Pick your intensity</div></div>
+    <div class="weekly-grid" id="weekly-grid"></div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-top:14px;">
+      <div style="font-family:var(--font-h);font-size:13px;font-weight:700;margin-bottom:8px;">⚡ The 60-40 Rule</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.6;">Never spend more than <b style="color:var(--accent2)">60%</b> of your study time watching videos or reading. At least <b style="color:var(--green)">40%</b> must be coding/building. Recruiters look at GitHub commits, deployed apps, and Kaggle scores — not hours watched.</div>
+    </div>
+  </div>
+  <div id="locker" class="panel" style="padding-top:8px;">
+    <div class="sec-head"><div class="sec-title">Evidence Locker · All Your Proofs</div><div class="sec-meta" id="locker-meta">0 links collected</div></div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:12px;font-size:11px;color:var(--muted);line-height:1.6;">
+      <b style="color:var(--text);font-family:var(--font-h);">Why this exists.</b> Every project's GitHub, demo, blog, and video links are aggregated here. Send this URL list to recruiters. The more populated this page, the more hireable you are.
+    </div>
+    <div class="ev-locker-grid" id="locker-grid"></div>
+  </div>
+  <div id="vault" class="panel" style="padding-top:8px;">
+    <div class="sec-head"><div class="sec-title">Interview Vault</div><div class="sec-meta">STAR · System Design · SQL · Mocks</div></div>
+    <div class="iv-grid" id="vault-grid"></div>
+  </div>
+  <div id="log" class="panel" style="padding-top:8px;">
+    <div class="sec-head"><div class="sec-title">Learning Log</div><div class="sec-meta">Spaced review · weekly reviews · public posts</div></div>
+    <div class="log-grid" id="log-grid"></div>
+  </div>
+  <div id="resources" class="panel" style="padding-top:8px;">
+    <div class="sec-head"><div class="sec-title">Free Learning Resources</div><div class="sec-meta">Curated · No fluff</div></div>
+    <div class="res-grid" id="res-grid"></div>
+  </div>
+  <div id="notes" class="panel" style="padding-top:8px;">
+    <div class="sec-head"><div class="sec-title">My Notes</div><div class="sec-meta">Auto-saved in browser · Export to backup</div></div>
+    <div class="notes-wrap" id="notes-wrap"></div>
+  </div>
+</main>
+</div>
+<div class="toast" id="toast">Saved</div>
+<script>
+"use strict";
+
+/* ═══════════════════════════════════════════════════════════════════
+   ARMAN · AIML+DS MASTERY v3
+   - 10 stages · ~285 topics · 55 projects · 8 roles · 23 pillars
+   - 6-level mastery scale (L0-L5)
+   - Per-topic and per-project evidence schemas
+   - Anti-cheat proof checklist
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ───────── ROADMAP DATA ───────── */
+const PHASES = [
+{id:'p0', name:'Stage 0 — Digital Operating System', meta:'Week 1–3 · ~50 hrs · Foundation for everything', color:'#7c6fff', bg:'rgba(124,111,255,.15)',
+ gate:['Personal portfolio site live','GitHub README + 6 pinned repo placeholders','Dotfiles repo public','30 days of daily notes','8 weekly public learning-log posts','Anki deck 100+ cards reviewed 14 days straight','1 architecture diagram published'],
+ courses:[
+  {name:'Execution Operating System', tag:'add', color:'#7c6fff', topics:[
+    {t:'Career target lock-in v3', s:'Pick PRIMARY + BACKUP role, write 3 sentences why, review every 60 days', w:2, p:['career','prod'], level:'basic', proof:'role-lock.md in dotfiles repo'},
+    {t:'Deep work blocks — 90 min focus', s:'Phone in another room, one tab, one measurable output per block', w:3, p:['prod'], level:'basic', proof:'10 logged sessions'},
+    {t:'Time blocking — weekly calendar', s:'Plan study, build, review, exercise, networking blocks every Sunday', w:2, p:['prod'], level:'basic', proof:'screenshot of weekly plan'},
+    {t:'PARA method — Projects, Areas, Resources, Archives', s:'Organize notes/code by outcome, never by topic', w:2, p:['prod'], level:'basic', proof:'Obsidian/Notion vault structure'},
+    {t:'Second brain — Obsidian / Notion / Logseq', s:'Capture concepts, bugs, decisions, interview notes; daily notes ON', w:2, p:['prod','comm'], level:'basic', proof:'30 days of notes'},
+    {t:'Spaced repetition — Anki for ML/SQL/interviews', s:'Cards for definitions, formulas, Linux commands, common gotchas', w:3, p:['prod'], level:'basic', proof:'200-card deck reviewed 7 days straight'},
+    {t:'Weekly review ritual', s:'Friday answer 4 questions: shipped? blocked? cut? repeat?', w:2, p:['prod'], level:'basic', proof:'4 weekly review notes'},
+    {t:'Anti-burnout system', s:'Sleep ≥7h, exercise 3x/week, deload week every 8 weeks, no 14h fantasy plans', w:2, p:['prod'], level:'basic', proof:'sleep + exercise log'},
+  ]},
+  {name:'Developer Setup & Workflow', tag:'eng', color:'#7c6fff', topics:[
+    {t:'Install Python 3.11+, VS Code, Git, Docker Desktop', s:'Windows: WSL2 recommended for ML work', w:1, p:['se'], level:'basic'},
+    {t:'Terminal & shell basics — cd, ls, mkdir, mv, cp, grep', s:'PowerShell or Bash — pick one and master', w:2, p:['se','cs'], level:'basic'},
+    {t:'GitHub profile setup with pinned repos & bio', s:'professional photo, location, contact, README profile', w:2, p:['se','career','comm'], level:'basic', proof:'github.com/<you> screenshot'},
+    {t:'LinkedIn optimisation — headline, About, skills', s:'mention target role, key tech, projects in About', w:2, p:['career','comm'], level:'basic'},
+    {t:'Markdown mastery — README, docs, blog posts', s:'tables, code blocks, badges, images, GitHub-flavoured', w:1, p:['comm'], level:'basic'},
+    {t:'Project structure conventions — src/ tests/ data/', s:'standard ML project template, .gitignore essentials', w:2, p:['se'], level:'basic'},
+    {t:'Environment management — venv, conda, uv, poetry', s:'uv is fastest 2026 standard; pyproject.toml basics', w:2, p:['se','py'], level:'basic'},
+    {t:'GitHub proof-of-work tracker', s:'Profile README + 6 pinned repos + project board + 5+ green days/week', w:3, p:['comm','career','se'], level:'basic', proof:'github.com/<you> screenshot'},
+  ]},
+  {name:'Communication & Documentation', tag:'add', color:'#7c6fff', topics:[
+    {t:'Technical writing workflow', s:'Every project = README + ARCHITECTURE.md + LESSONS.md + RESULTS.md', w:3, p:['comm'], level:'basic', proof:'1 fully-documented repo'},
+    {t:'Architecture diagram basics', s:'Excalidraw, Mermaid, draw.io; system, sequence, ERD diagrams', w:2, p:['comm','se'], level:'basic', proof:'3 diagrams in different repos'},
+    {t:'Public learning log', s:'Weekly LinkedIn/X/Hashnode post — proof, not motivation quotes', w:2, p:['career','comm'], level:'basic', proof:'8 weekly public posts'},
+    {t:'Dotfiles + dev environment as code', s:'.zshrc, .gitconfig, VS Code settings.json in a public repo', w:2, p:['se','prod'], level:'basic', proof:'dotfiles repo'},
+    {t:'Personal portfolio site v0', s:'astro/next/hugo — name, role, 3 projects, contact; deployed on Vercel/Netlify', w:3, p:['comm','career'], level:'basic', proof:'live URL'},
+    {t:'Daily commit habit + GitHub Actions hello-world', s:'Smallest possible CI workflow that runs pytest on push', w:2, p:['se','mlops'], level:'basic', proof:'green badge on README'},
+  ]},
+]},
+{id:'p1', name:'Stage 1 — Programming + CS + Databases Foundation', meta:'Months 1–3 · ~420 hrs · Cannot skip', color:'#7c6fff', bg:'rgba(124,111,255,.15)',
+ gate:['100 Python exercises solved','100 SQL problems solved','75 DSA problems solved','1 published pip package OR FastAPI hello-world with tests + CI','1 Excel dashboard','Can explain HTTP/DNS/process-vs-thread/ACID/B-tree in 60s','1 ERD + 1 sequence diagram'],
+ courses:[
+  {name:'Python — Production Mastery', tag:'core', color:'#7c6fff', topics:[
+    {t:'Variables, types, casting, operators, control flow', s:'int, float, str, bool, None; if/elif/else, match-case', w:2, p:['py'], level:'basic'},
+    {t:'Loops, comprehensions, walrus operator', s:'list/dict/set comp; enumerate, zip, range', w:2, p:['py'], level:'basic'},
+    {t:'Functions — args, kwargs, *args, **kwargs, defaults', s:'positional vs keyword, unpacking', w:3, p:['py'], level:'basic'},
+    {t:'Scope — LEGB, closures, nonlocal', s:'enclosing scope rules — common interview question', w:2, p:['py'], level:'intermediate'},
+    {t:'Data structures — list, tuple, dict, set, frozenset', s:'mutability, hashability, time complexity', w:3, p:['py'], level:'basic'},
+    {t:'Strings & f-strings, regex (re module)', s:'split, join, strip, format, named groups', w:2, p:['py'], level:'basic'},
+    {t:'OOP — classes, methods, inheritance, MRO, super()', s:'@classmethod, @staticmethod, multiple inheritance', w:3, p:['py'], level:'intermediate'},
+    {t:'Dunder methods — __str__, __repr__, __eq__, __hash__', s:'operator overloading, comparison protocol', w:2, p:['py'], level:'intermediate'},
+    {t:'Decorators — building, stacking, parametrised', s:'functools.wraps, real-world: caching, timing, auth', w:3, p:['py'], level:'intermediate'},
+    {t:'Context managers — with, __enter__/__exit__', s:'contextlib.contextmanager, resource management', w:2, p:['py'], level:'intermediate'},
+    {t:'Generators & iterators — yield, yield from', s:'lazy evaluation, memory efficiency, send()', w:3, p:['py'], level:'intermediate'},
+    {t:'Exception handling — try/except/else/finally, custom', s:'exception hierarchy, re-raising, chaining', w:2, p:['py'], level:'basic'},
+    {t:'File I/O — pathlib, open(), CSV, JSON, pickle', s:'pathlib over os.path; binary vs text modes', w:2, p:['py'], level:'basic'},
+    {t:'Standard library — collections, itertools, functools', s:'Counter, defaultdict, deque, lru_cache, partial', w:3, p:['py'], level:'intermediate'},
+    {t:'Type hints — typing, mypy, dataclasses, Protocol', s:'List, Dict, Optional, Union, TypeVar, Generic', w:3, p:['py','se'], level:'intermediate'},
+    {t:'Logging — logging module, levels, handlers, formatters', s:'never use print() in production code', w:3, p:['py','se'], level:'intermediate'},
+    {t:'Testing — pytest, fixtures, parametrize, mocks', s:'TDD basics, coverage, conftest.py', w:3, p:['py','se'], level:'intermediate'},
+    {t:'Async basics — async/await, asyncio, aiohttp', s:'CPU-bound vs IO-bound, when async helps', w:2, p:['py'], level:'intermediate'},
+    {t:'Packaging — pyproject.toml, src layout, CLI tools', s:'click/typer for CLIs, entry points', w:2, p:['py','se'], level:'intermediate'},
+  ]},
+  {name:'Software Engineering Core', tag:'eng', color:'#f5a623', topics:[
+    {t:'SOLID principles in Python', s:'SRP, OCP, LSP, ISP, DIP — refactor a 500-line script to apply each', w:3, p:['se'], level:'intermediate', proof:'before/after diff in repo'},
+    {t:'Clean Architecture basics', s:'Entities → use cases → adapters → infrastructure; never import inward', w:3, p:['se'], level:'intermediate', proof:'small CLI app organized this way'},
+    {t:'Design patterns — factory, strategy, adapter, observer', s:'Use ONLY when they simplify code; avoid pattern theater', w:2, p:['se'], level:'intermediate'},
+    {t:'Repository pattern + service layer', s:'Separate business logic from DB/API code; testable in isolation', w:2, p:['se','backend'], level:'intermediate'},
+    {t:'Dependency injection in Python', s:'Inject clients/models/config; never hardcode; FastAPI Depends() example', w:2, p:['se','backend'], level:'intermediate'},
+    {t:'Refactoring + code smells', s:'Long functions, duplicated logic, hidden globals, magic constants, primitive obsession', w:3, p:['se'], level:'intermediate'},
+    {t:'Threading vs multiprocessing vs asyncio', s:'I/O-bound vs CPU-bound; GIL implications; concurrent.futures', w:3, p:['py','cs'], level:'intermediate'},
+    {t:'Python memory model', s:'References, mutability, garbage collection, memory_profiler, tracemalloc', w:2, p:['py','cs'], level:'intermediate'},
+    {t:'Profiling + performance', s:'cProfile, line_profiler, py-spy, memory_profiler, scalene', w:2, p:['py','se'], level:'intermediate'},
+    {t:'Code review etiquette', s:'Read PRs, leave actionable comments, request changes politely; junior survival skill', w:2, p:['se','comm'], level:'basic'},
+  ]},
+  {name:'Computer Science Core', tag:'eng', color:'#5ba4ff', topics:[
+    {t:'OS — processes, threads, scheduling', s:'Why ML jobs hang, why servers fork, why Docker exists', w:3, p:['cs'], level:'intermediate'},
+    {t:'OS — memory, virtual memory, filesystems', s:'RAM limits, swap, mmap, page cache, file descriptors, OOM kills', w:2, p:['cs'], level:'intermediate'},
+    {t:'Networking — TCP/IP, DNS, HTTP/HTTPS, TLS', s:'Essential for APIs, deployment, scraping, LLM services', w:3, p:['cs','backend'], level:'intermediate'},
+    {t:'HTTP deep dive', s:'methods, status codes, headers, cookies, CORS, idempotency, caching', w:3, p:['cs','backend'], level:'intermediate'},
+    {t:'WebSockets + SSE', s:'When to use over HTTP — streaming LLM tokens, live dashboards', w:2, p:['backend','cs'], level:'intermediate'},
+    {t:'Load balancers, reverse proxies, CDNs', s:'Nginx, caching, horizontal scaling, sticky sessions', w:2, p:['backend','cloud'], level:'intermediate'},
+    {t:'Concurrency primitives', s:'Locks, semaphores, queues, race conditions, deadlocks; ML training pitfalls', w:2, p:['cs','py'], level:'advanced'},
+    {t:'Distributed systems essentials', s:'CAP theorem, eventual consistency, idempotency, retries, exactly-once myths', w:3, p:['cs','de','backend'], level:'advanced'},
+  ]},
+  {name:'SQL — Data Analytics Mastery', tag:'core', color:'#7c6fff', topics:[
+    {t:'SELECT, WHERE, ORDER BY, LIMIT, DISTINCT', s:'foundation; PostgreSQL recommended over MySQL', w:2, p:['sql'], level:'basic'},
+    {t:'Aggregations — COUNT, SUM, AVG, MIN, MAX', s:'GROUP BY, HAVING, common pitfalls with NULL', w:3, p:['sql'], level:'basic'},
+    {t:'Joins — INNER, LEFT, RIGHT, FULL, SELF, CROSS', s:'visual venn diagrams, cardinality (1:1, 1:M, M:M)', w:5, p:['sql'], level:'basic'},
+    {t:'Subqueries — scalar, correlated, EXISTS, IN, NOT IN', s:'when to use vs JOIN, performance implications', w:3, p:['sql'], level:'intermediate'},
+    {t:'CTEs (WITH clause) — readable multi-step queries', s:'recursive CTEs for hierarchies', w:3, p:['sql'], level:'intermediate'},
+    {t:'Window functions — ROW_NUMBER, RANK, DENSE_RANK', s:'PARTITION BY, ORDER BY within partition', w:5, p:['sql'], level:'intermediate'},
+    {t:'Window functions — LAG, LEAD, FIRST_VALUE, NTH_VALUE', s:'critical for time-series and cohort SQL', w:5, p:['sql'], level:'intermediate'},
+    {t:'Window aggregates — SUM/AVG OVER, ROWS/RANGE', s:'rolling sums, moving averages in pure SQL', w:3, p:['sql'], level:'intermediate'},
+    {t:'CASE WHEN, COALESCE, NULLIF, IFNULL', s:'conditional logic, NULL handling patterns', w:2, p:['sql'], level:'basic'},
+    {t:'Date/time SQL — DATE_TRUNC, EXTRACT, INTERVAL', s:'monthly/weekly aggregations, time bucketing', w:3, p:['sql'], level:'intermediate'},
+    {t:'Funnel + cohort retention SQL patterns', s:'multi-step funnels, monthly cohorts — interview classics', w:5, p:['sql','da'], level:'intermediate'},
+    {t:'Top-N per group pattern', s:'ROW_NUMBER + WHERE rn=1; top customer per region', w:3, p:['sql'], level:'intermediate'},
+    {t:'PostgreSQL hands-on — local install or Docker', s:'psql CLI, pgAdmin, sample dataset (Pagila/Sakila)', w:3, p:['sql','db'], level:'basic'},
+    {t:'DuckDB — analytical SQL on Parquet/CSV', s:'2026 must-know; reads CSV/Parquet directly', w:2, p:['sql','ae'], level:'intermediate'},
+    {t:'StrataScratch / DataLemur — 50 SQL problems', s:'real interview questions from FAANG/Indian unicorns', w:5, p:['sql','career'], level:'intermediate'},
+  ]},
+  {name:'Database Depth', tag:'eng', color:'#5ba4ff', topics:[
+    {t:'Database transactions + ACID', s:'Isolation levels, locks, deadlocks, MVCC, REPEATABLE READ vs SERIALIZABLE', w:3, p:['db','sql'], level:'intermediate'},
+    {t:'Normalization + schema design', s:'1NF, 2NF, 3NF, BCNF, denormalization tradeoffs for analytics', w:2, p:['db','sql'], level:'intermediate'},
+    {t:'Indexes deep dive', s:'B-tree, hash, GIN/GiST, covering indexes, partial indexes, EXPLAIN ANALYZE', w:3, p:['db','sql'], level:'intermediate'},
+    {t:'NoSQL overview', s:'MongoDB (document), Redis (KV), Neo4j (graph) — choose by access pattern, not hype', w:2, p:['db'], level:'intermediate'},
+    {t:'Vector databases conceptual', s:'pgvector, Qdrant, Weaviate; when to use over Postgres FTS', w:2, p:['db','llm'], level:'intermediate'},
+    {t:'Connection pooling + N+1 queries', s:'PgBouncer, SQLAlchemy pools, the silent killer of every backend', w:2, p:['db','backend'], level:'intermediate'},
+  ]},
+  {name:'Math for ML — Practical Coverage', tag:'math', color:'#5ba4ff', topics:[
+    {t:'Linear algebra — vectors, dot product, norms', s:'3B1B Essence Ch1-4; build intuition first', w:3, p:['math'], level:'basic'},
+    {t:'Matrices — multiplication as transformation', s:'3B1B Ch5-9; this is what neural nets do', w:3, p:['math'], level:'basic'},
+    {t:'Eigenvalues & eigenvectors, diagonalisation', s:'3B1B Ch14; PCA depends on this', w:3, p:['math'], level:'intermediate'},
+    {t:'SVD — Singular Value Decomposition', s:'PCA, recommender systems, low-rank approximation', w:2, p:['math'], level:'intermediate'},
+    {t:'Calculus — derivatives, chain rule', s:'this IS backpropagation; pencil-and-paper practice', w:3, p:['math'], level:'basic'},
+    {t:'Partial derivatives & gradients', s:'gradient = uphill direction; gradient descent goes downhill', w:3, p:['math'], level:'basic'},
+    {t:'Probability — sample space, axioms, conditional', s:'P(A|B) = P(A∩B)/P(B); foundation of everything', w:3, p:['math'], level:'basic'},
+    {t:"Bayes' theorem — prior, likelihood, posterior", s:'Naive Bayes, medical test paradox, update beliefs', w:3, p:['math'], level:'basic'},
+    {t:'Distributions — Bernoulli, Binomial, Poisson, Gaussian, Exponential, Beta', s:'PMF/PDF, mean, variance, when each applies', w:3, p:['math'], level:'basic'},
+    {t:'Expectation, variance, covariance, correlation', s:'E[X], Var(X), Pearson r, why correlation ≠ causation', w:2, p:['math'], level:'basic'},
+    {t:'MLE & MAP estimation', s:'ML algorithms framed as MLE; regularisation = MAP prior', w:3, p:['math'], level:'intermediate'},
+    {t:'Central Limit Theorem & Law of Large Numbers', s:'why sample means are normal; why bootstrapping works', w:2, p:['math'], level:'basic'},
+    {t:'Hypothesis testing — null/alt, p-value, type I/II', s:'t-test, z-test, chi-square — when to use each', w:3, p:['math','da'], level:'intermediate'},
+    {t:'Confidence intervals & bootstrap', s:'percentile bootstrap, when to prefer over t-CI', w:2, p:['math','da'], level:'intermediate'},
+    {t:'Bias-variance tradeoff (mathematical view)', s:'underfit = high bias, overfit = high variance', w:3, p:['math'], level:'intermediate'},
+    {t:'Information theory — entropy, KL, cross-entropy', s:'cross-entropy loss = KL + entropy of true dist', w:2, p:['math'], level:'intermediate'},
+  ]},
+  {name:'DSA — Interview Track', tag:'add', color:'#20c997', topics:[
+    {t:'Big-O — time & space complexity analysis', s:'identify O(n), O(n log n), O(n²) on sight', w:3, p:['dsa'], level:'basic'},
+    {t:'Arrays — two-pointer, prefix sums, Kadane', s:'max subarray, container with most water', w:3, p:['dsa'], level:'basic'},
+    {t:'Sliding window — fixed & variable', s:'longest substring no repeat, min window substring', w:3, p:['dsa'], level:'intermediate'},
+    {t:'Hashing — dict/set patterns', s:'two-sum, group anagrams, top-K frequent', w:3, p:['dsa'], level:'basic'},
+    {t:'Linked list — reverse, cycle detect, merge', s:'Floyd cycle, fast/slow pointer', w:2, p:['dsa'], level:'basic'},
+    {t:'Stacks & queues — monotonic stack, BFS pattern', s:'next greater element, sliding window max', w:2, p:['dsa'], level:'intermediate'},
+    {t:'Recursion & backtracking — subsets, permutations', s:'N-queens, sudoku, word search', w:2, p:['dsa'], level:'intermediate'},
+    {t:'Binary search — standard + variants', s:'rotated array, kth smallest, capacity to ship', w:3, p:['dsa'], level:'intermediate'},
+    {t:'Trees — DFS, BFS, all traversals, BST', s:'inorder, level-order, validate BST', w:3, p:['dsa'], level:'intermediate'},
+    {t:'Heaps — top-K, K-way merge, median stream', s:'heapq, custom comparator', w:2, p:['dsa'], level:'intermediate'},
+    {t:'Graphs — DFS, BFS, topological sort, Dijkstra', s:'islands, course schedule, shortest path', w:3, p:['dsa'], level:'advanced'},
+    {t:'DP — 1D & 2D patterns', s:'house robber, edit distance, LCS, knapsack', w:3, p:['dsa'], level:'advanced'},
+    {t:'LeetCode grind — 75 curated problems', s:'NeetCode 75 + 25 mediums; pattern-first', w:5, p:['dsa','career'], level:'advanced'},
+  ]},
+  {name:'Excel / Sheets — Analyst Essential', tag:'add', color:'#20c997', topics:[
+    {t:'Excel basics — formulas, formatting, filters', s:'Still required in 70% of analyst interviews', w:2, p:['excel','da'], level:'basic'},
+    {t:'Excel intermediate — pivots, XLOOKUP, INDEX/MATCH, Power Query', s:'XLOOKUP > VLOOKUP; Power Query for ETL inside Excel', w:3, p:['excel','da'], level:'intermediate'},
+    {t:'Excel dashboards', s:'Slicers, sparklines, conditional formatting, executive templates', w:2, p:['excel','da'], level:'intermediate', proof:'1-page executive dashboard .xlsx'},
+    {t:'Google Sheets + Apps Script', s:'IMPORTRANGE, QUERY function, automated reports for stakeholders', w:1, p:['excel','da'], level:'basic'},
+  ]},
+  {name:'Linux, Bash, Git — Pro Workflow', tag:'eng', color:'#20c997', topics:[
+    {t:'Linux file system, permissions, processes', s:'ls -la, chmod, chown, ps, kill, top', w:2, p:['cs','se'], level:'basic'},
+    {t:'Bash scripting beyond hello-world', s:'pipes, xargs, awk, sed, find — analyst/MLE survival kit', w:2, p:['cs','se'], level:'intermediate'},
+    {t:'Make / just / task runners', s:'Makefile for reproducible commands; better than copy-pasting README snippets', w:1, p:['se'], level:'basic'},
+    {t:'Pre-commit hooks + linters', s:'ruff, black, mypy, detect-secrets — non-negotiable in 2026', w:2, p:['se'], level:'basic'},
+    {t:'Conventional commits + semantic versioning', s:'feat:/fix:/chore: + SemVer; signals professionalism in PRs', w:1, p:['se','comm'], level:'basic'},
+    {t:'Git fundamentals — init, add, commit, log, status', s:'staging area, .gitignore, conventional commits', w:3, p:['se'], level:'basic'},
+    {t:'Branching — branch, checkout, merge, rebase', s:'fast-forward, 3-way merge, when to rebase', w:3, p:['se'], level:'intermediate'},
+    {t:'GitHub PRs, code review, issue templates', s:'professional PR descriptions, branch protection', w:2, p:['se','comm'], level:'intermediate'},
+    {t:'GitHub Actions — CI for Python projects', s:'pytest + lint + type check on every push', w:3, p:['se','mlops'], level:'intermediate'},
+    {t:'REST APIs — requests/httpx, JSON, auth', s:'API keys, OAuth basics, pagination, retries', w:3, p:['backend','se'], level:'intermediate'},
+  ]},
+]},
+{id:'p2', name:'Stage 2 — Data Analytics + BI + Analytics Engineering', meta:'Months 3–5 · ~320 hrs · Analyst-ready', color:'#20c997', bg:'rgba(32,201,151,.13)',
+ gate:['1 SQL business case study (20 queries + 1-page memo)','1 Power BI/Tableau dashboard deployed','1 dbt project with passing tests + docs','1 product analytics memo (funnel + cohort + recommendation)','1 A/B test analysis app','3 published executive memos'],
+ courses:[
+  {name:'NumPy + Pandas — Data Manipulation', tag:'core', color:'#20c997', topics:[
+    {t:'NumPy ndarray, broadcasting, vectorisation', s:'never loop over arrays in Python; einsum advanced', w:3, p:['da','py'], level:'basic'},
+    {t:'NumPy linear algebra & random', s:'np.linalg, default_rng for reproducibility', w:2, p:['da','math'], level:'intermediate'},
+    {t:'Pandas Series & DataFrame — .loc/.iloc precision', s:'SettingWithCopyWarning; views vs copies', w:3, p:['da'], level:'basic'},
+    {t:'Pandas reading data — CSV, Excel, JSON, SQL, Parquet', s:'dtype, parse_dates, chunksize for large files', w:3, p:['da'], level:'basic'},
+    {t:'Missing data — isna, fillna, dropna, interpolate', s:'forward/backward fill, MAR vs MNAR awareness', w:3, p:['da'], level:'intermediate'},
+    {t:'GroupBy — agg, transform, apply, named agg', s:'split-apply-combine; multi-column aggregation', w:5, p:['da'], level:'intermediate'},
+    {t:'Merging — merge, join, concat, merge_asof', s:'on, left_on, right_on, how; time-based merge', w:3, p:['da'], level:'intermediate'},
+    {t:'Reshaping — pivot, melt, stack, pivot_table', s:'wide↔long, hierarchical index', w:3, p:['da'], level:'intermediate'},
+    {t:'DateTime — DatetimeIndex, resample, rolling, shift', s:'critical for time-series; tz_localize/tz_convert', w:3, p:['da'], level:'intermediate'},
+    {t:'Performance — dtypes, query/eval, Polars handoff', s:'when Pandas hits limits → Polars or DuckDB', w:2, p:['da'], level:'intermediate'},
+  ]},
+  {name:'Modern Analytics Stack — Polars, DuckDB, Arrow', tag:'core', color:'#20c997', topics:[
+    {t:'Polars fundamentals', s:'DataFrame API, lazy queries, expressions; faster than Pandas on large data', w:3, p:['da','ae'], level:'intermediate'},
+    {t:'Polars vs Pandas decision matrix', s:'When to use each; benchmark on your own data', w:2, p:['da','ae'], level:'intermediate'},
+    {t:'Apache Arrow memory model', s:'Columnar memory, zero-copy, why Polars/DuckDB/Spark all use it', w:2, p:['ae','de'], level:'intermediate'},
+    {t:'DuckDB advanced analytics', s:'Query Parquet/CSV directly with SQL; replaces 80% of Pandas one-offs', w:3, p:['sql','ae'], level:'intermediate'},
+  ]},
+  {name:'EDA & Visualisation', tag:'core', color:'#20c997', topics:[
+    {t:'EDA framework — first 5 things every analyst does', s:'shape, dtypes, describe, nunique, value_counts', w:3, p:['da'], level:'basic'},
+    {t:'Matplotlib — Figure/Axes OOP API', s:'subplots, tight_layout, save publication-quality', w:2, p:['da'], level:'basic'},
+    {t:'Seaborn — statistical visualisation', s:'histplot, boxplot, violin, heatmap, pairplot', w:3, p:['da'], level:'basic'},
+    {t:'Plotly Express — interactive charts', s:'scatter, bar, line, choropleth; hover, animations', w:3, p:['da'], level:'intermediate'},
+    {t:'Distribution analysis — skew, kurtosis, Q-Q', s:'normality tests, log/Box-Cox transforms', w:2, p:['da','math'], level:'intermediate'},
+    {t:'Correlation — Pearson, Spearman, Kendall, VIF', s:'multicollinearity detection', w:2, p:['da','math'], level:'intermediate'},
+    {t:'Outlier detection — IQR, Z-score, domain rules', s:'cap vs remove vs flag — context matters', w:2, p:['da'], level:'intermediate'},
+    {t:'Storytelling principles — chart selection, Tufte', s:'right chart for right comparison; reduce ink', w:2, p:['da','comm'], level:'intermediate'},
+  ]},
+  {name:'Analytics Engineering with dbt', tag:'core', color:'#20c997', topics:[
+    {t:'dbt fundamentals', s:'models, refs, sources, tests, docs, snapshots, seeds — the AE bedrock', w:5, p:['ae','sql'], level:'intermediate', proof:'dbt project on GitHub with passing tests'},
+    {t:'dbt project structure', s:'staging → intermediate → marts; naming conventions; folder hygiene', w:3, p:['ae'], level:'intermediate'},
+    {t:'dbt macros + Jinja', s:'DRY SQL, generate_schema_name, custom tests', w:2, p:['ae'], level:'advanced'},
+    {t:'Data warehouse modelling', s:'Star schema, snowflake schema, facts vs dimensions, grain', w:3, p:['ae','db'], level:'intermediate'},
+    {t:'Slowly Changing Dimensions', s:'SCD Type 1, Type 2, Type 4; effective_from/effective_to columns', w:2, p:['ae'], level:'intermediate'},
+    {t:'Semantic layer basics', s:'Cube, dbt Semantic Layer, MetricFlow; one source of truth for KPIs', w:3, p:['ae','da'], level:'advanced'},
+    {t:'Data quality + tests', s:'Uniqueness, not_null, accepted values, relationships, freshness', w:3, p:['ae','gov'], level:'intermediate'},
+    {t:'Great Expectations / Soda', s:'Profiling, expectations, data docs, CI integration', w:2, p:['ae','gov'], level:'intermediate'},
+  ]},
+  {name:'Product Analytics & Experimentation', tag:'core', color:'#20c997', topics:[
+    {t:'Metric design', s:'North Star, guardrail, input vs output metrics; avoiding vanity metrics', w:3, p:['da','ae'], level:'intermediate'},
+    {t:'Funnel analysis — drop-off identification', s:'multi-step funnels, conversion rates by segment', w:3, p:['da'], level:'intermediate'},
+    {t:'Cohort analysis — retention curves, heatmaps', s:'monthly cohorts; retention >40% day-30 = product-market fit', w:3, p:['da'], level:'intermediate'},
+    {t:'A/B test design — hypothesis, sample size, power', s:'80% power, 5% significance; calculate before you start', w:5, p:['da','math'], level:'intermediate'},
+    {t:'A/B test analysis — t-test, Mann-Whitney, chi-square', s:'pick test by data type; effect size matters more than p-value', w:5, p:['da','math'], level:'intermediate'},
+    {t:'CUPED + variance reduction', s:'Cut A/B test sample size 30–50%; covariates from pre-experiment data', w:3, p:['da','math'], level:'advanced'},
+    {t:'Sequential testing + early stopping', s:'mSPRT, always-valid p-values; why peeking at standard tests is illegal', w:2, p:['da','math'], level:'advanced'},
+    {t:'Causal inference basics — DiD, propensity matching', s:'when you cannot run an A/B test (most of life)', w:3, p:['da','ml'], level:'advanced'},
+  ]},
+  {name:'BI Tools — Power BI / Tableau', tag:'core', color:'#f5a623', topics:[
+    {t:'Power Query — import, transform, M language basics', s:'merge/append, custom columns, data profiling', w:2, p:['da'], level:'basic'},
+    {t:'Star schema modelling, relationships, cardinality', s:'fact vs dimension; 1:M is the default goal', w:3, p:['da','ae'], level:'intermediate'},
+    {t:'DAX fundamentals — calc columns vs measures', s:'row context vs filter context (THE distinction)', w:3, p:['da'], level:'intermediate'},
+    {t:'Core DAX — CALCULATE, FILTER, ALL, ALLEXCEPT', s:'SUMX, COUNTROWS, DIVIDE, SWITCH, RELATED', w:3, p:['da'], level:'intermediate'},
+    {t:'Time intelligence — TOTALYTD, SAMEPERIODLASTYEAR', s:'YoY, MoM, rolling averages', w:2, p:['da'], level:'intermediate'},
+    {t:'Dashboard design — visuals, slicers, drill-through', s:'bookmarks, tooltip pages, accessibility', w:2, p:['da','comm'], level:'intermediate'},
+    {t:'Publish to Service — refresh, workspaces, apps', s:'incremental refresh, dataflows', w:2, p:['da'], level:'intermediate'},
+    {t:'Tableau alternative path', s:'parameters, calculated fields, LOD expressions, dashboards', w:2, p:['da'], level:'intermediate'},
+  ]},
+  {name:'Stakeholder Communication', tag:'add', color:'#20c997', topics:[
+    {t:'Stakeholder interview framework', s:'Translate "we need a dashboard" into measurable specs in 4 questions', w:2, p:['comm','da'], level:'intermediate'},
+    {t:'Executive memo writing', s:'Finding → evidence → recommendation → risk → next action (1 page max)', w:3, p:['comm','da'], level:'intermediate', proof:'3 published memos'},
+    {t:'Dashboard UX principles', s:'5-second test, inverted pyramid, no-pie-chart rule, color accessibility', w:2, p:['da','comm'], level:'intermediate'},
+  ]},
+]},
+{id:'p3', name:'Stage 3 — Classical Machine Learning', meta:'Months 5–8 · ~400 hrs · ML-intern ready', color:'#ff6b6b', bg:'rgba(255,107,107,.12)',
+ gate:['1 leakage-safe sklearn Pipeline (joblib-saved)','1 XGBoost/LightGBM project with calibration + threshold tuning','1 SHAP explanation report','1 time-series project with walk-forward CV + backtest','1 deployed ML API (FastAPI + Docker)','1 causal inference notebook'],
+ courses:[
+  {name:'Feature Engineering — The ML Secret Weapon', tag:'add', color:'#ff6b6b', topics:[
+    {t:'Encoding — one-hot, ordinal, target, binary', s:'handle unknown categories at inference; cardinality limits', w:3, p:['ml'], level:'intermediate'},
+    {t:'Target encoding with K-fold smoothing', s:'avoid leakage; CategoryEncoders library', w:3, p:['ml'], level:'intermediate'},
+    {t:'Scaling — Standard, MinMax, Robust, PowerTransformer', s:'tree models do not need scaling; KNN/SVM/NN do', w:2, p:['ml'], level:'basic'},
+    {t:'Date/time features — cyclical sin/cos encoding', s:'hour-of-day, day-of-week as cycles, not integers', w:3, p:['ml'], level:'intermediate'},
+    {t:'Aggregation features — groupby stats, ratios, ranks', s:'mean/std/max within group; lag features for time series', w:3, p:['ml'], level:'intermediate'},
+    {t:'Feature selection — filter, wrapper, embedded', s:'permutation importance is more reliable', w:2, p:['ml'], level:'intermediate'},
+    {t:'SHAP-based feature selection', s:'mean |SHAP|; interaction values for top pairs', w:2, p:['ml'], level:'advanced'},
+  ]},
+  {name:'ML Workflow & Algorithms', tag:'core', color:'#ff6b6b', topics:[
+    {t:'ML workflow — business → data → model → monitor', s:'ML formulation; the lifecycle, not just modelling', w:3, p:['ml'], level:'basic'},
+    {t:'Train/val/test split — and why time-series is different', s:'never shuffle time series; group splits for grouped data', w:3, p:['ml'], level:'intermediate'},
+    {t:'Data leakage — target leakage, train-serving skew', s:'#1 cause of "great model that fails in production"', w:5, p:['ml'], level:'intermediate'},
+    {t:'Linear regression — OLS, assumptions, diagnostics', s:'residual plots, heteroscedasticity, VIF', w:3, p:['ml','math'], level:'intermediate'},
+    {t:'Regularisation — Ridge, Lasso, ElasticNet', s:'geometric intuition; coefficient paths', w:3, p:['ml'], level:'intermediate'},
+    {t:'Logistic regression — sigmoid, log-loss, odds', s:'interpretation: 1-unit change → exp(coef) odds change', w:3, p:['ml'], level:'intermediate'},
+    {t:'Naive Bayes — Gaussian, Multinomial, Bernoulli', s:'fast text-classification baseline; Laplace smoothing', w:2, p:['ml'], level:'intermediate'},
+    {t:'KNN — distance metrics, k selection, curse of dim', s:'KD-trees, ball trees, weighted KNN', w:2, p:['ml'], level:'basic'},
+    {t:'SVM — margins, kernel trick (RBF, polynomial)', s:'when SVM beats trees: small high-dim datasets', w:2, p:['ml'], level:'intermediate'},
+    {t:'Decision trees — Gini, entropy, pruning', s:'max_depth, min_samples_leaf; visualise!', w:3, p:['ml'], level:'basic'},
+    {t:'Random Forest — bagging, OOB error, feature importance', s:'when RF still beats XGBoost (small data)', w:3, p:['ml'], level:'intermediate'},
+    {t:'Gradient Boosting intuition — residual fitting', s:'AdaBoost → GBM → XGBoost progression', w:3, p:['ml'], level:'intermediate'},
+    {t:'XGBoost — params, regularisation, early stopping', s:'eta, max_depth, min_child_weight, gamma, lambda', w:5, p:['ml'], level:'advanced'},
+    {t:'LightGBM — leaf-wise growth, GOSS, native categoricals', s:'usually faster than XGBoost; default for tabular', w:5, p:['ml'], level:'advanced'},
+    {t:'CatBoost — ordered boosting, categorical handling', s:'no preprocessing needed; symmetric trees', w:2, p:['ml'], level:'intermediate'},
+    {t:'Stacking & blending — out-of-fold predictions', s:'level-1 vs level-2; StackingClassifier', w:2, p:['ml'], level:'advanced'},
+    {t:'Classification metrics — precision, recall, F1, ROC-AUC, PR-AUC', s:'PR-AUC for imbalanced; MCC, Cohen kappa', w:5, p:['ml','eval'], level:'intermediate'},
+    {t:'Regression metrics — RMSE, MAE, MAPE, R², RMSLE', s:'when each is appropriate; custom losses', w:3, p:['ml','eval'], level:'intermediate'},
+    {t:'Cross-validation — K-fold, stratified, group, time-series', s:'avoid leakage; nested CV for honest evaluation', w:5, p:['ml','eval'], level:'intermediate'},
+    {t:'Hyperparameter tuning — Grid, Random, Optuna', s:'Bayesian optimisation; pruning; budget-aware', w:3, p:['ml'], level:'intermediate'},
+    {t:'Sklearn Pipeline — ColumnTransformer, FunctionTransformer', s:'fit_transform vs transform; serialise pipelines', w:5, p:['ml'], level:'intermediate'},
+    {t:'Imbalanced learning — SMOTE, class_weight, threshold tuning', s:'precision-recall trade-off; cost-sensitive', w:3, p:['ml'], level:'intermediate'},
+    {t:'Calibration — Platt, isotonic, reliability diagrams', s:'tree models are NOT calibrated by default', w:3, p:['ml'], level:'advanced'},
+    {t:'K-Means + DBSCAN + GMM clustering', s:'elbow, silhouette; density-based; soft probabilistic', w:3, p:['ml'], level:'intermediate'},
+    {t:'PCA + t-SNE + UMAP', s:'PCA for features; t-SNE/UMAP for viz only', w:3, p:['ml'], level:'intermediate'},
+    {t:'Anomaly detection — Isolation Forest, LOF, OneClassSVM', s:'unsupervised fraud/defect detection', w:2, p:['ml'], level:'intermediate'},
+    {t:'Time-series ML — lag/rolling features, walk-forward CV', s:'never shuffle; train always before test in time', w:3, p:['ml'], level:'advanced'},
+    {t:'SHAP — TreeSHAP, KernelSHAP, waterfall, beeswarm', s:'2026 standard for explainability', w:5, p:['ml','eval'], level:'advanced'},
+    {t:'Error analysis — slice-based evaluation', s:'where does the model fail? per-segment metrics', w:3, p:['ml','eval'], level:'advanced'},
+    {t:'Fairness metrics — demographic parity, equal opportunity', s:'EU AI Act, RBI requirements', w:2, p:['ml','gov'], level:'advanced'},
+  ]},
+  {name:'Recommender Systems', tag:'core', color:'#ff6b6b', topics:[
+    {t:'Learning-to-rank', s:'RankNet, LambdaMART, NDCG@k, MAP; search/recsys ranking', w:3, p:['ml'], level:'advanced'},
+    {t:'Recsys — collaborative filtering', s:'User-item matrix, implicit ALS, BPR, cold start problem', w:3, p:['ml'], level:'intermediate'},
+    {t:'Recsys — two-tower retrieval', s:'Candidate generation with embeddings; the Netflix/YouTube pattern', w:3, p:['ml','dl'], level:'advanced'},
+    {t:'Recsys — ranking + reranking', s:'Business constraints, diversity, freshness, MMR, position bias', w:3, p:['ml'], level:'advanced'},
+  ]},
+  {name:'Causal Inference & Advanced Stats', tag:'add', color:'#5ba4ff', topics:[
+    {t:'Causal DAGs', s:'Confounders, mediators, colliders, backdoor adjustment (Pearl)', w:3, p:['math','ml'], level:'advanced'},
+    {t:'Propensity score matching', s:'Estimate ATE from observational data; CausalInference / DoWhy', w:3, p:['ml','da'], level:'advanced'},
+    {t:'Difference-in-differences', s:'Before/after × treatment/control; parallel trends assumption', w:3, p:['ml','da'], level:'advanced'},
+    {t:'Uplift modelling', s:'Treatment/control response; X-learner, T-learner, R-learner', w:2, p:['ml','da'], level:'advanced'},
+    {t:'Survival analysis', s:'Kaplan-Meier, Cox PH model; churn / time-to-event modelling', w:2, p:['ml'], level:'advanced'},
+    {t:'Conformal prediction', s:'Distribution-free uncertainty; MAPIE library; finally calibrated CIs', w:3, p:['ml','eval'], level:'advanced'},
+    {t:'Quantile regression + prediction intervals', s:'When point predictions are not enough', w:2, p:['ml','math'], level:'intermediate'},
+    {t:'Model robustness testing', s:'Stress test missing values, outliers, drift, adversarial slices', w:3, p:['ml','eval'], level:'advanced'},
+  ]},
+  {name:'NLP — Classical Foundations', tag:'core', color:'#ff6b6b', topics:[
+    {t:'NLP pipeline — tokenise → normalise → represent → model', s:'end-to-end view before each step', w:2, p:['ml'], level:'basic'},
+    {t:'Tokenisation — word, sentence, subword (BPE)', s:'NLTK vs spaCy vs Hugging Face tokenizers', w:3, p:['ml','llm'], level:'intermediate'},
+    {t:'Bag of Words & TF-IDF', s:'CountVectorizer, TfidfVectorizer, n-grams', w:3, p:['ml'], level:'basic'},
+    {t:'Word embeddings — Word2Vec, GloVe, FastText', s:'analogies, OOV handling in FastText', w:2, p:['ml'], level:'intermediate'},
+    {t:'Sentence embeddings — sentence-transformers', s:'2026 standard for semantic similarity', w:3, p:['ml','llm'], level:'intermediate'},
+    {t:'Text classification end-to-end', s:'clean → vectorise → calibrate → deploy', w:3, p:['ml'], level:'intermediate'},
+    {t:'NER — spaCy, transformer-based, BIO tagging', s:'custom entity extraction', w:2, p:['ml'], level:'intermediate'},
+    {t:'Topic modelling — LDA, NMF, BERTopic', s:'BERTopic is 2026 state-of-art', w:2, p:['ml'], level:'intermediate'},
+    {t:'Semantic search — bi-encoder, cross-encoder rerankers', s:'foundation for RAG', w:3, p:['ml','rag'], level:'advanced'},
+  ]},
+]},
+{id:'p4', name:'Stage 4 — Deep Learning + Multimodal AI', meta:'Months 8–10 · ~320 hrs · DL fundamentals', color:'#5ba4ff', bg:'rgba(91,164,255,.12)',
+ gate:['1 PyTorch model trained from scratch','1 transfer learning project (CV or NLP)','1 CV / OCR / audio project deployed','1 model exported to ONNX + benchmarked','1 explainability artifact (Grad-CAM / attention viz)','1 multimodal demo (image + text)'],
+ courses:[
+  {name:'Deep Learning — Math to Practice', tag:'core', color:'#5ba4ff', topics:[
+    {t:'Perceptron, MLP — forward pass step-by-step', s:'do this with NumPy first, no framework', w:3, p:['dl'], level:'intermediate'},
+    {t:'Activation functions — ReLU, GELU, Sigmoid, Tanh, Swish', s:'why GELU for transformers; dying ReLU', w:3, p:['dl'], level:'intermediate'},
+    {t:'Backprop from scratch — chain rule on graph', s:'build mini-autograd in NumPy (Karpathy micrograd)', w:5, p:['dl','math'], level:'advanced'},
+    {t:'Loss functions — MSE, BCE, CCE, focal, contrastive', s:'match loss to task; focal for imbalance', w:3, p:['dl'], level:'intermediate'},
+    {t:'Optimisers — SGD, Momentum, RMSProp, Adam, AdamW', s:'AdamW > Adam (decoupled weight decay)', w:3, p:['dl'], level:'intermediate'},
+    {t:'Learning rate schedules — warmup, cosine, OneCycle', s:'lr_finder; warmup is critical for transformers', w:3, p:['dl'], level:'advanced'},
+    {t:'Regularisation — Dropout, BatchNorm, LayerNorm, weight decay', s:'when BN fails (small batches) → use LayerNorm', w:3, p:['dl'], level:'intermediate'},
+    {t:'Vanishing/exploding gradients, gradient clipping', s:'clip by norm; skip connections as the cure', w:2, p:['dl'], level:'advanced'},
+    {t:'CNN — convolution, pooling, stride, padding, receptive field', s:'depthwise separable conv (MobileNet)', w:3, p:['dl','cv'], level:'intermediate'},
+    {t:'CNN architectures — ResNet, EfficientNet, ConvNeXt', s:'2026: ResNet50 still strong baseline', w:3, p:['dl','cv'], level:'intermediate'},
+    {t:'Transfer learning — freeze, fine-tune, differential LR', s:'90% of CV problems = use pretrained + fine-tune', w:3, p:['dl','cv'], level:'intermediate'},
+    {t:'Data augmentation — Albumentations, Mixup, CutMix', s:'2026 standard library; RandAugment policies', w:2, p:['dl','cv'], level:'intermediate'},
+    {t:'Attention mechanism — scaled dot-product Q,K,V', s:'why √d_k; build from scratch', w:5, p:['dl','llm'], level:'advanced'},
+    {t:'Multi-head attention — parallel heads, projections', s:'information diversity; concat + linear', w:5, p:['dl','llm'], level:'advanced'},
+    {t:'Transformer architecture — encoder, decoder, FFN', s:'positional encoding (sinusoidal vs RoPE)', w:5, p:['dl','llm'], level:'advanced'},
+  ]},
+  {name:'PyTorch — Production Patterns', tag:'core', color:'#5ba4ff', topics:[
+    {t:'PyTorch tensors, autograd, computational graph', s:'requires_grad, backward(), no_grad, detach', w:3, p:['dl'], level:'intermediate'},
+    {t:'PyTorch nn.Module — forward, parameters, state_dict', s:'model surgery, freeze layers, parameter groups', w:3, p:['dl'], level:'intermediate'},
+    {t:'PyTorch DataLoader — Dataset, collate_fn, num_workers', s:'pin_memory, prefetch_factor, IterableDataset', w:3, p:['dl'], level:'intermediate'},
+    {t:'PyTorch training loop — opt + scheduler + AMP scaler', s:'mixed precision (fp16/bf16); gradient accumulation', w:3, p:['dl'], level:'intermediate'},
+    {t:'PyTorch Lightning — abstract boilerplate', s:'Trainer, callbacks, multi-GPU for free', w:2, p:['dl'], level:'intermediate'},
+    {t:'W&B / TensorBoard — DL experiment tracking', s:'2026: W&B is the default; sweeps for HPO', w:2, p:['dl','mlops'], level:'intermediate'},
+    {t:'GPU memory debugging — OOM, gradient checkpointing', s:'torch.cuda.memory_summary(); checkpointing trades compute', w:2, p:['dl'], level:'advanced'},
+    {t:'Mixed precision + distributed training', s:'AMP (fp16/bf16), DDP, FSDP, gradient accumulation', w:2, p:['dl'], level:'advanced'},
+    {t:'Model export — ONNX, TorchScript, quantisation', s:'INT8 quantisation; deployment-ready models', w:2, p:['dl','mlops'], level:'advanced'},
+    {t:'Model compression', s:'Distillation, pruning, INT8/INT4 quantization, ONNX, TensorRT', w:3, p:['dl','mlops'], level:'advanced'},
+  ]},
+  {name:'Computer Vision', tag:'core', color:'#5ba4ff', topics:[
+    {t:'OpenCV fundamentals', s:'Image loading, transforms, contours, morphology, color spaces', w:2, p:['cv'], level:'basic'},
+    {t:'Albumentations augmentation', s:'Industry-standard pipeline; faster than torchvision transforms', w:2, p:['cv','dl'], level:'intermediate'},
+    {t:'Object detection — YOLO family', s:'YOLOv8/v10/v11; bounding boxes, mAP, IoU, NMS', w:3, p:['cv','dl'], level:'advanced'},
+    {t:'Image segmentation', s:'U-Net, Mask R-CNN, SAM2 workflows; medical / satellite use cases', w:3, p:['cv','dl'], level:'advanced'},
+    {t:'OCR pipelines', s:'Tesseract, PaddleOCR, EasyOCR; preprocessing for accuracy', w:3, p:['docai','cv'], level:'intermediate'},
+    {t:'Document AI — layout understanding', s:'LayoutLMv3, Donut, Docling; tables, forms, receipts, invoices', w:3, p:['docai','llm'], level:'advanced'},
+  ]},
+  {name:'Audio AI & Multimodal', tag:'core', color:'#5ba4ff', topics:[
+    {t:'Speech-to-text — Whisper', s:'whisperX, faster-whisper; timestamps, word-level alignment', w:2, p:['audio','dl'], level:'intermediate'},
+    {t:'Text-to-speech', s:'Coqui XTTS, ElevenLabs API; latency, quality, voice cloning ethics', w:2, p:['audio'], level:'intermediate'},
+    {t:'Speaker diarization', s:'pyannote, NeMo; who-spoke-when for meetings/call centers', w:2, p:['audio'], level:'advanced'},
+    {t:'Diffusion models', s:'Forward/reverse process, DDPM/DDIM, latent diffusion, ControlNet', w:3, p:['dl','multi'], level:'advanced'},
+    {t:'Vision-language models', s:'CLIP, SigLIP, image-text embeddings; image search, zero-shot classification', w:3, p:['multi','llm'], level:'advanced'},
+    {t:'Multimodal prompting', s:'GPT-4o, Claude, Gemini vision; chart/document/diagram Q&A', w:3, p:['multi','llm'], level:'intermediate'},
+  ]},
+]},
+{id:'p5', name:'Stage 5 — Data Engineering + Backend Systems', meta:'Months 10–12 · ~300 hrs · Stop being notebook-only', color:'#f5a623', bg:'rgba(245,166,35,.12)',
+ gate:['1 production FastAPI service (auth + tests + Docker + CI)','1 multi-container app via docker-compose','1 Airflow OR Prefect pipeline (≥5 tasks)','1 Postgres-backed app with migrations','1 Kafka OR Spark OR lakehouse mini project','1 streaming dashboard'],
+ courses:[
+  {name:'FastAPI & Backend Engineering', tag:'eng', color:'#f5a623', topics:[
+    {t:'FastAPI basics — routes, path/query params', s:'auto-generated OpenAPI docs at /docs', w:3, p:['backend','se'], level:'intermediate'},
+    {t:'Pydantic models — request/response validation', s:'2026 standard; replaces marshmallow/manual validation', w:3, p:['backend','se'], level:'intermediate'},
+    {t:'Async endpoints — async def, await, aiohttp', s:'use async for IO-bound; sync for CPU-bound ML', w:2, p:['backend','py'], level:'intermediate'},
+    {t:'Dependency injection — Depends, sub-dependencies', s:'auth, DB sessions, model loading', w:2, p:['backend','se'], level:'intermediate'},
+    {t:'Authentication — OAuth2, JWT, API keys', s:'security headers, CORS configuration', w:2, p:['backend','sec'], level:'intermediate'},
+    {t:'Background tasks & WebSockets', s:'long-running ML jobs; streaming LLM responses', w:2, p:['backend','llm'], level:'intermediate'},
+    {t:'Testing FastAPI — TestClient, pytest fixtures', s:'integration tests for API endpoints', w:2, p:['backend','se'], level:'intermediate'},
+    {t:'Production server — Uvicorn + Gunicorn workers', s:'scaling, graceful shutdown, health checks', w:2, p:['backend','mlops'], level:'intermediate'},
+    {t:'API design', s:'REST conventions, pagination, filtering, versioning, error envelopes', w:3, p:['backend'], level:'intermediate'},
+    {t:'gRPC + Protobuf', s:'Low-latency internal services; HTTP/2; streaming', w:2, p:['backend'], level:'advanced'},
+    {t:'Message queues', s:'Celery, RQ, RabbitMQ, SQS; backpressure, DLQ, ordering', w:3, p:['backend','de'], level:'intermediate'},
+    {t:'Idempotency + retries', s:'Critical for payments, pipelines, agents; idempotency keys', w:3, p:['backend','se'], level:'advanced'},
+    {t:'Caching strategies', s:'Redis, TTL, cache-aside, write-through, semantic caching for LLMs', w:3, p:['backend','llm'], level:'intermediate'},
+    {t:'Background jobs + scheduling', s:'cron, APScheduler, Celery beat; retries, locks, jitter', w:2, p:['backend','de'], level:'intermediate'},
+  ]},
+  {name:'Docker & Containerisation', tag:'eng', color:'#f5a623', topics:[
+    {t:'Docker fundamentals — images, containers, layers', s:'docker run, build, ps, logs, exec', w:3, p:['se','mlops'], level:'intermediate'},
+    {t:'Dockerfile best practices — multi-stage builds', s:'small final image, .dockerignore, non-root user', w:3, p:['se','mlops'], level:'intermediate'},
+    {t:'GPU containers — nvidia/cuda base images', s:'nvidia-docker runtime; CUDA versions matter', w:2, p:['mlops'], level:'advanced'},
+    {t:'Docker Compose — multi-service stacks', s:'volumes, networks, depends_on, healthchecks', w:3, p:['se','mlops'], level:'intermediate'},
+    {t:'Container registries — Docker Hub, GHCR, ECR', s:'private images, tags, vulnerability scanning', w:1, p:['mlops'], level:'intermediate'},
+  ]},
+  {name:'Data Engineering Foundations', tag:'eng', color:'#f5a623', topics:[
+    {t:'CSV vs JSON vs Parquet vs Avro', s:'Parquet is columnar, compressed, fast — 2026 default', w:2, p:['de'], level:'intermediate'},
+    {t:'PostgreSQL hands-on — schemas, constraints, indexes', s:'connect from Python via psycopg/SQLAlchemy', w:3, p:['de','db','sql'], level:'intermediate'},
+    {t:'SQLAlchemy ORM & Core', s:'models, sessions, queries; for ML metadata stores', w:2, p:['de','backend'], level:'intermediate'},
+    {t:'ETL vs ELT — patterns and trade-offs', s:'when to transform: source, in-flight, warehouse', w:2, p:['de','ae'], level:'intermediate'},
+    {t:'Cloud storage basics — S3, GCS, Azure Blob', s:'object storage, lifecycle policies, signed URLs', w:2, p:['de','cloud'], level:'intermediate'},
+  ]},
+  {name:'Orchestration & Big Data', tag:'eng', color:'#f5a623', topics:[
+    {t:'Airflow advanced', s:'Sensors, XComs, dynamic DAGs, task groups, backfills, SLAs', w:3, p:['de','mlops'], level:'advanced'},
+    {t:'Prefect / Dagster', s:'Modern alternatives; software-defined assets; pick one beyond Airflow', w:2, p:['de'], level:'intermediate'},
+    {t:'Spark architecture', s:'Driver, executors, partitions, shuffles, lazy evaluation', w:3, p:['de'], level:'advanced'},
+    {t:'PySpark DataFrames', s:'Transformations vs actions, joins, window functions, UDFs', w:3, p:['de','sql'], level:'intermediate'},
+    {t:'Spark performance tuning', s:'Partitioning, caching, broadcast joins, skew handling, AQE', w:3, p:['de'], level:'advanced'},
+  ]},
+  {name:'Streaming & Lakehouse', tag:'eng', color:'#f5a623', topics:[
+    {t:'Kafka basics', s:'Topics, partitions, producers, consumers, offsets, consumer groups', w:3, p:['stream','de'], level:'intermediate'},
+    {t:'Stream processing patterns', s:'Windowing, watermarks, late events, exactly-once, Kafka Streams / Flink', w:3, p:['stream'], level:'advanced'},
+    {t:'Lakehouse table formats', s:'Delta Lake, Apache Iceberg, Hudi — ACID on S3/GCS', w:3, p:['de','ae'], level:'advanced'},
+    {t:'CDC (Change Data Capture)', s:'Debezium, Postgres logical replication; Kafka → warehouse syncing', w:2, p:['de','stream'], level:'advanced'},
+  ]},
+  {name:'Production Engineering Practices', tag:'eng', color:'#f5a623', topics:[
+    {t:'Configuration management — Hydra, pydantic-settings', s:'never hardcode paths/params; YAML configs', w:2, p:['se','mlops'], level:'intermediate'},
+    {t:'Logging strategy — structured logs, levels, JSON', s:'loguru or stdlib logging; aggregate to ELK/Loki', w:2, p:['se','mlops'], level:'intermediate'},
+    {t:'Error handling patterns — fail fast, retries, circuit breaker', s:'tenacity for retries with backoff', w:2, p:['se','backend'], level:'intermediate'},
+    {t:'Secrets management', s:'.env → Vault → cloud secret managers; never hardcode keys', w:3, p:['sec','cloud'], level:'intermediate'},
+    {t:'Profiling & debugging — cProfile, py-spy, ipdb', s:'find the bottleneck before optimising', w:2, p:['se','py'], level:'intermediate'},
+  ]},
+]},
+{id:'p6', name:'Stage 6 — LLM Engineering + RAG + Agents + MCP', meta:'Months 12–15 · ~400 hrs · GenAI engineering', color:'#a78bfa', bg:'rgba(167,139,250,.12)',
+ gate:['1 RAG app with citations + Ragas eval dashboard','1 LangGraph agent with 3+ tools + HITL approval','1 MCP server (file/SQL/API) + client demo video','1 prompt injection test suite (≥20 attacks)','1 multimodal RAG (PDF + tables + images)','1 structured extraction app (Instructor/Outlines)'],
+ courses:[
+  {name:'LLM Foundations & API Engineering', tag:'core', color:'#a78bfa', topics:[
+    {t:'LLM landscape 2026 — GPT-4o, Claude, Llama 3.1, Mistral, Gemma', s:'when to use closed vs open; cost/latency comparison', w:3, p:['llm'], level:'intermediate'},
+    {t:'Tokenisation — BPE, Tiktoken, SentencePiece', s:'token-counting for cost estimation', w:2, p:['llm'], level:'intermediate'},
+    {t:'Pre-training objectives — CLM, MLM, prefix LM', s:'why GPT uses CLM, BERT uses MLM', w:2, p:['llm'], level:'intermediate'},
+    {t:'Attention optimisations — Flash Attention, GQA, MQA', s:'KV cache memory dominates inference', w:2, p:['llm'], level:'advanced'},
+    {t:'Inference parameters — temperature, top-p, top-k', s:'temperature 0 = deterministic; top-p 0.9 default', w:3, p:['llm'], level:'intermediate'},
+    {t:'OpenAI / Anthropic / Gemini API basics', s:'system/user/assistant roles; chat completion format', w:3, p:['llm'], level:'intermediate'},
+    {t:'Function calling / tool use — JSON schema', s:'structured outputs; LLM as a router', w:5, p:['llm','agents'], level:'intermediate'},
+    {t:'Structured output — Pydantic, Outlines, Instructor', s:'guaranteed valid JSON; grammar-constrained decoding', w:3, p:['llm','docai'], level:'intermediate'},
+    {t:'Streaming responses — SSE, WebSocket', s:'token-by-token UI; better perceived latency', w:2, p:['llm','backend'], level:'intermediate'},
+    {t:'Token budgeting & cost optimisation', s:'context window mgmt; prompt caching', w:3, p:['llm'], level:'intermediate'},
+    {t:'Multi-provider abstraction — LiteLLM, OpenRouter', s:'fallback chains; provider-agnostic code', w:2, p:['llm'], level:'intermediate'},
+    {t:'Hugging Face Transformers — AutoModel, pipeline()', s:'model hub navigation; reading model cards', w:3, p:['llm'], level:'intermediate'},
+    {t:'Local LLMs — Ollama, llama.cpp, LM Studio', s:'run Llama 3.1 8B on laptop; offline-capable apps', w:3, p:['llm'], level:'intermediate'},
+    {t:'Quantisation — GPTQ, AWQ, GGUF', s:'4-bit/8-bit; quality-vs-size tradeoffs', w:2, p:['llm'], level:'advanced'},
+    {t:'Inference servers — vLLM, TGI, TensorRT-LLM', s:'PagedAttention; continuous batching', w:2, p:['llm','mlops'], level:'advanced'},
+    {t:'Cost-latency-quality routing', s:'Cheap model first → escalate; LiteLLM, RouteLLM, semantic routing', w:3, p:['llm','mlops'], level:'advanced'},
+    {t:'Speculative decoding + KV cache', s:'Draft + target model acceleration; long-context memory tradeoffs', w:2, p:['llm'], level:'expert'},
+    {t:'Open-source local LLMs', s:'Ollama, vLLM, llama.cpp; quantized GGUF; offline + privacy use cases', w:2, p:['llm','mlops'], level:'intermediate'},
+  ]},
+  {name:'Prompt Engineering & Security', tag:'core', color:'#a78bfa', topics:[
+    {t:'System prompts — role, instructions, constraints', s:'foundation; impact is enormous on quality', w:3, p:['llm'], level:'intermediate'},
+    {t:'Few-shot prompting — example selection', s:'2-5 shots; diverse examples, edge cases', w:2, p:['llm'], level:'intermediate'},
+    {t:'Chain-of-thought — let me think step by step', s:'self-consistency: sample N, majority vote', w:3, p:['llm'], level:'intermediate'},
+    {t:'Prompt versioning & A/B testing', s:'PromptLayer, LangSmith; treat prompts as code', w:2, p:['llm','mlops'], level:'advanced'},
+    {t:'Prompt injection defense — input sanitisation', s:'OWASP LLM Top 10; treat user input as adversarial', w:5, p:['llm','sec'], level:'advanced'},
+    {t:'Prompt injection red teaming', s:'Direct + indirect injection tests; PromptInject, Garak, Giskard suites', w:5, p:['llm','sec'], level:'advanced'},
+    {t:'Jailbreak resistance — output filtering, guardrails', s:'NeMo Guardrails, Llama Guard, content filters', w:3, p:['llm','sec'], level:'advanced'},
+    {t:'PII redaction — Presidio, regex, LLM-based', s:'GDPR, DPDP Act compliance', w:3, p:['llm','sec','gov'], level:'advanced'},
+    {t:'Hallucination measurement & mitigation', s:'grounding, citations, uncertainty', w:3, p:['llm','eval'], level:'advanced'},
+  ]},
+  {name:'RAG — Production Retrieval Augmented Generation', tag:'core', color:'#a78bfa', topics:[
+    {t:'RAG architecture — when to RAG vs fine-tune vs both', s:'RAG for fresh/private data; FT for style/format', w:3, p:['rag','llm'], level:'intermediate'},
+    {t:'Document loading — PDF, DOCX, HTML, Markdown', s:'unstructured.io, pypdf, docling (2026 best)', w:2, p:['rag','docai'], level:'intermediate'},
+    {t:'RAG chunking strategies', s:'Fixed, semantic, parent-child, layout-aware, late chunking — eval each', w:5, p:['rag','eval'], level:'advanced'},
+    {t:'Embedding models — BGE, E5, Nomic, OpenAI text-embed-3', s:'MTEB leaderboard; multilingual options', w:3, p:['rag','llm'], level:'intermediate'},
+    {t:'Vector databases — ChromaDB, Qdrant, Pinecone, Weaviate', s:'HNSW vs IVF indexes; metadata filtering', w:3, p:['rag','db'], level:'intermediate'},
+    {t:'Hybrid retrieval — BM25 + dense, reciprocal rank fusion', s:'usually beats pure dense; sparse for keywords', w:5, p:['rag'], level:'advanced'},
+    {t:'Reranking — cross-encoders, Cohere Rerank', s:'rerank top-50 → keep top-5; quality boost', w:3, p:['rag'], level:'advanced'},
+    {t:'Query transformation — HyDE, multi-query, step-back', s:'expand or rewrite user query for retrieval', w:3, p:['rag'], level:'advanced'},
+    {t:'Citation & source attribution', s:'every answer must cite; users trust verifiable AI', w:3, p:['rag','llm'], level:'intermediate'},
+    {t:'RAG retrieval metrics', s:'Recall@k, MRR, nDCG, context precision/recall (Ragas)', w:3, p:['rag','eval'], level:'intermediate'},
+    {t:'RAG evaluation — RAGAS, DeepEval, Trulens', s:'faithfulness, answer relevancy, context precision/recall', w:5, p:['rag','eval','mlops'], level:'advanced'},
+    {t:'Retrieval poisoning defense', s:'Detect malicious docs, trust boundaries, source scoring, content provenance', w:5, p:['rag','sec'], level:'advanced'},
+    {t:'Multimodal RAG', s:'Text + image + table + chart; ColPali, vision rerankers, layout-aware retrieval', w:5, p:['multi','rag','docai'], level:'advanced'},
+    {t:'Structured extraction with LLMs', s:'Invoices, resumes, contracts → validated JSON; Instructor, Outlines, BAML', w:3, p:['docai','llm'], level:'intermediate'},
+  ]},
+  {name:'Agents & Multi-step LLM Systems', tag:'core', color:'#a78bfa', topics:[
+    {t:'ReAct pattern — reason, act, observe loop', s:'foundation for tool-using agents', w:3, p:['agents','llm'], level:'intermediate'},
+    {t:'Tool design — clear schema, idempotent, errors', s:'LLM is bad at math/dates → give it tools', w:3, p:['agents'], level:'intermediate'},
+    {t:'LangChain — LCEL chains, RunnableSequence/Parallel', s:'composable; streaming; fallbacks', w:3, p:['llm','agents'], level:'intermediate'},
+    {t:'LangGraph — stateful multi-step graphs', s:'2026 standard for serious agents; state, edges, checkpoints', w:5, p:['agents'], level:'advanced'},
+    {t:'Agent state machines (LangGraph)', s:'Nodes, edges, conditional routing, checkpoints, time-travel debugging', w:5, p:['agents'], level:'advanced'},
+    {t:'Multi-agent patterns — supervisor, hierarchical', s:'when complexity justifies it (rarely)', w:2, p:['agents'], level:'advanced'},
+    {t:'Agent tool permission design', s:'Read-only vs write tools, approvals, rate limits, audit logs, allowlists', w:5, p:['agents','sec'], level:'advanced'},
+    {t:'Agent memory design', s:'Short-term, long-term, episodic, semantic; summarization windows', w:3, p:['agents','llm'], level:'advanced'},
+    {t:'Sandboxed code execution — E2B, Modal, Riza', s:'safe Python execution for data analysis agents', w:2, p:['agents','sec'], level:'advanced'},
+    {t:'Human-in-the-loop gates', s:'Approval before email, payment, DB write, deploy; interrupt() pattern', w:3, p:['agents','sec'], level:'advanced'},
+    {t:'Agent evaluation — task completion, tool accuracy', s:'most "agent demos" are fragile; evaluate rigorously', w:3, p:['agents','eval'], level:'advanced'},
+  ]},
+  {name:'MCP — Model Context Protocol', tag:'core', color:'#a78bfa', topics:[
+    {t:'MCP fundamentals', s:'Model Context Protocol — JSON-RPC for LLM ↔ tools/resources/prompts', w:3, p:['mcp','agents','llm'], level:'intermediate'},
+    {t:'Build an MCP server', s:'Expose local files / SQL DB / API as tools; FastMCP or official SDK', w:5, p:['mcp','backend'], level:'advanced', proof:'public MCP server repo'},
+    {t:'MCP client integration', s:'Claude Desktop, Cursor, custom client; resource subscriptions', w:2, p:['mcp','llm'], level:'intermediate'},
+  ]},
+  {name:'Evaluation Engineering', tag:'core', color:'#a78bfa', topics:[
+    {t:'Answer quality evaluation', s:'Faithfulness, groundedness, relevance, refusal correctness', w:5, p:['eval','llm'], level:'advanced'},
+    {t:'LLM-as-judge — pitfalls', s:'Position bias, verbosity bias; pairwise > scoring; human validation gold sets', w:3, p:['eval'], level:'advanced'},
+    {t:'Golden test set construction', s:'synthetic Q-A from docs; manual curation', w:3, p:['eval','rag'], level:'advanced'},
+    {t:'Continuous evaluation pipelines', s:'Every prompt/model change must pass eval gate; CI integration', w:3, p:['eval','mlops'], level:'advanced'},
+  ]},
+  {name:'Fine-tuning LLMs', tag:'core', color:'#a78bfa', topics:[
+    {t:'Fine-tuning decision tree', s:'Prompting → RAG → SFT → DPO → RLHF; cost/value at each step', w:3, p:['llm'], level:'advanced'},
+    {t:'Instruction tuning / SFT — chat templates', s:'system/user/assistant roles, dataset formatting', w:3, p:['llm'], level:'advanced'},
+    {t:'LoRA — low-rank adaptation, target modules', s:'rank, alpha, target_modules; merge_and_unload', w:5, p:['llm'], level:'advanced'},
+    {t:'QLoRA — 4-bit base + LoRA on consumer GPU', s:'fits Llama 3 8B on Colab T4 free tier', w:5, p:['llm'], level:'advanced'},
+    {t:'Hugging Face PEFT + TRL', s:'get_peft_model, SFTTrainer, DPOTrainer', w:3, p:['llm'], level:'advanced'},
+    {t:'DPO vs RLHF — direct preference optimisation', s:'2026 default for alignment; simpler than PPO', w:2, p:['llm'], level:'advanced'},
+  ]},
+]},
+{id:'p7', name:'Stage 7 — MLOps + LLMOps + Cloud + AI Platform', meta:'Months 15–17 · ~320 hrs · Production maturity', color:'#e879b0', bg:'rgba(232,121,176,.12)',
+ gate:['1 MLflow OR DVC pipeline with model registry','1 GitHub Actions CI/CD deploying to cloud','1 monitoring dashboard (Prometheus/Grafana)','1 drift detection report (EvidentlyAI)','1 LLMOps cost + eval + trace system','1 Kubernetes deployment'],
+ courses:[
+  {name:'MLOps — Reproducibility & Lifecycle', tag:'core', color:'#e879b0', topics:[
+    {t:'MLOps maturity levels — Google MLOps levels 0/1/2', s:'know where you and the team stand', w:2, p:['mlops'], level:'intermediate'},
+    {t:'MLflow — tracking, model registry, projects', s:'log_metric, log_param, log_artifact, register_model', w:5, p:['mlops'], level:'advanced'},
+    {t:'Weights & Biases — sweeps, reports, artifacts', s:'collaborative; great for DL', w:2, p:['mlops','dl'], level:'intermediate'},
+    {t:'DVC — data + model versioning', s:'remotes (S3/GCS); dvc repro for pipelines', w:3, p:['mlops','de'], level:'advanced'},
+    {t:'CI/CD for ML — GitHub Actions workflows', s:'test → train → validate → deploy gates', w:5, p:['mlops','se'], level:'advanced'},
+    {t:'Model registry promotion workflow', s:'dev → staging → production; validation gates; MLflow / W&B / SageMaker', w:3, p:['mlops'], level:'advanced'},
+    {t:'Feature stores — Feast, Tecton concepts', s:'point-in-time joins; train-serve consistency', w:2, p:['mlops','de'], level:'advanced'},
+    {t:'Deployment strategies', s:'Shadow, canary, blue-green, feature flag, rollback automation', w:3, p:['mlops'], level:'advanced'},
+    {t:'Batch inference vs real-time serving', s:'choose based on latency requirements & cost', w:3, p:['mlops'], level:'intermediate'},
+    {t:'Model serving frameworks — BentoML, TorchServe, Triton', s:'Triton for high-perf; BentoML for ergonomics', w:2, p:['mlops'], level:'advanced'},
+    {t:'Data validation in CI/CD', s:'GE / Soda / dbt tests block bad data before training; pipeline contracts', w:3, p:['mlops','de','gov'], level:'advanced'},
+    {t:'Feature freshness + lineage', s:'Stale, missing, schema-changed features; dbt + OpenLineage', w:3, p:['mlops','de'], level:'advanced'},
+  ]},
+  {name:'Monitoring & Observability', tag:'prod', color:'#e879b0', topics:[
+    {t:'Why ML models silently degrade', s:'data drift, concept drift, schema changes', w:3, p:['mlops','eval'], level:'intermediate'},
+    {t:'Data drift detection — PSI, KS-test, Wasserstein', s:'monitor input feature distributions', w:5, p:['mlops','eval'], level:'advanced'},
+    {t:'Concept drift — performance metric monitoring', s:'requires ground truth; delayed labels challenge', w:3, p:['mlops','eval'], level:'advanced'},
+    {t:'EvidentlyAI — drift reports, dashboards', s:'2026 standard for ML monitoring', w:3, p:['mlops'], level:'advanced'},
+    {t:'Prometheus + Grafana for ML metrics', s:'latency, throughput, error rate, prediction distribution', w:2, p:['mlops','cloud'], level:'advanced'},
+    {t:'OpenTelemetry — distributed tracing for ML APIs', s:'trace requests through pipeline', w:2, p:['mlops','llm'], level:'advanced'},
+    {t:'Drift root-cause analysis', s:'Find which pipeline/source caused the regression; bisect strategy', w:3, p:['mlops','eval'], level:'advanced'},
+    {t:'Alerting — PagerDuty, threshold vs anomaly', s:"don't alert on noise; SLO-based alerts", w:2, p:['mlops'], level:'advanced'},
+  ]},
+  {name:'LLMOps — GenAI in Production', tag:'prod', color:'#e879b0', topics:[
+    {t:'LLM prompt registry', s:'Version prompts, templates, configs, evals; PromptLayer, LangSmith, Helicone', w:3, p:['llm','mlops'], level:'advanced'},
+    {t:'LLM cost observability', s:'Token usage, cache hit rate, $/user, $/request; alerting on spikes', w:3, p:['llm','mlops','cloud'], level:'advanced'},
+    {t:'Semantic caching — cache by embedding similarity', s:'GPTCache; massive cost reduction', w:2, p:['llm','mlops'], level:'advanced'},
+    {t:'OpenTelemetry for AI apps', s:'Trace retrieval → rerank → LLM → tools; OTel + Jaeger / Honeycomb', w:3, p:['mlops','llm'], level:'advanced'},
+    {t:'Online evaluation — user feedback, thumbs up/down', s:'collect, label, retrain prompts', w:2, p:['llm','mlops','eval'], level:'advanced'},
+    {t:'Multi-model routing & fallback', s:'cheap model first → expensive only when needed', w:2, p:['llm','mlops'], level:'advanced'},
+    {t:'Guardrails in production — input/output filtering', s:'NeMo Guardrails, custom validators', w:3, p:['llm','mlops','sec'], level:'advanced'},
+    {t:'A/B testing prompts & models', s:'statistical rigour for LLM experiments', w:2, p:['llm','mlops'], level:'advanced'},
+  ]},
+  {name:'Cloud & Infrastructure', tag:'eng', color:'#e879b0', topics:[
+    {t:'Cloud fundamentals — IAM, regions, networking', s:'least privilege; VPC basics', w:2, p:['cloud','sec'], level:'intermediate'},
+    {t:'AWS S3 — buckets, lifecycle, signed URLs', s:'data lake foundation', w:2, p:['cloud','de'], level:'intermediate'},
+    {t:'AWS EC2 / GCP Compute — provisioning, AMIs', s:'spot instances for training (50-90% savings)', w:2, p:['cloud','mlops'], level:'intermediate'},
+    {t:'AWS SageMaker — training, endpoints, batch transform', s:'managed ML platform; pay-per-use', w:2, p:['cloud','mlops'], level:'advanced'},
+    {t:'AWS Lambda + API Gateway — serverless ML', s:'cost-effective for low-traffic models', w:2, p:['cloud','mlops'], level:'intermediate'},
+    {t:'Kubernetes fundamentals', s:'Pods, deployments, services, ingress, configmaps, secrets, HPA', w:3, p:['cloud','mlops'], level:'advanced'},
+    {t:'Helm + Kustomize', s:'Package K8s manifests reproducibly; environment overlays', w:2, p:['cloud','mlops'], level:'advanced'},
+    {t:'GPU serving', s:'vLLM, TGI, Triton; batching, concurrency, autoscaling, cold starts', w:3, p:['mlops','cloud'], level:'expert'},
+    {t:'Terraform basics — IaC for reproducible infra', s:'never click in console; everything as code', w:2, p:['cloud','mlops'], level:'advanced'},
+    {t:'FinOps for AI', s:'GPU $, token $, warehouse $; budgets, alerts, chargeback', w:3, p:['cloud','mlops'], level:'advanced'},
+    {t:'Multi-cloud basics', s:'AWS / GCP / Azure equivalents; lock-in tradeoffs; Terraform across all 3', w:2, p:['cloud'], level:'advanced'},
+    {t:'Disaster recovery + backups', s:'RPO/RTO, PITR, cross-region replication; tested restore drills', w:2, p:['cloud','mlops'], level:'advanced'},
+  ]},
+  {name:'Responsible AI, Security & Governance', tag:'prod', color:'#e879b0', topics:[
+    {t:'Microsoft RAI principles', s:'Fairness, reliability, privacy, inclusiveness, transparency, accountability', w:2, p:['gov'], level:'intermediate'},
+    {t:'EU AI Act overview — risk tiers, obligations', s:'high-risk systems (banking, hiring) face audit', w:2, p:['gov'], level:'intermediate'},
+    {t:'India DPDP Act 2023 — consent, data principal rights', s:'critical for Indian deployments', w:2, p:['gov','sec'], level:'intermediate'},
+    {t:'Bias detection & mitigation — Aequitas, Fairlearn', s:'pre-, in-, post-processing techniques', w:2, p:['gov','ml'], level:'advanced'},
+    {t:'Model cards & dataset cards', s:'document training data, intended use, limitations', w:2, p:['gov','comm'], level:'intermediate'},
+    {t:'Red-teaming LLMs — adversarial probes', s:'find failures before users do', w:2, p:['llm','sec','eval'], level:'advanced'},
+    {t:'Audit logging — what was predicted, why, when', s:'required for regulated industries', w:2, p:['mlops','gov'], level:'advanced'},
+    {t:'Responsible AI governance', s:'Risk assessment, approvals, human oversight, audit logs (NIST AI RMF)', w:3, p:['gov','sec'], level:'advanced'},
+    {t:'Privacy + PII controls', s:'Redaction (Presidio), encryption at rest/transit, retention, consent', w:3, p:['sec','gov'], level:'advanced'},
+  ]},
+]},
+{id:'p8', name:'Stage 8 — Research + Advanced AI', meta:'Months 17–19 · ~200 hrs · Frontier work', color:'#c0c0d0', bg:'rgba(192,192,208,.10)',
+ gate:['20 papers logged with summaries','2 paper reproductions with reproducibility logs','2 technical blog posts published','1 ablation study with ≥3 conditions + variance bars','1 published benchmark comparison'],
+ courses:[
+  {name:'Research Skills', tag:'add', color:'#c0c0d0', topics:[
+    {t:'How to read ML papers', s:'Abstract → figures → method → experiments → limitations; 3-pass method', w:3, p:['research'], level:'advanced'},
+    {t:'Paper reproduction workflow', s:'Reproduce one result, document gaps, compare metrics; Papers With Code', w:5, p:['research','eval'], level:'advanced', proof:'1 reproduction repo with logs'},
+    {t:'Benchmarking methodology', s:'Baselines, datasets, metrics, hardware, seeds, variance bars', w:5, p:['research','eval'], level:'advanced'},
+    {t:'Ablation studies', s:'Remove one component at a time to prove what actually matters', w:3, p:['research','eval'], level:'advanced'},
+    {t:'Writing a technical blog post that ranks', s:'Hook → problem → solution → result → code link; SEO basics', w:2, p:['research','comm','career'], level:'intermediate'},
+    {t:'Conferences + arxiv-sanity workflow', s:'NeurIPS/ICML/ACL/EMNLP filtering; following 10 researchers > skim 100 papers', w:1, p:['research'], level:'intermediate'},
+  ]},
+  {name:'Advanced AI Topics', tag:'add', color:'#c0c0d0', topics:[
+    {t:'Mechanistic interpretability', s:'Circuits, probes, activation patching, attention analysis (Neel Nanda track)', w:2, p:['research','llm'], level:'expert'},
+    {t:'AI safety basics', s:'Alignment, misuse, robustness, evals, red-teaming taxonomy', w:3, p:['gov','research'], level:'advanced'},
+    {t:'Synthetic data generation', s:'Generate, filter, validate; avoid leakage, contamination, mode collapse', w:3, p:['research','llm'], level:'advanced'},
+    {t:'Edge AI', s:'ONNX Runtime, TensorRT, CoreML, TFLite; mobile / IoT inference', w:2, p:['dl','mlops'], level:'advanced'},
+    {t:'Federated learning', s:'Train across devices without centralizing raw data; FedAvg, secure agg', w:2, p:['research','gov'], level:'advanced'},
+    {t:'Model compression deep dive', s:'Distillation, pruning, INT4 quantization, low-rank methods, GPTQ/AWQ', w:3, p:['dl','mlops'], level:'expert'},
+  ]},
+]},
+{id:'p9', name:'Stage 9 — Career Execution + Interview Conversion', meta:'Months 19–21 · ~160 hrs · Convert skill to offer', color:'#ffd700', bg:'rgba(255,215,0,.10)',
+ gate:['1-page ATS resume scoring ≥80','4 flagship repos polished','4 published case-study blog posts','10 mock interviews completed','100 targeted applications submitted','30 personalized referral attempts','≥3 onsite interviews OR ≥1 offer'],
+ courses:[
+  {name:'Resume, Portfolio & Branding', tag:'add', color:'#ffd700', topics:[
+    {t:'1-page ATS-optimized resume', s:'XYZ format, quant impact, keywords; Reactive Resume / Rxresu.me', w:3, p:['career'], level:'intermediate', proof:'PDF + scoring screenshot'},
+    {t:'4-flagship-repo polish pass', s:'README, demo gif, architecture, tests, deploy link, blog link — every one', w:3, p:['career','comm'], level:'intermediate'},
+    {t:'4 case-study blog posts', s:'One per flagship project; problem → approach → result → tradeoffs', w:3, p:['career','comm'], level:'intermediate'},
+    {t:'LinkedIn pro — headline, About, featured', s:'recruiters search by keywords; load yours up', w:3, p:['career','comm'], level:'intermediate'},
+    {t:'Portfolio website final', s:'Hugo/Astro/Next.js; deploy to Vercel/Netlify free', w:2, p:['career','comm'], level:'intermediate'},
+    {t:'Demo videos — 60-90s Loom for each project', s:'recruiters love demos; embed in resume QR', w:2, p:['career','comm'], level:'intermediate'},
+  ]},
+  {name:'Interview Preparation', tag:'add', color:'#ffd700', topics:[
+    {t:'SQL interview drill', s:'150 problems on StrataScratch / DataLemur; window functions on autopilot', w:5, p:['career','sql'], level:'advanced'},
+    {t:'Python coding interviews — pattern-based', s:'80 LeetCode + Hacker Rank Python sets', w:3, p:['career','dsa'], level:'advanced'},
+    {t:'ML conceptual interviews — bias-variance, leakage, etc', s:'Chip Huyen ML Interviews Book (free)', w:5, p:['career','ml'], level:'advanced'},
+    {t:'ML / AI system design framework', s:'Requirements → metrics → data → model → serving → monitoring → cost', w:5, p:['career','mlops'], level:'advanced'},
+    {t:'Statistics & A/B testing interviews', s:'Glassdoor company-specific questions', w:3, p:['career','math'], level:'advanced'},
+    {t:'Behavioral STAR stories', s:'12 stories covering conflict, ambiguity, failure, impact, learning', w:3, p:['career','comm'], level:'intermediate'},
+    {t:'10 mock interviews', s:'Pramp, interviewing.io, peers; SQL, ML system design, behavioral, leetcode', w:5, p:['career'], level:'advanced'},
+    {t:'Salary negotiation', s:'Levels.fyi, AmbitionBox; competing offers; "I have a number in mind" framework', w:3, p:['career'], level:'advanced'},
+  ]},
+  {name:'Job Search Execution', tag:'add', color:'#ffd700', topics:[
+    {t:'Targeted application strategy', s:'100 apps to companies that match your stack; not 1000 spray-and-pray', w:3, p:['career'], level:'intermediate'},
+    {t:'30 referral / outreach attempts', s:'Personalized DMs to engineers + alumni; not "kindly refer"', w:3, p:['career','comm'], level:'intermediate'},
+    {t:'Application tracker — Notion/Sheet pipeline', s:'company, stage, dates, notes; iterate weekly', w:1, p:['career'], level:'basic'},
+    {t:'Job platforms — LinkedIn, Naukri, Hirect, Wellfound', s:'Indian + global remote; instahyre for ML roles', w:1, p:['career'], level:'basic'},
+    {t:'Open-source contribution — 1 merged PR', s:'hf transformers, scikit-learn, langchain — high-signal', w:3, p:['career','se'], level:'advanced'},
+    {t:'Networking — Twitter/X, ML conferences, meetups', s:'PyData, FOSSAsia, build presence over 6 months', w:2, p:['career','comm'], level:'intermediate'},
+  ]},
+]},
+];
+
+/* ───────── PROJECTS DATA (55 projects in 4 tiers) ───────── */
+const PROJECTS = [
+  // ━━━ TIER 0 — MICRO (25) ━━━
+  {id:'m001', phase:'p1', tier:0, title:'Python CLI Expense Tracker', diff:'Beginner', src:'Custom', roles:['da','ds','mle','de'],
+    desc:'CLI app to add/list/edit/delete/summarize expenses (CSV/JSON storage).', detail:'Functions, file I/O, argparse/typer, project structure, README, pytest.', skills:['Python','CLI','CSV','JSON','pytest']},
+  {id:'m002', phase:'p1', tier:0, title:'Markdown Notes Generator', diff:'Beginner', src:'Custom', roles:['da','ds','mle','llm','de','ae','mlops','research'],
+    desc:'CLI that creates daily learning logs and weekly review markdown.', detail:'Stage 0 + Stage 1 bridge — automate your own documentation.', skills:['Python','Markdown','Automation','CLI']},
+  {id:'m003', phase:'p1', tier:0, title:'GitHub Repo Health Checker', diff:'Beginner-Int', src:'Custom', roles:['mle','mlops','de'],
+    desc:'Check repos for README, license, requirements, tests, CI, .gitignore.', detail:'GitHub API; output a scorecard table; publish as GitHub Action.', skills:['Python','GitHub API','Requests','Automation']},
+  {id:'m004', phase:'p1', tier:0, title:'Excel Sales Dashboard', diff:'Beginner', src:'Custom', roles:['da','ae'],
+    desc:'Pivots, charts, slicers, XLOOKUP, Power Query — full sales dashboard.', detail:'Raw → transformed → pivot → dashboard layers in one workbook.', skills:['Excel','Pivot Tables','Power Query','Dashboards']},
+  {id:'m005', phase:'p1', tier:0, title:'SQL Window Function Drill Pack', diff:'Beginner-Int', src:'Custom', roles:['da','ds','ae'],
+    desc:'30 SQL queries: ROW_NUMBER, RANK, LAG, LEAD, rolling sums, cohort logic.', detail:'PostgreSQL or DuckDB; commit one query/day with explanation.', skills:['SQL','Window Functions','PostgreSQL','DuckDB']},
+  {id:'m006', phase:'p1', tier:0, title:'Personal Finance ETL with Postgres', diff:'Beginner-Int', src:'Custom', roles:['de','ae'],
+    desc:'Read bank CSV → clean → load to Postgres → query monthly spend.', detail:'Alembic migrations; SQLAlchemy; first taste of real ETL.', skills:['PostgreSQL','SQLAlchemy','Alembic','Python']},
+  {id:'m007', phase:'p2', tier:0, title:'Pandas Data Cleaning Lab', diff:'Beginner', src:'Kaggle', roles:['da','ds'],
+    desc:'Take messy dataset; clean missing values, dupes, dtypes, dates, outliers.', detail:'Before/after data quality report (1 page).', skills:['Pandas','EDA','Data Cleaning','Data Quality']},
+  {id:'m008', phase:'p2', tier:0, title:'Polars vs Pandas Benchmark', diff:'Intermediate', src:'Custom', roles:['da','ae','de'],
+    desc:'Compare on 5GB CSV/Parquet: filter, groupby, join, lazy.', detail:'Charts + memory notes + recommendation matrix.', skills:['Polars','Pandas','Benchmarking','Parquet']},
+  {id:'m009', phase:'p2', tier:0, title:'DuckDB Local Analytics Project', diff:'Beginner-Int', src:'Custom', roles:['da','ae','de'],
+    desc:'Analyze multiple CSV/Parquet directly with DuckDB SQL — no Pandas.', detail:'Modern analyst skill; show SQL on flat files is enough.', skills:['DuckDB','SQL','Parquet','Analytics']},
+  {id:'m010', phase:'p2', tier:0, title:'Product Funnel Mini Analysis', diff:'Beginner-Int', src:'Custom', roles:['da','ds'],
+    desc:'User events → funnel conversion → identify biggest drop-off.', detail:'SQL + Python notebook + 1-page recommendation memo.', skills:['SQL','Product Analytics','Funnels','Storytelling']},
+  {id:'m011', phase:'p2', tier:0, title:'Cohort Retention Heatmap', diff:'Intermediate', src:'Custom', roles:['da','ds','ae'],
+    desc:'Monthly cohort retention table + heatmap from transactions.', detail:'Once in pure SQL, once in Pandas — compare clarity.', skills:['SQL','Pandas','Cohorts','Retention']},
+  {id:'m012', phase:'p2', tier:0, title:'dbt Mini Project (Jaffle Shop +)', diff:'Intermediate', src:'Custom', roles:['ae','da'],
+    desc:'Take Jaffle Shop, add 3 marts, 10 tests, custom macros, docs site.', detail:'Deploy docs to GitHub Pages; lineage screenshot in README.', skills:['dbt','SQL','Data Quality','Analytics Engineering']},
+  {id:'m013', phase:'p3', tier:0, title:'Sklearn Pipeline Mini Lab', diff:'Beginner-Int', src:'Custom', roles:['ds','mle'],
+    desc:'ColumnTransformer + Pipeline for mixed numeric/categorical.', detail:'Prevent train-test leakage; save with joblib; load & predict script.', skills:['Sklearn','Pipeline','ColumnTransformer','Joblib']},
+  {id:'m014', phase:'p3', tier:0, title:'Model Metrics Explorer', diff:'Intermediate', src:'Custom', roles:['ds','mle'],
+    desc:'Streamlit app — confusion matrix, ROC, PR curve, threshold, calibration.', detail:'Upload CSV of predictions + labels; instantly explore tradeoffs.', skills:['Streamlit','Metrics','Classification','Calibration']},
+  {id:'m015', phase:'p3', tier:0, title:'SHAP Explanation Mini App', diff:'Intermediate', src:'Custom', roles:['ds','mle'],
+    desc:'Train tree model; generate beeswarm, waterfall, force plots.', detail:'Explain top 5 predictions in plain English in README.', skills:['SHAP','XGBoost','Explainability','ML']},
+  {id:'m016', phase:'p3', tier:0, title:'Conformal Prediction Notebook', diff:'Intermediate', src:'Custom', roles:['ds'],
+    desc:'Use MAPIE to add calibrated prediction intervals to a regressor.', detail:'Show coverage % at multiple alphas; explain why this beats bootstrap CIs.', skills:['MAPIE','Conformal Prediction','Sklearn','Statistics']},
+  {id:'m017', phase:'p4', tier:0, title:'Image Classifier with Transfer Learning', diff:'Intermediate', src:'Custom', roles:['ds','mle'],
+    desc:'Fine-tune pretrained CNN on small custom dataset.', detail:'Deploy with Streamlit/Gradio; report training curves + confusion matrix.', skills:['PyTorch','CNN','Transfer Learning','Gradio']},
+  {id:'m018', phase:'p4', tier:0, title:'Whisper Audio Transcriber', diff:'Intermediate', src:'Custom', roles:['llm','mle'],
+    desc:'Upload audio → Whisper → text/SRT → summary.', detail:'Add timestamps + speaker labels (pyannote) as stretch.', skills:['Whisper','Audio AI','LLM','Streamlit']},
+  {id:'m019', phase:'p4', tier:0, title:'OCR Receipt Parser', diff:'Intermediate', src:'Custom', roles:['llm','mle','de'],
+    desc:'Extract vendor, date, line items, subtotal, tax, total from images.', detail:'Validate output with Pydantic; CSV export; manual correction UI.', skills:['OCR','Pydantic','Document AI','Computer Vision']},
+  {id:'m020', phase:'p4', tier:0, title:'CLIP Image Search Mini', diff:'Intermediate', src:'Custom', roles:['llm','mle'],
+    desc:'Index 1000 images with CLIP; search by natural-language query.', detail:'Streamlit UI; FAISS or pgvector backend.', skills:['CLIP','FAISS','Multimodal','Streamlit']},
+  {id:'m021', phase:'p5', tier:0, title:'FastAPI + Postgres Todo with Tests', diff:'Beginner-Int', src:'Custom', roles:['mle','de'],
+    desc:'Auth, CRUD, migrations, ≥80% test coverage, GitHub Actions CI.', detail:'The classic that proves you can ship a backend.', skills:['FastAPI','PostgreSQL','Pytest','GitHub Actions']},
+  {id:'m022', phase:'p5', tier:0, title:'Airflow Mini DAG', diff:'Intermediate', src:'Custom', roles:['de','mlops'],
+    desc:'5-task DAG: API pull → validate → load → transform → notify.', detail:'Retries, SLAs, sensors, XComs.', skills:['Airflow','ETL','Python','Notifications']},
+  {id:'m023', phase:'p6', tier:0, title:'Prompt Injection Test Playground', diff:'Intermediate', src:'Custom', roles:['llm','mlops'],
+    desc:'App that runs prompts against direct + indirect injection attacks.', detail:'30+ attacks; mitigation notes for each; PromptInject library.', skills:['LLM Security','Prompt Injection','Guardrails']},
+  {id:'m024', phase:'p6', tier:0, title:'Simple MCP File Search Server', diff:'Intermediate', src:'Custom', roles:['llm','mle'],
+    desc:'MCP server exposing local markdown notes as searchable resources.', detail:'Test with Claude Desktop; record 60s demo video.', skills:['MCP','Agents','Python','Tool Calling']},
+  {id:'m025', phase:'p7', tier:0, title:'LangSmith Trace Dashboard', diff:'Intermediate', src:'Custom', roles:['llm','mlops'],
+    desc:'Instrument any LLM app with LangSmith; show 100 traces with cost/latency.', detail:'Compare 3 prompt versions; export eval to CSV.', skills:['LangSmith','Observability','LLM','Tracing']},
+
+  // ━━━ TIER 1 — CORE (15) ━━━
+  {id:'c001', phase:'p2', tier:1, title:'SQL + BI Business Analytics Case Study', diff:'Beginner', src:'Custom', roles:['da','ds','ae'],
+    desc:'20 business SQL queries (cohorts, funnels, top-N) + Power BI/Tableau dashboard + 1-page exec summary.',
+    detail:'GitHub repo with .sql files, dashboard screenshots, PDF summary. Unlocks DA applications.', skills:['SQL','PostgreSQL','Power BI','Pandas','Storytelling']},
+  {id:'c002', phase:'p2', tier:1, title:'dbt Analytics Engineering Project', diff:'Intermediate', src:'Custom', roles:['ae','de','da'],
+    desc:'Staging, intermediate, marts layers from raw e-commerce data using dbt.',
+    detail:'Tests, docs, freshness, lineage, semantic metrics, CI on PR.', skills:['dbt','SQL','Data Quality','Analytics Engineering']},
+  {id:'c003', phase:'p2', tier:1, title:'A/B Testing Analyser Tool', diff:'Beginner-Int', src:'Custom', roles:['da','ds'],
+    desc:'Streamlit app: upload control/treatment → auto-pick test → p-value, CI, effect size, power, plain-English recommendation.',
+    detail:'Add CUPED variance reduction + sequential testing for stretch.', skills:['Python','SciPy','Streamlit','Statistics','A/B Testing']},
+  {id:'c004', phase:'p2', tier:1, title:'Customer Support Analytics System', diff:'Intermediate', src:'Custom', roles:['da','ae','ds'],
+    desc:'Tickets by category, SLA breach, agent perf, sentiment, resolution time.',
+    detail:'Dashboard + root-cause memo + 3 recommendations with $ impact.', skills:['SQL','Pandas','NLP','BI','Business Analysis']},
+  {id:'c005', phase:'p3', tier:1, title:'Loan Default Prediction with SHAP', diff:'Intermediate', src:'Kaggle', roles:['ds','mle'],
+    desc:'EDA → leakage prevention → sklearn Pipeline → XGBoost/LightGBM → calibration → threshold tuning → SHAP → FastAPI → Docker.',
+    detail:'Discuss fairness across protected groups; cost matrix.', skills:['XGBoost','SHAP','Pipeline','FastAPI','Docker','Fairness']},
+  {id:'c006', phase:'p3', tier:1, title:'Time-Series Forecasting — Store Sales', diff:'Intermediate', src:'Kaggle', roles:['ds','mle'],
+    desc:'Walk-forward CV, lag/rolling/holiday features, ARIMA vs Prophet vs LightGBM.',
+    detail:'Aim top 25%; document validation strategy; backtest the strategy.', skills:['LightGBM','Prophet','Time Series','Walk-Forward CV','RMSLE']},
+  {id:'c007', phase:'p3', tier:1, title:'Customer Segmentation + Retention Dashboard', diff:'Intermediate', src:'Custom', roles:['da','ds'],
+    desc:'UCI Online Retail → RFM → K-Means → segment profiling + cohort retention SQL → Power BI dashboard.',
+    detail:'Label clusters as Champions / At Risk / Hibernating; business framing.', skills:['Pandas','K-Means','RFM','SQL','Power BI']},
+  {id:'c008', phase:'p3', tier:1, title:'Causal Impact Marketing Analysis', diff:'Advanced', src:'Custom', roles:['ds','da'],
+    desc:'Estimate campaign effect via DiD or propensity score matching.',
+    detail:'Show why correlation alone is dangerous; published methodology blog.', skills:['Causal Inference','DiD','Propensity Score','Statistics']},
+  {id:'c009', phase:'p4', tier:1, title:'Document OCR + Information Extraction App', diff:'Advanced', src:'Custom', roles:['llm','mle'],
+    desc:'PDF / image upload → structured fields (JSON) → Pydantic validation.',
+    detail:'Human correction interface; CSV export; Docling or LayoutLM backend.', skills:['OCR','Document AI','Pydantic','LLM','FastAPI']},
+  {id:'c010', phase:'p4', tier:1, title:'Medical CV Classifier with Grad-CAM', diff:'Advanced', src:'Kaggle', roles:['mle','ds'],
+    desc:'Chest X-ray pneumonia or plant disease; EfficientNet-B3 + Albumentations; >95% accuracy.',
+    detail:'Grad-CAM heatmaps; Streamlit demo; ONNX export; false-negative cost discussion.', skills:['PyTorch','EfficientNet','Albumentations','Grad-CAM','ONNX']},
+  {id:'c011', phase:'p5', tier:1, title:'FastAPI ML Model Service', diff:'Intermediate', src:'Custom', roles:['mle','mlops'],
+    desc:'Trained ML model served via FastAPI with validation, logging, tests, Docker.',
+    detail:'Health endpoint, prediction endpoint, load test (locust), 80% coverage.', skills:['FastAPI','Docker','Pydantic','pytest','Locust']},
+  {id:'c012', phase:'p5', tier:1, title:'Airflow ETL Pipeline', diff:'Intermediate', src:'Custom', roles:['de','mle','mlops'],
+    desc:'Scheduled ETL: API/raw → Postgres/warehouse → quality checks.',
+    detail:'Retries, backfill, SLA, Slack notification on failure.', skills:['Airflow','ETL','PostgreSQL','Data Quality']},
+  {id:'c013', phase:'p6', tier:1, title:'Production RAG with Citations & Evaluation', diff:'Advanced', src:'Custom', roles:['llm','mle'],
+    desc:'PDFs → Docling chunking → BGE embeddings → Qdrant → BM25+dense hybrid → cross-encoder rerank → Llama 3.1 (Ollama) → citations → Ragas eval → Gradio UI.',
+    detail:'Deploy on HF Spaces; chunking ablation; hallucination tests; cost dashboard; Medium article.', skills:['LangChain','Qdrant','BGE','Ollama','Ragas','Gradio']},
+  {id:'c014', phase:'p6', tier:1, title:'Multi-Agent Research Assistant (LangGraph)', diff:'Advanced', src:'Custom', roles:['llm'],
+    desc:'Planner → Web Search (Tavily) → Analyst (code-exec sandbox) → Writer → Reviewer.',
+    detail:'Structured PDF report with charts; HITL approval; observable + evaluated.', skills:['LangGraph','Tavily','Code Sandbox','Multi-agent','PDF gen']},
+  {id:'c015', phase:'p6', tier:1, title:'SQL Agent with Human Approval', diff:'Advanced', src:'Custom', roles:['llm','ae','de'],
+    desc:'NL → SQL agent that drafts, explains, requires approval, then runs read-only.',
+    detail:'Query safety checks, explain plan, result viz; never destructive.', skills:['Agents','SQL','LangGraph','Security','BI']},
+
+  // ━━━ TIER 2 — PRODUCTION (10) ━━━
+  {id:'p201', phase:'p5', tier:2, title:'Production Analytics Engineering Platform', diff:'Expert', src:'Custom', roles:['ae','de'],
+    desc:'Raw → dbt → tests → docs → BI dashboard → semantic metrics layer.',
+    detail:'CI on PR, freshness alerts, lineage, business metric definitions, on-call runbook.', skills:['dbt','CI/CD','Data Quality','Semantic Layer','BI']},
+  {id:'p202', phase:'p5', tier:2, title:'Lakehouse Batch Processing System', diff:'Expert', src:'Custom', roles:['de','mlops'],
+    desc:'PySpark + Delta/Iceberg + partitioning + quality + perf benchmark.',
+    detail:'Compare row vs columnar; cost notes; data contract enforcement.', skills:['Spark','PySpark','Lakehouse','Parquet','Data Engineering']},
+  {id:'p203', phase:'p5', tier:2, title:'Real-Time Feature Pipeline', diff:'Expert', src:'Custom', roles:['de','mle','mlops'],
+    desc:'Kafka events → stream processor → Redis/Postgres feature store → inference API.',
+    detail:'Track feature freshness + serving latency; replay-safe.', skills:['Kafka','Redis','Feature Store','FastAPI','Streaming']},
+  {id:'p204', phase:'p6', tier:2, title:'Multimodal RAG for PDFs, Tables, Images', diff:'Expert', src:'Custom', roles:['llm','mle'],
+    desc:'RAG over PDFs, scanned docs, tables, charts with layout-aware chunking.',
+    detail:'Citations to page/section/table/image; eval dashboard with Ragas.', skills:['Multimodal RAG','OCR','Document AI','Vector DB','Evaluation']},
+  {id:'p205', phase:'p6', tier:2, title:'Enterprise Agent with MCP Tools', diff:'Expert', src:'Custom', roles:['llm','mle'],
+    desc:'Agent connected via MCP to file search, SQL DB, calendar/task mock, web search.',
+    detail:'Permissions, audit logs, HITL approval, tool error recovery.', skills:['MCP','LangGraph','Tool Calling','Security','Agents']},
+  {id:'p206', phase:'p6', tier:2, title:'LLM Evaluation Harness', diff:'Expert', src:'Custom', roles:['llm','mlops'],
+    desc:'Reusable eval framework for prompts/RAG/agents with regression tests.',
+    detail:'Faithfulness, relevance, retrieval quality, latency, cost, safety; CI gating.', skills:['Ragas','DeepEval','Evaluation','LLMOps','Experiment Tracking']},
+  {id:'p207', phase:'p7', tier:2, title:'AI Observability Platform', diff:'Expert', src:'Custom', roles:['mlops','llm'],
+    desc:'Full trace: request → retrieval → rerank → LLM → tools → answer.',
+    detail:'Latency, cost, errors, tokens, cache hit, eval score on every span.', skills:['OpenTelemetry','Prometheus','Grafana','LLMOps','Tracing']},
+  {id:'p208', phase:'p7', tier:2, title:'End-to-End MLOps Pipeline', diff:'Expert', src:'Custom', roles:['mle','mlops'],
+    desc:'Churn model: DVC → MLflow → pytest → Docker → FastAPI → GHA CI/CD → AWS EC2 → EvidentlyAI drift → Prometheus/Grafana.',
+    detail:'Architecture diagram mandatory; 1 retraining trigger demonstrated.', skills:['MLflow','DVC','Docker','FastAPI','EvidentlyAI','AWS','GitHub Actions']},
+  {id:'p209', phase:'p7', tier:2, title:'LLMOps — Production GenAI App', diff:'Expert', src:'Custom', roles:['llm','mlops'],
+    desc:'Take c013 (RAG) → LangSmith tracing → semantic cache → prompt registry → continuous Ragas → cost dashboard → multi-model fallback → guardrails.',
+    detail:'2026 differentiator: most have RAG, very few have LLMOps.', skills:['LangSmith','GPTCache','Ragas','Guardrails','LiteLLM','OpenTelemetry']},
+  {id:'p210', phase:'p7', tier:2, title:'Secure AI API Gateway', diff:'Expert', src:'Custom', roles:['llm','mlops'],
+    desc:'AI gateway: auth, rate limits, prompt filtering, PII redaction, logging, model routing.',
+    detail:'Strong enterprise GenAI signal; Presidio for PII; OPA for policy.', skills:['Security','FastAPI','LLM Gateway','PII Redaction','Rate Limiting']},
+
+  // ━━━ TIER 3 — ELITE (5) ━━━
+  {id:'e301', phase:'p8', tier:3, title:'Autonomous Research Agent', diff:'Elite', src:'Custom', roles:['llm','research'],
+    desc:'Agent finds papers, extracts claims, compares methods, runs experiments, writes report.',
+    detail:'HITL approval, source citations, eval, reproducibility log, public demo video.', skills:['Agents','Research','LangGraph','RAG','Evaluation']},
+  {id:'e302', phase:'p8', tier:3, title:'Mini Feature Store from Scratch', diff:'Elite', src:'Custom', roles:['mle','mlops','de'],
+    desc:'Offline + online storage; point-in-time joins; freshness checks; serving API.',
+    detail:'Compare to Feast; benchmark p99 latency; published design doc.', skills:['Feature Store','Data Engineering','ML Platform','Point-in-time Joins']},
+  {id:'e303', phase:'p8', tier:3, title:'Distributed Vector Search Engine Prototype', diff:'Elite', src:'Custom', roles:['llm','mle','de','research'],
+    desc:'Implement HNSW or IVF-PQ ANN, metadata filtering, sharding simulation, benchmark.',
+    detail:'Not production-grade; proves systems depth on a hot AI infrastructure topic.', skills:['Vector Search','ANN','Embeddings','Systems','Benchmarking']},
+  {id:'e304', phase:'p9', tier:3, title:'AI SaaS with 10 Real Users', diff:'Elite', src:'Custom', roles:['llm','mle','career'],
+    desc:'Build useful AI product, deploy, onboard 10 real users, collect feedback, iterate 3 cycles.',
+    detail:'Resume analyzer / legal-doc assistant / data analyst copilot / meeting assistant / niche RAG.', skills:['Product','LLM','Deployment','User Research','Analytics']},
+  {id:'e305', phase:'p8', tier:3, title:'Paper Reproduction + Blog Series', diff:'Elite', src:'Custom', roles:['research','ds','llm'],
+    desc:'Reproduce 2–3 techniques and publish benchmarks/blogs.',
+    detail:'Examples: LoRA, RAG reranking, conformal prediction, diffusion basics, transformers from scratch.', skills:['Research','PyTorch','Benchmarking','Technical Writing']}
+];
+
+/* ───────── ROLE REQUIREMENTS v3 ───────── */
+const ROLE_REQUIREMENTS = {
+  da:{name:'Data Analyst', lpa:'₹4–14 LPA', desc:'SQL-first storytelling. Excel, BI, product analytics, stakeholder communication.', pillars:{sql:22,excel:12,da:22,math:10,comm:10,py:8,projects:16}},
+  ae:{name:'Analytics Engineer', lpa:'₹8–24 LPA', desc:'dbt-driven warehouse modelling, semantic layer, data quality, BI reliability.', pillars:{sql:22,ae:22,db:12,de:10,comm:8,py:8,gov:4,projects:14}},
+  ds:{name:'Data Scientist', lpa:'₹8–28 LPA', desc:'Stats, ML modelling, experimentation, causal inference, decision science.', pillars:{sql:10,py:14,math:18,ml:22,da:8,eval:6,comm:6,projects:16}},
+  de:{name:'Data Engineer', lpa:'₹10–30 LPA', desc:'Pipelines, warehouses, Spark, Airflow, Kafka, lakehouse, cloud, data quality.', pillars:{py:10,sql:16,de:24,stream:10,cloud:10,db:8,se:8,projects:14}},
+  mle:{name:'ML Engineer', lpa:'₹12–35 LPA', desc:'Software engineering + ML deployment. APIs, Docker, testing, pipelines, monitoring.', pillars:{py:12,se:14,ml:18,dl:6,backend:12,mlops:18,cloud:6,projects:14}},
+  llm:{name:'LLM / GenAI Engineer', lpa:'₹15–48 LPA', desc:'RAG, agents, tool-calling, MCP, evals, fine-tuning, LLMOps, security.', pillars:{py:8,llm:16,rag:14,agents:12,mcp:6,eval:10,sec:6,backend:8,projects:20}},
+  mlops:{name:'MLOps / LLMOps / AI Platform Engineer', lpa:'₹15–38 LPA', desc:'AI platform, CI/CD, registries, monitoring, drift, infra, FinOps, governance.', pillars:{mlops:24,cloud:14,se:12,de:10,sec:8,eval:8,gov:6,backend:6,projects:12}},
+  research:{name:'AI Research Engineer', lpa:'₹18–65 LPA', desc:'Paper implementation, PyTorch depth, training, ablations, benchmarking, optimization.', pillars:{math:14,dl:18,llm:12,research:22,py:10,eval:8,multi:6,projects:10}}
+};
+
+const PILLAR_LABELS = {
+  prod:'Productivity', comm:'Communication', py:'Python', sql:'SQL', cs:'CS Core', se:'Software Eng',
+  db:'Databases', dsa:'DSA', math:'Math/Stats', excel:'Excel', da:'Data Analysis', ae:'Analytics Eng',
+  ml:'Classical ML', dl:'Deep Learning', cv:'Computer Vision', audio:'Audio AI', docai:'Document AI',
+  multi:'Multimodal', de:'Data Eng', stream:'Streaming', backend:'Backend', llm:'LLM/GenAI',
+  rag:'RAG', agents:'Agents', mcp:'MCP', eval:'Evaluation', mlops:'MLOps/LLMOps', cloud:'Cloud',
+  sec:'Security', gov:'Governance', research:'Research', career:'Career'
+};
+
+const CAREER_LEVELS = [
+  {min:0,max:9,label:'Setup',lpa:'Pre-job',color:'#3a3a5a'},
+  {min:10,max:24,label:'Beginner Builder',lpa:'Intern prep',color:'#7c6fff'},
+  {min:25,max:39,label:'Analyst-Ready',lpa:'₹4–10 LPA',color:'#5ba4ff'},
+  {min:40,max:54,label:'ML-Intern Ready',lpa:'₹6–14 LPA',color:'#20c997'},
+  {min:55,max:69,label:'Junior AI/ML',lpa:'₹10–25 LPA',color:'#f5a623'},
+  {min:70,max:84,label:'Production AI',lpa:'₹18–45 LPA',color:'#ff6b6b'},
+  {min:85,max:100,label:'Strong Specialist',lpa:'₹35–80 LPA+',color:'#e879b0'}
+];
+
+const TIMELINE = [
+  {mo:'M 1',title:'Digital OS + proof habits',sub:'Portfolio v0, dotfiles, learning log, Anki, GitHub profile',c:'#7c6fff'},
+  {mo:'M 1–3',title:'Python + SQL + CS + Math + DSA',sub:'100 Python, 100 SQL, 75 DSA, Excel dashboard, FastAPI hello-world',c:'#7c6fff'},
+  {mo:'M 3–5',title:'Analytics + BI + Analytics Engineering',sub:'SQL case, BI dashboard, dbt project, A/B test app',c:'#20c997'},
+  {mo:'M 5',title:'🎯 Apply: Data Analyst / Analytics Intern',sub:'Start applications with c001/c002/c003 evidence',c:'#20c997'},
+  {mo:'M 5–8',title:'Classical ML',sub:'Leakage-safe pipelines, SHAP, time series, causal notebook',c:'#ff6b6b'},
+  {mo:'M 8–10',title:'Deep Learning + Multimodal',sub:'PyTorch, CNN, OCR/audio/CV, ONNX, Grad-CAM',c:'#5ba4ff'},
+  {mo:'M 10–12',title:'Data Engineering + Backend',sub:'FastAPI, Docker, Airflow, Postgres, Kafka/Spark/lakehouse',c:'#f5a623'},
+  {mo:'M 12–15',title:'LLM Engineering',sub:'Production RAG, LangGraph agent, MCP server, evals, security',c:'#a78bfa'},
+  {mo:'M 15',title:'🎯 Apply: LLM/MLE/DE roles',sub:'4+ Core projects documented and deployed',c:'#a78bfa'},
+  {mo:'M 15–17',title:'MLOps + LLMOps + Cloud',sub:'CI/CD, monitoring, drift, tracing, K8s, cost observability',c:'#e879b0'},
+  {mo:'M 17–19',title:'Research + Advanced AI',sub:'20 papers, 2 reproductions, ablations, benchmark posts',c:'#c0c0d0'},
+  {mo:'M 19–21',title:'Career conversion sprint',sub:'ATS resume, 10 mocks, 100 apps, 30 referrals, negotiation',c:'#ffd700'}
+];
+
+const WEEKLY_PLANS = [
+  {title:'🌱 Minimum Sustainable — 15 hrs/wk',items:['Learning: 5 hrs','Coding practice: 4 hrs','Project work: 4 hrs','Revision/Anki: 1 hr','Writing/networking: 1 hr','Pace: ~28 months']},
+  {title:'⚡ Strong Pace — 25 hrs/wk',items:['Learning: 8 hrs','Coding practice: 6 hrs','Project work: 7 hrs','Math/stats/review: 2 hrs','Interview prep: 1 hr','Writing/networking: 1 hr','Pace: ~21 months']},
+  {title:'🚀 Full-Time Sprint — 40 hrs/wk',items:['Learning: 12 hrs','Coding practice: 10 hrs','Project work: 12 hrs','Docs/blogs: 3 hrs','Interview/networking: 3 hrs','Pace: ~14–16 months']},
+  {title:'📅 Weekly Rhythm',items:['Mon–Fri: learn + implement','Saturday: deep project block','Sunday: review + plan + write','Daily: 1 SQL or DSA problem','Weekly: public proof post','Monthly: ship something']},
+  {title:'🎯 Anti-Cheat Rules',items:['Topic done only if you can explain and apply it','Project done only at ≥8/10 checklist','Stage done only after gate artifacts exist','Career-ready requires deployed + documented proof','L5 topics re-reviewed every 30 days']}
+];
+
+const RESOURCES = [
+  {name:'Kaggle Learn',desc:'Free micro-courses for Python, Pandas, SQL, ML, DL.',link:'https://www.kaggle.com/learn',tag:'All',tc:'#20c997'},
+  {name:'Mode SQL Tutorial',desc:'Excellent beginner-to-advanced SQL tutorial.',link:'https://mode.com/sql-tutorial',tag:'SQL',tc:'#7c6fff'},
+  {name:'DataLemur SQL',desc:'FAANG-style SQL interview practice.',link:'https://datalemur.com',tag:'SQL',tc:'#7c6fff'},
+  {name:'StrataScratch',desc:'Real SQL/Python interview questions.',link:'https://www.stratascratch.com',tag:'Interview',tc:'#ffd700'},
+  {name:'3Blue1Brown Linear Algebra',desc:'Best visual intuition for matrices and vectors.',link:'https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab',tag:'Math',tc:'#5ba4ff'},
+  {name:'StatQuest',desc:'Clear ML/statistics explanations.',link:'https://www.youtube.com/@statquest',tag:'ML',tc:'#f5a623'},
+  {name:'CS229 Stanford',desc:'Classic ML notes and lectures.',link:'https://cs229.stanford.edu',tag:'ML',tc:'#ff6b6b'},
+  {name:'fast.ai',desc:'Practical deep learning course.',link:'https://course.fast.ai',tag:'DL',tc:'#5ba4ff'},
+  {name:'Andrej Karpathy — Zero to Hero',desc:'Build neural nets and GPT from scratch.',link:'https://www.youtube.com/@AndrejKarpathy/playlists',tag:'DL/LLM',tc:'#a78bfa'},
+  {name:'Hugging Face Learn',desc:'Transformers, NLP, agents, fine-tuning.',link:'https://huggingface.co/learn',tag:'LLM',tc:'#a78bfa'},
+  {name:'OpenAI Cookbook',desc:'Practical production LLM examples.',link:'https://cookbook.openai.com',tag:'LLM',tc:'#a78bfa'},
+  {name:'Anthropic Docs',desc:'Claude API and prompt engineering docs.',link:'https://docs.anthropic.com',tag:'LLM',tc:'#a78bfa'},
+  {name:'LangChain Academy',desc:'LangChain and LangGraph official courses.',link:'https://academy.langchain.com',tag:'Agents',tc:'#a78bfa'},
+  {name:'RAGAS Docs',desc:'Evaluate RAG systems properly.',link:'https://docs.ragas.io',tag:'Eval',tc:'#a78bfa'},
+  {name:'Made With ML',desc:'Production ML and MLOps curriculum.',link:'https://madewithml.com',tag:'MLOps',tc:'#e879b0'},
+  {name:'MLflow Docs',desc:'Experiment tracking and model registry.',link:'https://mlflow.org/docs/latest/',tag:'MLOps',tc:'#e879b0'},
+  {name:'EvidentlyAI Docs',desc:'Monitoring and drift detection.',link:'https://docs.evidentlyai.com',tag:'MLOps',tc:'#e879b0'},
+  {name:'dbt Learn',desc:'Analytics engineering courses.',link:'https://learn.getdbt.com',tag:'AE',tc:'#20c997'},
+  {name:'Full Stack Deep Learning',desc:'End-to-end ML systems course.',link:'https://fullstackdeeplearning.com',tag:'MLOps',tc:'#e879b0'},
+  {name:'Papers With Code',desc:'Track papers and implementations.',link:'https://paperswithcode.com',tag:'Research',tc:'#c0c0d0'},
+  {name:'Chip Huyen ML Interviews Book',desc:'Free ML interview prep.',link:'https://huyenchip.com/ml-interviews-book/',tag:'Interview',tc:'#ffd700'}
+];
+
+const PROOF_CHECKLIST = [
+  'README explains business problem',
+  'Architecture diagram included',
+  'Dataset / source documented',
+  'Reproducible setup',
+  'Tests included',
+  'Deployment link OR docker-compose works',
+  'Metrics / evaluation included',
+  'Failure cases documented',
+  'Security / privacy considered',
+  'Blog or case study written'
+];
+
+const STORAGE_KEY = 'aiml_v5_arman_v3';
+let S = loadState();
+let currentRole = S.role || 'all';
+let currentProjectFilter = 'all';
+
+/* ───────── STATE ───────── */
+function blankState(){
+  return {
+    t:{}, topicEv:{}, p:{}, ev:{}, h:{}, n:{},
+    role:'all',
+    streak:0,
+    lastStudy:'',
+    vault:{mocks:0,sql:0,stars:0,apps:0,refs:0},
+    log:{posts:0,reviews:0}
+  };
+}
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return blankState();
+    return Object.assign(blankState(), JSON.parse(raw));
+  }catch(e){
+    console.warn(e);
+    return blankState();
+  }
+}
+function save(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(S));
+}
+function showToast(msg){
+  const t = document.getElementById('toast');
+  if(!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(showToast._tid);
+  showToast._tid = setTimeout(()=>t.classList.remove('show'),1800);
+}
+function todayISO(){ return new Date().toISOString().slice(0,10); }
+function addDaysISO(days){
+  const d = new Date();
+  d.setDate(d.getDate()+days);
+  return d.toISOString().slice(0,10);
+}
+function yesterday(){
+  const d = new Date();
+  d.setDate(d.getDate()-1);
+  return d.toISOString().slice(0,10);
+}
+
+/* ───────── HELPERS ───────── */
+function escapeHtml(s){
+  return String(s ?? '').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+function escapeAttr(s){
+  return String(s ?? '').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function getTopicLevel(id){
+  const v = Number(S.t[id] || 0);
+  return Math.max(0, Math.min(5, isNaN(v)?0:v));
+}
+function projectEv(id){
+  if(!S.ev[id]){
+    S.ev[id] = {
+      repoUrl:'',demoUrl:'',blogUrl:'',videoUrl:'',architectureDiagramUrl:'',
+      datasetUrl:'',testCoverage:'',deploymentStatus:'idea',
+      evaluation:{metrics:'',baseline:'',finalScore:'',failureCases:'',cost:'',latency:''},
+      checklist:[]
+    };
+  }
+  if(!S.ev[id].evaluation) S.ev[id].evaluation = {metrics:'',baseline:'',finalScore:'',failureCases:'',cost:'',latency:''};
+  if(!Array.isArray(S.ev[id].checklist)) S.ev[id].checklist = [];
+  return S.ev[id];
+}
+function checklistCount(id){
+  return projectEv(id).checklist.filter(Boolean).length;
+}
+function isProjectComplete(id){
+  return checklistCount(id) >= 8;
+}
+
+/* ───────── ROADMAP ───────── */
+function buildRoadmap(){
+  const cont = document.getElementById('roadmap-list');
+  cont.innerHTML = '';
+  PHASES.forEach((ph,pi)=>{
+    const {pct} = phProgress(pi);
+    const card = document.createElement('div');
+    card.className = 'phase-card';
+    card.innerHTML = `
+      <div class="phase-head" onclick="togglePh(${pi})">
+        <div class="phase-num" style="background:${ph.bg};color:${ph.color}">${pi}</div>
+        <div class="phase-info">
+          <div class="phase-name">${escapeHtml(ph.name)}</div>
+          <div class="phase-meta2">${escapeHtml(ph.meta)}</div>
+        </div>
+        <div class="phase-right">
+          <div class="ph-bar-wrap"><div class="ph-bar-fill" id="phbf-${pi}" style="width:${pct}%;background:${ph.color}"></div></div>
+          <div class="ph-pct" id="phpct-${pi}">${pct}%</div>
+          <div class="ph-chev ${pi===0?'open':''}" id="phch-${pi}">▼</div>
+        </div>
+      </div>
+      <div class="ph-accent-bar" id="phab-${pi}" style="background:${ph.color};opacity:.3;width:${pct}%;transition:width .5s;"></div>
+      <div class="phase-body" id="phbody-${pi}" style="display:${pi===0?'block':'none'}">
+        ${ph.courses.map((c,ci)=>buildCourse(c,pi,ci)).join('')}
+        <div class="phase-gate"><b>🎯 Stage Gate</b><ul>${ph.gate.map(g=>`<li>✓ ${escapeHtml(g)}</li>`).join('')}</ul></div>
+      </div>`;
+    cont.appendChild(card);
+  });
+}
+function buildCourse(c,pi,ci){
+  const tagCls = {core:'tag-core',add:'tag-add',math:'tag-math',eng:'tag-eng',prod:'tag-prod'}[c.tag] || 'tag-core';
+  const done = c.topics.filter((_,ti)=>getTopicLevel(`${pi}-${ci}-${ti}`)>=3).length;
+  const topics = c.topics.map((tp,ti)=>buildTopic(tp,pi,ci,ti)).join('');
+  return `<div class="course-block">
+    <div class="course-head" onclick="toggleCourse(${pi},${ci})">
+      <div class="c-dot" style="background:${c.color}"></div>
+      <div class="c-name">${escapeHtml(c.name)}</div>
+      <span class="c-tag ${tagCls}">${escapeHtml(c.tag)}</span>
+      <span class="c-prog" id="cprog-${pi}-${ci}">${done}/${c.topics.length} ≥L3</span>
+      <span class="c-chev" id="cc-${pi}-${ci}">▼</span>
+    </div>
+    <div class="topic-wrap" id="cl-${pi}-${ci}">${topics}</div>
+  </div>`;
+}
+function buildTopic(tp,pi,ci,ti){
+  const id = `${pi}-${ci}-${ti}`;
+  const lvl = getTopicLevel(id);
+  const text = `${tp.t} ${tp.s||''} ${(tp.p||[]).join(' ')}`.toLowerCase();
+  return `<div class="topic ${lvl===5?'lvl5':''}" id="topic-${id}" data-text="${escapeAttr(text)}" onclick="cycleTopicLevel('${id}',${pi},${ci})">
+    <div class="lvl-pip" onclick="event.stopPropagation()">
+      ${[1,2,3,4,5].map(n=>`<span class="lvl-dot ${n===5?'l5':''} ${lvl>=n?'on':''}" onclick="setTopicLevel('${id}',${n},${pi},${ci})" title="Set L${n}"></span>`).join('')}
+    </div>
+    <div class="t-main">
+      <div class="t-name">${escapeHtml(tp.t)}</div>
+      ${tp.s?`<div class="t-sub">${escapeHtml(tp.s)}</div>`:''}
+      ${tp.proof?`<div class="t-proof">Proof: ${escapeHtml(tp.proof)}</div>`:''}
+    </div>
+    <div class="t-meta">
+      <span class="t-level ${tp.level||'basic'}">${escapeHtml(tp.level||'basic')}</span>
+      <span class="t-weight">w${tp.w||2}</span>
+      <span class="t-weight">L${lvl}</span>
+    </div>
+  </div>`;
+}
+function togglePh(pi){
+  const b = document.getElementById(`phbody-${pi}`);
+  const ch = document.getElementById(`phch-${pi}`);
+  const open = b.style.display !== 'none';
+  b.style.display = open ? 'none' : 'block';
+  ch.classList.toggle('open',!open);
+}
+function toggleCourse(pi,ci){
+  const l = document.getElementById(`cl-${pi}-${ci}`);
+  const c = document.getElementById(`cc-${pi}-${ci}`);
+  const open = l.style.display === 'block';
+  l.style.display = open ? 'none' : 'block';
+  c.classList.toggle('open',!open);
+}
+function cycleTopicLevel(id,pi,ci){
+  const lvl = getTopicLevel(id);
+  setTopicLevel(id,(lvl+1)%6,pi,ci);
+}
+function setTopicLevel(id,lvl,pi,ci){
+  S.t[id] = lvl;
+  if(!S.topicEv[id]) S.topicEv[id] = {};
+  S.topicEv[id].lastReviewed = todayISO();
+  if(lvl >= 5) S.topicEv[id].nextReview = addDaysISO(30);
+
+  if(lvl > 0 && todayISO() !== S.lastStudy){
+    S.streak = S.lastStudy === yesterday() ? (S.streak||0)+1 : 1;
+    S.lastStudy = todayISO();
+  }
+
+  save();
+  refreshTopicElement(id,pi,ci);
+  updatePhaseUI(pi);
+  updateCourseUI(pi,ci);
+  updateStats();
+}
+function refreshTopicElement(id,pi,ci){
+  const [p,c,t] = id.split('-').map(Number);
+  const wrap = document.getElementById(`topic-${id}`);
+  if(!wrap) return;
+  const tp = PHASES[p].courses[c].topics[t];
+  wrap.outerHTML = buildTopic(tp,p,c,t);
+}
+function updateCourseUI(pi,ci){
+  const c = PHASES[pi].courses[ci];
+  const done = c.topics.filter((_,ti)=>getTopicLevel(`${pi}-${ci}-${ti}`)>=3).length;
+  const el = document.getElementById(`cprog-${pi}-${ci}`);
+  if(el) el.textContent = `${done}/${c.topics.length} ≥L3`;
+}
+
+/* ───────── PROGRESS ───────── */
+function phProgress(pi){
+  let doneW=0,totalW=0,doneC=0,totalC=0;
+  PHASES[pi].courses.forEach((c,ci)=>{
+    c.topics.forEach((tp,ti)=>{
+      const w = tp.w || 2;
+      const lvl = getTopicLevel(`${pi}-${ci}-${ti}`);
+      totalW += w;
+      totalC++;
+      doneW += w * (lvl/5);
+      if(lvl >= 3) doneC++;
+    });
+  });
+  return {pct:totalW?Math.round(doneW/totalW*100):0,doneC,totalC,doneW,totalW};
+}
+function totalWeighted(){
+  let doneW=0,totalW=0,doneC=0,totalC=0;
+  PHASES.forEach((_,pi)=>{
+    const r = phProgress(pi);
+    doneW += r.doneW; totalW += r.totalW; doneC += r.doneC; totalC += r.totalC;
+  });
+  return {pct:totalW?Math.round(doneW/totalW*100):0,doneC,totalC};
+}
+function pillarProgress(pillar){
+  let doneW=0,totalW=0;
+  PHASES.forEach((ph,pi)=>{
+    ph.courses.forEach((c,ci)=>{
+      c.topics.forEach((tp,ti)=>{
+        if(!tp.p || !tp.p.includes(pillar)) return;
+        const w = tp.w || 2;
+        const lvl = getTopicLevel(`${pi}-${ci}-${ti}`);
+        totalW += w;
+        doneW += w*(lvl/5);
+      });
+    });
+  });
+  return totalW ? Math.round(doneW/totalW*100) : 0;
+}
+function projectsProgressForRoles(roleKey){
+  const list = PROJECTS.filter(p=>roleKey==='all' || p.roles.includes(roleKey) || p.roles.includes('all'));
+  if(!list.length) return 0;
+  const done = list.filter(p=>isProjectComplete(p.id)).length;
+  return Math.round(done/list.length*100);
+}
+function roleReadiness(roleKey){
+  if(roleKey==='all') return totalWeighted().pct;
+  const req = ROLE_REQUIREMENTS[roleKey];
+  if(!req) return 0;
+  let score=0,total=0;
+  Object.keys(req.pillars).forEach(p=>{
+    const wt = req.pillars[p];
+    const pct = p==='projects' ? projectsProgressForRoles(roleKey) : pillarProgress(p);
+    score += pct*wt;
+    total += wt;
+  });
+  return total ? Math.round(score/total) : 0;
+}
+function updatePhaseUI(pi){
+  const {pct} = phProgress(pi);
+  const bf = document.getElementById(`phbf-${pi}`);
+  const pp = document.getElementById(`phpct-${pi}`);
+  const ab = document.getElementById(`phab-${pi}`);
+  if(bf) bf.style.width = pct+'%';
+  if(pp) pp.textContent = pct+'%';
+  if(ab) ab.style.width = pct+'%';
+}
+
+/* ───────── PROJECTS ───────── */
+function tierInfo(t){
+  return [
+    {txt:'🔹 Micro',cls:'t0',color:'#5ba4ff'},
+    {txt:'⭐ Core',cls:'t1',color:'#7c6fff'},
+    {txt:'🛠️ Production',cls:'t2',color:'#20c997'},
+    {txt:'🏆 Elite',cls:'t3',color:'#ffd700'}
+  ][t] || {txt:'Project',cls:'t0',color:'#5ba4ff'};
+}
+function phaseLabel(pid){
+  const map = {p0:'Digital OS',p1:'Foundation',p2:'Analytics',p3:'ML',p4:'DL',p5:'Engineering',p6:'LLM',p7:'MLOps',p8:'Research',p9:'Career'};
+  return map[pid] || pid;
+}
+function phaseColor(pid){
+  const p = PHASES.find(x=>x.id===pid);
+  return p ? p.color : '#7c6fff';
+}
+function diffColor(d){
+  return {Beginner:'#20c997','Beginner-Int':'#5ba4ff',Intermediate:'#f5a623',Advanced:'#ff6b6b',Expert:'#e879b0',Elite:'#ffd700'}[d] || '#7c6fff';
+}
+function buildProjects(filter=currentProjectFilter){
+  currentProjectFilter = filter;
+  const grid = document.getElementById('proj-grid');
+  let list = PROJECTS.slice();
+
+  if(filter==='t0') list = list.filter(p=>p.tier===0);
+  else if(filter==='t1') list = list.filter(p=>p.tier===1);
+  else if(filter==='t2') list = list.filter(p=>p.tier===2);
+  else if(filter==='t3') list = list.filter(p=>p.tier===3);
+  else if(['da','ae','ds','de','mle','llm','mlops','research'].includes(filter)) list = list.filter(p=>p.roles.includes(filter) || p.roles.includes('all'));
+  else if(['deployed','documented','users','building'].includes(filter)){
+    list = list.filter(p=>{
+      const ev = projectEv(p.id);
+      if(filter==='deployed') return ev.deploymentStatus === 'deployed' || ev.deploymentStatus === 'documented' || ev.deploymentStatus === 'evaluated' || ev.deploymentStatus === 'used_by_real_users';
+      if(filter==='documented') return ev.deploymentStatus === 'documented' || ev.blogUrl || ev.deploymentStatus === 'evaluated' || ev.deploymentStatus === 'used_by_real_users';
+      if(filter==='users') return ev.deploymentStatus === 'used_by_real_users';
+      if(filter==='building') return ev.deploymentStatus === 'building';
+      return true;
+    });
+  }
+
+  grid.innerHTML = list.map(p=>projectCard(p)).join('');
+}
+function projectCard(p){
+  const ev = projectEv(p.id);
+  const ti = tierInfo(p.tier);
+  const done = isProjectComplete(p.id);
+  const checked = checklistCount(p.id);
+  const pc = Math.round(checked/PROOF_CHECKLIST.length*100);
+  return `<div class="proj-card tier${p.tier} ${done?'done-c':''}" id="pc-${p.id}">
+    <div class="proj-top">
+      <span class="p-phase-pill" style="background:${phaseColor(p.phase)}22;color:${phaseColor(p.phase)}">${phaseLabel(p.phase)}</span>
+      <span class="p-tier ${ti.cls}">${ti.txt}</span>
+      <span class="p-src">${escapeHtml(p.src)}</span>
+    </div>
+    <div class="p-title">${escapeHtml(p.title)}</div>
+    <div class="p-desc">${escapeHtml(p.desc)}</div>
+    <div class="p-detail">${escapeHtml(p.detail)}</div>
+    <div class="p-skills">${p.skills.map(s=>`<span class="skill-pill">${escapeHtml(s)}</span>`).join('')}</div>
+    <div class="p-foot">
+      <span class="p-diff"><span class="p-diff-dot" style="background:${diffColor(p.diff)}"></span>${escapeHtml(p.diff)}</span>
+      <span class="p-evidence" onclick="toggleEvidence('${p.id}')">Evidence</span>
+      <span class="p-checklist-pct">${checked}/10 · ${pc}%</span>
+      <div class="p-done" onclick="toggleProj('${p.id}')">
+        <div class="p-chk ${done?'on':''}" id="pchk-${p.id}"></div>
+        <span>${done?'Tier-complete':'Need 8/10'}</span>
+      </div>
+    </div>
+    <div class="evidence-wrap" id="ev-${p.id}">
+      ${evInput(p.id,'repoUrl','GitHub repo URL')}
+      ${evInput(p.id,'demoUrl','Live demo URL')}
+      ${evInput(p.id,'blogUrl','Blog / case study URL')}
+      ${evInput(p.id,'videoUrl','60–90s demo video URL')}
+      ${evInput(p.id,'architectureDiagramUrl','Architecture diagram URL')}
+      ${evInput(p.id,'datasetUrl','Dataset URL / synthetic / private')}
+      ${evInput(p.id,'testCoverage','Test coverage e.g. 82%')}
+      <div class="ev-status">
+        ${['idea','building','deployed','documented','evaluated','used_by_real_users'].map(st=>`<button class="ev-st-btn ${ev.deploymentStatus===st?'on':''}" onclick="updateEvidence('${p.id}','deploymentStatus','${st}')">${st}</button>`).join('')}
+      </div>
+      <input class="ev-input" placeholder="Metrics used" value="${escapeAttr(ev.evaluation.metrics)}" onchange="updateEval('${p.id}','metrics',this.value)"/>
+      <input class="ev-input" placeholder="Baseline" value="${escapeAttr(ev.evaluation.baseline)}" onchange="updateEval('${p.id}','baseline',this.value)"/>
+      <input class="ev-input" placeholder="Final score" value="${escapeAttr(ev.evaluation.finalScore)}" onchange="updateEval('${p.id}','finalScore',this.value)"/>
+      <input class="ev-input" placeholder="Failure cases / what breaks?" value="${escapeAttr(ev.evaluation.failureCases)}" onchange="updateEval('${p.id}','failureCases',this.value)"/>
+      <input class="ev-input" placeholder="Cost per request/inference" value="${escapeAttr(ev.evaluation.cost)}" onchange="updateEval('${p.id}','cost',this.value)"/>
+      <input class="ev-input" placeholder="Latency p50 / p95" value="${escapeAttr(ev.evaluation.latency)}" onchange="updateEval('${p.id}','latency',this.value)"/>
+      <div class="ev-checklist">
+        <div class="ev-checklist-title">Proof Checklist · complete ≥8/10</div>
+        ${PROOF_CHECKLIST.map((item,i)=>`<div class="ev-cli ${ev.checklist[i]?'on':''}" onclick="toggleChecklist('${p.id}',${i})">
+          <div class="p-chk ${ev.checklist[i]?'on':''}"></div><span>${escapeHtml(item)}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+function evInput(id,field,placeholder){
+  const ev = projectEv(id);
+  return `<input type="text" class="ev-input" placeholder="${escapeAttr(placeholder)}" value="${escapeAttr(ev[field]||'')}" onchange="updateEvidence('${id}','${field}',this.value)"/>`;
+}
+function flt(f,btn){
+  document.querySelectorAll('.flt').forEach(b=>b.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+  buildProjects(f);
+}
+function toggleEvidence(id){
+  const w = document.getElementById(`ev-${id}`);
+  if(w) w.classList.toggle('open');
+}
+function updateEvidence(id,field,value){
+  const ev = projectEv(id);
+  ev[field] = value;
+  save();
+  if(field==='deploymentStatus') showToast(`Status: ${value}`);
+  updateStats();
+}
+function updateEval(id,field,value){
+  const ev = projectEv(id);
+  ev.evaluation[field] = value;
+  save();
+  updateStats();
+}
+function toggleChecklist(id,i){
+  const ev = projectEv(id);
+  ev.checklist[i] = !ev.checklist[i];
+  save();
+  buildProjects(currentProjectFilter);
+  updateStats();
+  showToast(`${checklistCount(id)}/10 checklist`);
+}
+function toggleProj(id){
+  if(isProjectComplete(id)){
+    showToast('Project is tier-complete ✓');
+  }else{
+    showToast('Need at least 8/10 proof checklist items');
+  }
+}
+
+/* ───────── ROLE READINESS ───────── */
+function buildRoleCareer(){
+  const grid = document.getElementById('role-grid');
+  if(!grid) return;
+  grid.innerHTML = Object.keys(ROLE_REQUIREMENTS).map(rk=>{
+    const req = ROLE_REQUIREMENTS[rk];
+    const score = roleReadiness(rk);
+    const status = score>=70?'READY':score>=40?'IN PROGRESS':'LOCKED';
+    const statusCls = score>=70?'rs-ready':score>=40?'rs-progress':'rs-locked';
+    const cardCls = `role-card ${rk===currentRole?'current-target':''} ${score>=70?'unlocked':''}`;
+    const pillars = Object.keys(req.pillars).map(p=>{
+      const pct = p==='projects' ? projectsProgressForRoles(rk) : pillarProgress(p);
+      const col = pct>=70?'#20c997':pct>=40?'#f5a623':'#5ba4ff';
+      return `<div class="role-prog-item">
+        <span class="role-prog-name">${PILLAR_LABELS[p]||p} <span style="color:var(--faint);font-size:9px">(${req.pillars[p]}%)</span></span>
+        <div class="role-prog-bar"><div class="role-prog-fill" style="width:${pct}%;background:${col}"></div></div>
+        <span class="role-prog-pct">${pct}%</span>
+      </div>`;
+    }).join('');
+    return `<div class="${cardCls}">
+      <div class="role-status ${statusCls}">${status}</div>
+      ${rk===currentRole?'<div style="font-family:var(--font-m);font-size:8px;color:var(--accent2);margin-bottom:4px;">🎯 YOUR TARGET</div>':''}
+      <div class="role-title">${escapeHtml(req.name)}</div>
+      <div class="role-lpa">${escapeHtml(req.lpa)}</div>
+      <div class="role-desc">${escapeHtml(req.desc)}</div>
+      <div class="role-prog-list">${pillars}</div>
+      <div class="role-overall">Overall readiness: <b style="color:${score>=70?'var(--green)':score>=40?'var(--amber)':'var(--coral)'}">${score}%</b></div>
+    </div>`;
+  }).join('');
+}
+function setRole(role){
+  currentRole = role;
+  S.role = role;
+  save();
+  updateStats();
+  buildRoleCareer();
+}
+
+/* ───────── OVERVIEW ───────── */
+function buildOverview(){
+  buildOverviewProgress();
+  buildTimeline();
+  buildHeatmap();
+  buildPillarCoverage();
+}
+function buildOverviewProgress(){
+  const pp = document.getElementById('ph-progress');
+  if(!pp) return;
+  pp.innerHTML = PHASES.map((ph,pi)=>{
+    const {pct} = phProgress(pi);
+    const short = ph.name.split('—')[1]?.trim() || ph.name;
+    return `<div class="ph-row">
+      <div class="ph-row-name">${escapeHtml(short)}</div>
+      <div class="ph-row-bw"><div class="ph-row-bf" style="width:${pct}%;background:${ph.color}"></div></div>
+      <div class="ph-row-pct">${pct}%</div>
+    </div>`;
+  }).join('');
+}
+function buildTimeline(){
+  const tl = document.getElementById('tl');
+  if(!tl) return;
+  tl.innerHTML = TIMELINE.map(t=>`<div class="tl-item">
+    <div class="tl-left"><div class="tl-dot" style="background:${t.c}"></div><div class="tl-line"></div></div>
+    <div class="tl-mo">${escapeHtml(t.mo)}</div>
+    <div class="tl-content"><div class="tl-title">${escapeHtml(t.title)}</div><div class="tl-sub">${escapeHtml(t.sub)}</div></div>
+  </div>`).join('');
+}
+function buildHeatmap(){
+  const hm = document.getElementById('heatmap');
+  if(!hm || hm.children.length) return;
+  for(let i=0;i<91;i++){
+    const key = `hm-${i}`;
+    const lvl = S.h[key] || 0;
+    const d = document.createElement('div');
+    d.className = `s-cell s${lvl}`;
+    d.title = `Day ${i+1}`;
+    d.onclick = ()=>{
+      S.h[key] = ((S.h[key]||0)+1)%5;
+      d.className = `s-cell s${S.h[key]}`;
+      save();
+    };
+    hm.appendChild(d);
+  }
+}
+function buildPillarCoverage(){
+  const pc = document.getElementById('pillar-coverage');
+  if(!pc) return;
+  pc.innerHTML = Object.keys(PILLAR_LABELS).map(k=>{
+    const pct = pillarProgress(k);
+    const col = pct>=70?'#20c997':pct>=40?'#f5a623':'#5ba4ff';
+    return `<div class="ph-row" style="margin:0;background:var(--bg4);padding:7px 8px;border-radius:7px;">
+      <div class="ph-row-name" style="width:100px">${escapeHtml(PILLAR_LABELS[k])}</div>
+      <div class="ph-row-bw"><div class="ph-row-bf" style="width:${pct}%;background:${col}"></div></div>
+      <div class="ph-row-pct">${pct}%</div>
+    </div>`;
+  }).join('');
+}
+
+/* ───────── WEEKLY / RESOURCES / NOTES ───────── */
+function buildWeekly(){
+  const g = document.getElementById('weekly-grid');
+  if(!g) return;
+  g.innerHTML = WEEKLY_PLANS.map(w=>`<div class="week-card">
+    <div class="week-title">${escapeHtml(w.title)}</div>
+    <ul class="week-list">${w.items.map(i=>`<li>${escapeHtml(i)}</li>`).join('')}</ul>
+  </div>`).join('');
+}
+function buildResources(){
+  const g = document.getElementById('res-grid');
+  if(!g) return;
+  g.innerHTML = RESOURCES.map(r=>`<div class="res-card">
+    <span class="res-tag" style="background:${r.tc}22;color:${r.tc}">${escapeHtml(r.tag)}</span>
+    <div class="res-name">${escapeHtml(r.name)}</div>
+    <div class="res-desc">${escapeHtml(r.desc)}</div>
+    <a class="res-link" href="${escapeAttr(r.link)}" target="_blank" rel="noopener noreferrer">→ ${escapeHtml(r.link.replace(/^https?:\/\//,''))}</a>
+  </div>`).join('');
+}
+function buildNotes(){
+  const wrap = document.getElementById('notes-wrap');
+  if(!wrap) return;
+  const topics = ['Daily Goals','Key Learnings','Questions to Research','Interview Prep Notes','Project Ideas','Doubts & Blockers'];
+  wrap.innerHTML = topics.map((t,i)=>`<div class="notes-area">
+    <div class="notes-label">${escapeHtml(t)}</div>
+    <textarea class="notes-input" id="note-${i}" placeholder="Write here..." oninput="saveNote(${i})">${escapeHtml(S.n[i]||'')}</textarea>
+  </div>`).join('');
+}
+function saveNote(i){
+  const el = document.getElementById(`note-${i}`);
+  S.n[i] = el.value;
+  clearTimeout(saveNote._tid);
+  saveNote._tid = setTimeout(save,350);
+}
+
+/* ───────── EVIDENCE LOCKER ───────── */
+function buildLocker(){
+  const grid = document.getElementById('locker-grid');
+  const meta = document.getElementById('locker-meta');
+  if(!grid) return;
+
+  let linkCount = 0;
+  grid.innerHTML = PROJECTS.map(p=>{
+    const ev = projectEv(p.id);
+    const links = [
+      ['Repo',ev.repoUrl],['Demo',ev.demoUrl],['Blog',ev.blogUrl],['Video',ev.videoUrl],
+      ['Architecture',ev.architectureDiagramUrl],['Dataset',ev.datasetUrl]
+    ].filter(x=>x[1]);
+    linkCount += links.length;
+    return `<div class="ev-locker-card">
+      <div class="ev-locker-title">${escapeHtml(p.id)} · ${escapeHtml(p.title)}</div>
+      <div class="ev-locker-links">
+        ${links.length ? links.map(([lbl,url])=>`<a class="ev-locker-link" href="${escapeAttr(url)}" target="_blank" rel="noopener noreferrer">↗ ${escapeHtml(lbl)} · ${escapeHtml(url)}</a>`).join('') : `<div class="ev-locker-empty">No evidence links yet</div>`}
+      </div>
+      <span class="ev-locker-status" style="background:${isProjectComplete(p.id)?'var(--greenglow)':'var(--bg4)'};color:${isProjectComplete(p.id)?'var(--green)':'var(--muted)'}">${checklistCount(p.id)}/10 · ${escapeHtml(ev.deploymentStatus)}</span>
+    </div>`;
+  }).join('');
+  if(meta) meta.textContent = `${linkCount} links collected`;
+}
+
+/* ───────── INTERVIEW VAULT ───────── */
+function buildVault(){
+  const g = document.getElementById('vault-grid');
+  if(!g) return;
+  const cards = [
+    ['mocks','Mock Interviews','Target: 10 completed. Record, review, fix one weakness per mock.'],
+    ['sql','SQL Drill Count','Target: 150 SQL problems. Window functions must be automatic.'],
+    ['stars','STAR Stories','Target: 12 stories: failure, conflict, ambiguity, leadership, impact.'],
+    ['apps','Targeted Applications','Target: 100 focused applications with role-specific resume.'],
+    ['refs','Referral Attempts','Target: 30 personalized messages, not spam.']
+  ];
+  g.innerHTML = cards.map(([key,title,desc])=>`<div class="iv-card">
+    <h3>${escapeHtml(title)}</h3>
+    <p>${escapeHtml(desc)}</p>
+    <div class="iv-counter">
+      <button onclick="vaultInc('${key}',-1)">−</button>
+      <div class="iv-counter-val" id="vault-${key}">${S.vault[key]||0}</div>
+      <button onclick="vaultInc('${key}',1)">+</button>
+    </div>
+  </div>`).join('') + `<div class="iv-card">
+    <h3>ML / AI System Design Framework</h3>
+    <ul>
+      <li>Requirements and constraints</li>
+      <li>Success metrics and guardrails</li>
+      <li>Data sources and labels</li>
+      <li>Model choice and baselines</li>
+      <li>Serving architecture</li>
+      <li>Monitoring, drift, cost, rollback</li>
+    </ul>
+  </div>`;
+}
+function vaultInc(key,delta){
+  S.vault[key] = Math.max(0,(S.vault[key]||0)+delta);
+  save();
+  const el = document.getElementById(`vault-${key}`);
+  if(el) el.textContent = S.vault[key];
+}
+
+/* ───────── LEARNING LOG ───────── */
+function buildLearningLog(){
+  const g = document.getElementById('log-grid');
+  if(!g) return;
+  const due = [];
+  Object.keys(S.topicEv||{}).forEach(id=>{
+    const ev = S.topicEv[id];
+    if(ev.nextReview && ev.nextReview <= todayISO()){
+      const parts = id.split('-').map(Number);
+      const tp = PHASES[parts[0]]?.courses[parts[1]]?.topics[parts[2]];
+      if(tp) due.push({id,title:tp.t,date:ev.nextReview});
+    }
+  });
+  const l5 = Object.values(S.t).filter(v=>Number(v)>=5).length;
+  g.innerHTML = `<div class="log-card">
+    <div class="log-stat-row">
+      <div class="log-stat"><div class="log-stat-val">${S.streak||0}</div><div class="log-stat-lbl">Day Streak</div></div>
+      <div class="log-stat"><div class="log-stat-val">${l5}</div><div class="log-stat-lbl">L5 Topics</div></div>
+      <div class="log-stat"><div class="log-stat-val">${due.length}</div><div class="log-stat-lbl">Reviews Due</div></div>
+      <div class="log-stat"><div class="log-stat-val">${S.log.posts||0}</div><div class="log-stat-lbl">Public Posts</div></div>
+      <div class="log-stat"><div class="log-stat-val">${S.log.reviews||0}</div><div class="log-stat-lbl">Weekly Reviews</div></div>
+    </div>
+    <div class="iv-counter">
+      <button onclick="logInc('posts',1)">+ Public Post</button>
+      <button onclick="logInc('reviews',1)">+ Weekly Review</button>
+    </div>
+  </div>
+  <div class="log-card">
+    <div class="ov-title">Spaced Review Due</div>
+    <div class="review-list">
+      ${due.length ? due.map(x=>`<div class="review-item due"><span>${escapeHtml(x.title)}</span><button class="sb-btn" onclick="markReviewed('${x.id}')">reviewed</button></div>`).join('') : `<div class="review-item">No reviews due. Keep going.</div>`}
+    </div>
+  </div>`;
+}
+function logInc(key,delta){
+  S.log[key] = (S.log[key]||0)+delta;
+  save();
+  buildLearningLog();
+}
+function markReviewed(id){
+  if(!S.topicEv[id]) S.topicEv[id] = {};
+  S.topicEv[id].lastReviewed = todayISO();
+  S.topicEv[id].nextReview = addDaysISO(30);
+  save();
+  buildLearningLog();
+  showToast('Review moved +30 days');
+}
+
+/* ───────── SEARCH ───────── */
+function searchTopics(query){
+  const q = (query||'').trim().toLowerCase();
+  document.querySelectorAll('.topic').forEach(el=>{
+    if(!q){ el.classList.remove('hidden'); return; }
+    el.classList.toggle('hidden', !(el.dataset.text||'').includes(q));
+  });
+  if(q){
+    document.querySelectorAll('.phase-body').forEach(b=>b.style.display='block');
+    document.querySelectorAll('.topic-wrap').forEach(b=>b.style.display='block');
+    document.querySelectorAll('.ph-chev,.c-chev').forEach(c=>c.classList.add('open'));
+  }
+}
+
+/* ───────── EXPORT / IMPORT / RESET ───────── */
+function exportData(){
+  const blob = new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `aiml-v3-backup-${todayISO()}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  showToast('Exported ✓');
+}
+function importData(event){
+  const file = event.target.files && event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e=>{
+    try{
+      S = Object.assign(blankState(), JSON.parse(e.target.result));
+      currentRole = S.role || 'all';
+      save();
+      init();
+      showToast('Imported ✓');
+    }catch(err){
+      showToast('Import failed');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+function resetData(){
+  if(!confirm('Reset ALL progress? Export first if needed.')) return;
+  S = blankState();
+  currentRole = 'all';
+  save();
+  init();
+  showToast('Reset ✓');
+}
+
+/* ───────── NAVIGATION ───────── */
+const PAGE_META = {
+  roadmap:['Roadmap','10 stages · 6-level mastery · weighted progress'],
+  projects:['Projects','55 projects · 4 tiers · proof checklist'],
+  career:['Role Readiness','8 roles · pillar-weighted readiness'],
+  overview:['Overview','Stage progress · timeline · pillars · heatmap'],
+  weekly:['Weekly Plan','Execution rhythm · anti-cheat rules'],
+  locker:['Evidence Locker','All proof URLs in one searchable grid'],
+  vault:['Interview Vault','STAR stories · mocks · SQL drill · applications'],
+  log:['Learning Log','Spaced review · weekly reviews · public posts'],
+  resources:['Resources','Curated free learning resources'],
+  notes:['Notes','Auto-saved browser notes']
+};
+function nav(el){
+  const panel = el.dataset.panel;
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById(panel)?.classList.add('active');
+  const meta = PAGE_META[panel] || [panel,''];
+  document.getElementById('pg-title').textContent = meta[0];
+  document.getElementById('pg-sub').textContent = meta[1];
+
+  if(panel==='projects') buildProjects();
+  if(panel==='career') buildRoleCareer();
+  if(panel==='overview') buildOverview();
+  if(panel==='weekly') buildWeekly();
+  if(panel==='locker') buildLocker();
+  if(panel==='vault') buildVault();
+  if(panel==='log') buildLearningLog();
+  if(panel==='resources') buildResources();
+  if(panel==='notes') buildNotes();
+}
+
+/* ───────── STATS ───────── */
+function updateStats(){
+  const tw = totalWeighted();
+  const pDone = PROJECTS.filter(p=>isProjectComplete(p.id)).length;
+
+  document.getElementById('s-done').textContent = tw.doneC;
+  document.getElementById('s-done-sub').textContent = `of ${tw.totalC} total`;
+  document.getElementById('s-pct').textContent = tw.pct + '%';
+  document.getElementById('s-proj').textContent = pDone;
+  document.getElementById('s-proj-sub').textContent = `of ${PROJECTS.length} total`;
+  document.getElementById('s-streak').textContent = S.streak || 0;
+  document.getElementById('s-streak-sub').textContent = (S.streak||0)>0 ? `${S.streak} day streak 🔥` : 'start today!';
+
+  document.getElementById('sb-pct').textContent = tw.pct + '%';
+  document.getElementById('sb-fill').style.width = tw.pct + '%';
+  document.getElementById('proj-count').textContent = `${pDone} / ${PROJECTS.length} done`;
+
+  const lvl = CAREER_LEVELS.slice().reverse().find(l=>tw.pct>=l.min) || CAREER_LEVELS[0];
+  document.getElementById('sb-rank').textContent = `${lvl.label} · ${tw.pct}%`;
+
+  if(currentRole==='all'){
+    document.getElementById('sb-rd-val').textContent = lvl.label;
+    document.getElementById('sb-rd-sub').textContent = lvl.lpa;
+  }else{
+    const r = roleReadiness(currentRole);
+    const req = ROLE_REQUIREMENTS[currentRole];
+    document.getElementById('sb-rd-val').textContent = `${r}% ready`;
+    document.getElementById('sb-rd-sub').textContent = `${req.name} · ${req.lpa}`;
+  }
+
+  buildOverviewProgress();
+  if(document.getElementById('pillar-coverage')) buildPillarCoverage();
+  if(document.getElementById('career')?.classList.contains('active')) buildRoleCareer();
+  if(document.getElementById('locker')?.classList.contains('active')) buildLocker();
+  if(document.getElementById('log')?.classList.contains('active')) buildLearningLog();
+}
+
+/* ───────── INIT ───────── */
+function init(){
+  const sel = document.getElementById('role-select');
+  if(sel) sel.value = currentRole;
+
+  document.getElementById('nb-phases').textContent = PHASES.length;
+  document.getElementById('nb-proj').textContent = PROJECTS.length;
+
+  buildRoadmap();
+  buildProjects();
+  buildRoleCareer();
+  buildOverview();
+  buildWeekly();
+  buildLocker();
+  buildVault();
+  buildLearningLog();
+  buildResources();
+  buildNotes();
+  updateStats();
+}
+init();
+</script>
+</body>
+</html>
